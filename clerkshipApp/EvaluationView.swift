@@ -3,7 +3,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct EvaluationView: View {
     // State variables to track user answers
     @State private var question1 = ""
     @State private var question2 = ""
@@ -173,5 +173,5 @@ struct SubmittedView: View {
 }
 
 #Preview {
-    ContentView()
+    EvaluationView()
 }
