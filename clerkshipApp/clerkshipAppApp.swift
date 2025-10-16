@@ -10,7 +10,7 @@ import SwiftUI
 struct clerkshipAppApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            EvaluationView()
         }
     }
 }
