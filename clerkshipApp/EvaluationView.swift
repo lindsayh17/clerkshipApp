@@ -2,6 +2,7 @@
 //  clerkshipApp
 
 import SwiftUI
+import Foundation
 
 struct EvaluationView: View {
     // State variables to track user answers
@@ -14,6 +15,16 @@ struct EvaluationView: View {
     
     // Navigation after submission
     @State private var submitted = false
+    
+    func verifyAlphaNum(testString: String) -> String{
+        let regex: String = "%"
+        let test = NSPredicate(format: "SELF MATCHES %@", regex)
+        if !test.evaluate(with: testString){
+            return "Invalid characters."
+        }else{
+            return ""
+        }
+    }
     
     var body: some View {
         NavigationStack {
@@ -46,6 +57,7 @@ struct EvaluationView: View {
                                     .padding(8)
                                     .background(Color.white)
                                     .cornerRadius(10)
+                                Text(verifyAlphaNum(testString: notes)).foregroundColor(.red)
                             }
                             
                             // Submit button
