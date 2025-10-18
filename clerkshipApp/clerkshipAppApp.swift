@@ -9,7 +9,7 @@ import FirebaseCore
 
 @main
 struct clerkshipAppApp: App {
-    var firebase = FirebaseService()
+//    var firebase = FirebaseService()
     init() {
         // Use Firebase library to configure APIs
         FirebaseApp.configure()
