@@ -9,14 +9,16 @@ import FirebaseCore
 
 @main
 struct clerkshipAppApp: App {
+    var firebase = FirebaseService()
     init() {
         // Use Firebase library to configure APIs
         FirebaseApp.configure()
+        
     }
     
     var body: some Scene {
         WindowGroup {
-            EvaluationView()
+            EvaluationView().environmentObject(FirebaseService())
         }
     }
 }

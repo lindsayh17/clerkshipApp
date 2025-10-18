@@ -6,6 +6,7 @@ import Foundation
 
 struct EvaluationView: View {
     // State variables to track user answers
+    @EnvironmentObject var service: FirebaseService
     @State private var question1 = ""
     @State private var question2 = ""
     @State private var question3 = ""
@@ -15,6 +16,16 @@ struct EvaluationView: View {
     
     // Navigation after submission
     @State private var submitted = false
+    
+    func fetchTest() {
+        Task {
+            do {
+                try await service.fetchForms()
+            } catch {
+                print("an error occurred: \(error)")
+            }
+        }
+    }
     
     func verifyAlphaNum(testString: String) -> String{
         let regex: String = "%"
@@ -27,6 +38,7 @@ struct EvaluationView: View {
     }
     
     var body: some View {
+
         NavigationStack {
             ZStack {
                 // Background color (dark green)
@@ -122,6 +134,7 @@ struct EvaluationView: View {
                 .navigationDestination(isPresented: $submitted) {
                     // Page after submitting
                     SubmittedView()
+                        .onAppear() { fetchTest() }
                 }
             }
             
@@ -185,5 +198,5 @@ struct SubmittedView: View {
 }
 
 #Preview {
-    EvaluationView()
+    EvaluationView().environmentObject(FirebaseService())
 }
