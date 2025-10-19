@@ -5,15 +5,15 @@ import SwiftUI
 import Foundation
 
 struct EvaluationView: View {
-    // State variables to track user answers
+    @EnvironmentObject var service: FirebaseService
     @State private var questionIndex = 0
     @State private var form = Form()
     
     // Navigation after submission
     @State private var submitted = false
     @State private var complete = false
-    
-    var body: some View {
+    func fetchTest() {
+        Task {
         ZStack {
             // Background color (dark green)
             Color(red: 0.10, green: 0.26, blue: 0.22)
@@ -62,8 +62,8 @@ struct EvaluationView: View {
                         }
                         // Submit button
                         Button(action: {
-                                print("Form submitted")
-                                submitted = true
+                                        
+                                        // Box for comments
                         }){
                             Text("Submit Form")
                                 .foregroundColor(.white)
@@ -89,6 +89,27 @@ struct EvaluationView: View {
     }
 }
 
+                                    .frame(maxWidth: .infinity)
+                                // Olive green color
+                                    .background(Color(red: 0.68, green: 0.69, blue: 0.53))
+                                    .cornerRadius(30)
+                            }
+                            .disabled(complete)
+                            .padding(.top, 10)
+                        }
+                        .padding()
+                Image(systemName: isSelected ? "circle.inset.fislled" : "circle")
+                    NavView()
+                }
+                .navigationDestination(isPresented: $submitted) {
+                    // Page after submitting
+                    SubmittedView()
+                }
+            }
+        }
+    }
+    EvaluationView()
+
 struct RadioButton: View {
     let label: String
     let isSelected: Bool
@@ -108,5 +129,5 @@ struct RadioButton: View {
 }
 
 #Preview {
-    EvaluationView()
+    EvaluationView().environmentObject(FirebaseService())
 }
