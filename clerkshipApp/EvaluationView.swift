@@ -110,6 +110,16 @@ struct RadioButton: View {
     }
 }
 
+struct SubmittedView: View{
+    var body: some View{
+        VStack(spacing: 30){
+            Text("Submitted!")
+            Spacer()
+        }
+        .padding()
+    }
+}
+
 #Preview {
     EvaluationView()//.environmentObject()
 }
