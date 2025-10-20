@@ -110,7 +110,7 @@ struct RadioButton: View {
         Button(action: action) {
             HStack {
                 // Filled or empty circle based on selection
-                Image(systemName: isSelected ? "circle.inset.fislled" : "circle")
+                Image(systemName: isSelected ? "circle.inset.filled" : "circle")
                     .foregroundColor(.white)
                 Text(label)
                     .foregroundColor(.white)
