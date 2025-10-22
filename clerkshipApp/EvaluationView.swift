@@ -5,6 +5,7 @@ import SwiftUI
 import Foundation
 
 struct EvaluationView: View {
+    @EnvironmentObject var firebase: FirebaseService
     // State variables to track user answers
     @State private var questionIndex = 0
     @State private var form = Form()
@@ -20,6 +21,14 @@ struct EvaluationView: View {
             }
         }
         return true
+    }
+    
+    func download() {
+        Task {
+            do {
+                try await firebase.fetchForms()
+            }
+        }
     }
     
     var body: some View {
@@ -74,6 +83,7 @@ struct EvaluationView: View {
                             Button(action: {
                                 print("Form submitted")
                                 submitted = true
+                                download()
                             }){
                                 Text("Submit Form")
                                     .foregroundColor(.white)
@@ -94,7 +104,7 @@ struct EvaluationView: View {
                 .navigationDestination(isPresented: $submitted) {
                     // Page after submitting
                     SubmittedView()
-                        //.onAppear() { fetchTest() }
+                        .onAppear() { }
                 }
             }
         }
@@ -130,5 +140,5 @@ struct SubmittedView: View{
 }
 
 #Preview {
-    EvaluationView()//.environmentObject()
+    EvaluationView().environmentObject(FirebaseService())
 }

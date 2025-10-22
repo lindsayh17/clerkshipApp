@@ -13,6 +13,7 @@
 		BB8998C32EA81677009C7B97 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = BB8998C22EA81677009C7B97 /* FirebaseCore */; };
 		BB8998C52EA81677009C7B97 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = BB8998C42EA81677009C7B97 /* FirebaseDatabase */; };
 		BB8998C72EA81677009C7B97 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = BB8998C62EA81677009C7B97 /* FirebaseFirestore */; };
+		BBC46EC32EA83EA800F447CD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BBC46EC22EA83EA800F447CD /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +37,7 @@
 		BBA6891B2E984B7400D03118 /* clerkshipApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = clerkshipApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBA689282E984B7700D03118 /* clerkshipAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = clerkshipAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBA689322E984B7700D03118 /* clerkshipAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = clerkshipAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BBC46EC22EA83EA800F447CD /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -90,6 +92,7 @@
 		BBA689122E984B7400D03118 = {
 			isa = PBXGroup;
 			children = (
+				BBC46EC22EA83EA800F447CD /* GoogleService-Info.plist */,
 				BBA6891D2E984B7400D03118 /* clerkshipApp */,
 				BBA6892B2E984B7700D03118 /* clerkshipAppTests */,
 				BBA689352E984B7700D03118 /* clerkshipAppUITests */,
@@ -236,6 +239,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBC46EC32EA83EA800F447CD /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
