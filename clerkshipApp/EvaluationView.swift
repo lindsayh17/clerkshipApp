@@ -12,16 +12,6 @@ struct EvaluationView: View {
     
     // Navigation after submission
     @State private var submitted = false
-    //@State private var complete = false
-    
-    func checkComplete() -> Bool{
-        for q in form.questions{
-            if q.required && (q.responseString == nil){
-                return false
-            }
-        }
-        return true
-    }
     
     func download() {
         Task {
@@ -94,7 +84,7 @@ struct EvaluationView: View {
                                     .background(Color(red: 0.68, green: 0.69, blue: 0.53))
                                     .cornerRadius(30)
                             }
-                            .disabled(!checkComplete())
+                            .disabled(!form.validForm())
                             .padding(.top, 10)
                         }
                         .padding()
