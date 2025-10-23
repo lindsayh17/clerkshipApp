@@ -26,7 +26,24 @@ struct PreceptorProfile: View {
                         .fill(Color(red: 0.68, green: 0.69, blue: 0.53))
                         .frame(width: 170, height: 170)
                         // Add first + last name, email and role
-                        // Submit button
+                        Text("Firstname :")
+                            .foregroundColor(.white)
+                            .padding(.top, 20)
+                            .padding()
+                            .bold()
+                        Text("Lastname :")
+                            .foregroundColor(.white)
+                            .padding()
+                            .bold()
+                        Text("Role :")
+                            .foregroundColor(.white)
+                            .padding()
+                            .bold()
+                        Text("Email :")
+                            .foregroundColor(.white)
+                            .padding()
+                            .bold()
+                        // Logout button
                         Button(action: {
                             print("Logged Out")
                         }) {
