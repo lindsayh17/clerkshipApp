@@ -4,36 +4,34 @@
 import SwiftUI
 
 struct SearchView: View {
-    // State variables to track user answers
+    private let backgroundColor = Color(red: 0.10, green: 0.26, blue: 0.22)
     
     var body: some View {
         NavigationStack {
             ZStack {
-                // Background color (dark green)
-                Color(red: 0.10, green: 0.26, blue: 0.22)
                 // Color fills the entire screen
-                    .ignoresSafeArea()
-                
+                backgroundColor.ignoresSafeArea()
                 VStack(spacing: 0) {
                     // Add search bar
                     // Makes scrollable
                     ScrollView {
                         VStack(alignment: .leading, spacing: 30) {
+                            // Add A-# on left side going down
+                            // Take names from firebase and sort alphabetically
                         }
-                        // Add A-# on left side going down
-                        // Take names from firebase and but alphabetically in
                         // Space around form content
                         .padding()
                     }
-                    
+                    // Bottom Navigation Bar
                     NavView()
-
                 }
             }
         }
     }
 }
 
+// Preview
 #Preview {
     SearchView()
 }
+

@@ -1,8 +1,6 @@
-//
 //  clerkshipAppApp.swift
 //  clerkshipApp
-//
-//
+
 
 import SwiftUI
 //import FirebaseCore
@@ -13,12 +11,11 @@ struct clerkshipAppApp: App {
     init() {
         // Use Firebase library to configure APIs
         FirebaseApp.configure()
-        
     }
-    
     var body: some Scene {
         WindowGroup {
-            EvaluationView().environmentObject(FirebaseService())
+            EvaluationView()
+                .environmentObject(FirebaseService())
         }
     }
 }

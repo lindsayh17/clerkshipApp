@@ -1,40 +1,42 @@
-//
 //  QuestionEntry.swift
 //  clerkshipApp
-//
-//  Created by Lindsay on 10/17/25.
-//
 
 import SwiftUI
 
-struct Question: Identifiable, Codable{
+struct Question: Identifiable, Codable {
     
-    enum QuestionType: Codable{
+    // Question Types
+    enum QuestionType: Codable {
         case radio
         case open
         case slider
     }
     
-    enum ResponseType: Codable{
+    // Response Types
+    enum ResponseType: Codable {
         case text(String)
         case number(Int)
     }
-        
+    
+    // Properties
     var id = UUID()
     var question: String = ""
     var type: QuestionType
     var required: Bool = true
     var response: ResponseType?
     
-    init(question: String, type: QuestionType, required: Bool){
+    // Initializer
+    init(question: String, type: QuestionType, required: Bool) {
         self.question = question
         self.type = type
         self.required = required
         self.response = nil
     }
     
+    // Text type
     var responseString: String? {
-        if case let .text(value)? = response{
+        // Returns the text value if response is a text type
+        if case let .text(value)? = response {
             return value
         }
         return nil

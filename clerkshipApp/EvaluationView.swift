@@ -1,63 +1,75 @@
-//  ContentView.swift
+//  EvaluationView.swift
 //  clerkshipApp
 
 import SwiftUI
+// I don't think we ned import foundation ?
 import Foundation
 
 struct EvaluationView: View {
     @EnvironmentObject var firebase: FirebaseService
     // State variables to track user answers
-    @State private var questionIndex = 0
     @State private var form = Form()
-    
     // Navigation after submission
     @State private var submitted = false
     
+    // Colors
+    private let backgroundColor = Color(red: 0.10, green: 0.26, blue: 0.22)
+    private let buttonColor = Color(red: 0.68, green: 0.69, blue: 0.53)
+    
+    // Firebase Download
     func download() {
         Task {
             do {
+                // Is there supposed to be a ? after try
                 try await firebase.fetchForms()
             }
         }
     }
     
     var body: some View {
-        NavigationStack{
+        NavigationStack {
             ZStack {
-                // Background color (dark green)
-                Color(red: 0.10, green: 0.26, blue: 0.22)
                 // Color fills the entire screen
-                    .ignoresSafeArea()
+                backgroundColor.ignoresSafeArea()
                 
                 VStack(spacing: 0) {
                     // Makes scrollable
                     ScrollView {
                         VStack(alignment: .leading, spacing: 30) {
-                            ForEach($form.questions){$q in
-                                if q.required{
+                            // Display all questions in the form
+                            ForEach($form.questions) { $q in
+                                if q.required {
                                     Text(q.question).foregroundColor(.white) + Text(" *").foregroundColor(.red)
-                                }else{
+                                } else {
                                     Text(q.question).foregroundColor(.white)
                                 }
-                                switch q.type{
-                                case.radio:
+                                
+                                switch q.type {
+                                case .radio:
                                     HStack {
-                                        RadioButton(label: "Yes", isSelected: (q.responseString == "Yes")){
+                                        RadioButton(label: "Yes", isSelected: (q.responseString == "Yes")) {
                                             q.response = .text("Yes")
                                         }
-                                        RadioButton(label: "No", isSelected: (q.responseString == "No")){
+                                        RadioButton(label: "No", isSelected: (q.responseString == "No")) {
                                             q.response = .text("No")
                                         }
                                     }
                                 case .open:
                                     VStack(alignment: .leading) {
-                                        
                                         // Box for comments
-                                        TextEditor(text: Binding(get: {if case .text(let notes) = q.response{
-                                            return notes
-                                        }
-                                            return ""
-                                        }, set: {newVal in q.response = .text(newVal)}))
+                                        TextEditor(
+                                            text: Binding(
+                                                get: {
+                                                    if case .text(let notes) = q.response {
+                                                        return notes
+                                                    }
+                                                    return ""
+                                                },
+                                                set: { newVal in
+                                                    q.response = .text(newVal)
+                                                }
+                                            )
+                                        )
                                         .frame(height: 100)
                                         .padding(8)
                                         .background(Color.white)
@@ -69,19 +81,20 @@ struct EvaluationView: View {
                                     //TODO: slider code
                                 }
                             }
+                            
                             // Submit button
                             Button(action: {
                                 print("Form submitted")
                                 submitted = true
                                 download()
-                            }){
+                            }) {
                                 Text("Submit Form")
                                     .foregroundColor(.white)
                                     .padding()
-                                // Width
+                                    // Width
                                     .frame(maxWidth: .infinity)
-                                // Olive green color
-                                    .background(Color(red: 0.68, green: 0.69, blue: 0.53))
+                                    // Olive green color
+                                    .background(buttonColor)
                                     .cornerRadius(30)
                             }
                             .disabled(!form.validForm())
@@ -101,6 +114,7 @@ struct EvaluationView: View {
     }
 }
 
+// RadioButton Subview
 struct RadioButton: View {
     let label: String
     let isSelected: Bool
@@ -119,9 +133,10 @@ struct RadioButton: View {
     }
 }
 
-struct SubmittedView: View{
-    var body: some View{
-        VStack(spacing: 30){
+// SubmittedView Subview
+struct SubmittedView: View {
+    var body: some View {
+        VStack(spacing: 30) {
             Text("Submitted!")
             Spacer()
         }
@@ -129,6 +144,7 @@ struct SubmittedView: View{
     }
 }
 
+// Preview
 #Preview {
     EvaluationView().environmentObject(FirebaseService())
 }

@@ -1,14 +1,10 @@
-//
 //  LogInView.swift
 //  clerkshipApp
-//
-//  Created by Hannah Deyst on 10/17/25.
-//
 
 import SwiftUI
 import FirebaseCore
 import FirebaseFirestore
-
+// import FirebaseAuth
 
 class FirebaseService: ObservableObject {
 //    @Published private(set) var forms: [EvaluationForm]
