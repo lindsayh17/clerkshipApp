@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-struct Question: Identifiable{
+struct Question: Identifiable, Codable{
     
-    enum QuestionType{
+    enum QuestionType: Codable{
         case radio
         case open
         case slider
     }
     
-    enum ResponseType{
+    enum ResponseType: Codable{
         case text(String)
         case number(Int)
     }

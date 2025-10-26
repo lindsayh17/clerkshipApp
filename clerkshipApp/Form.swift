@@ -5,8 +5,16 @@
 //  Created by Lindsay on 10/17/25.
 //
 
-struct Form{
+import Foundation
+
+struct Form /*:Identifiable, Codable*/{
+//    var id: UUID
     var questions: [Question]
+    
+//    init(id: UUID) {
+//        self.id = id
+//        self.questions = []
+//    }
     
     init(){
         let q1 = Question(question: "Patient assessment ~ Can student take patient history?", type: .radio, required: true)
