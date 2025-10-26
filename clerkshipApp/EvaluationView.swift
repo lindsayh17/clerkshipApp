@@ -78,10 +78,9 @@ struct EvaluationView: View {
                                     }
                                 case .slider:
                                     Text("Slide")
-                                    //TODO: slider code
+                                    // slider code
                                 }
                             }
-                            
                             // Submit button
                             Button(action: {
                                 print("Form submitted")
@@ -93,8 +92,8 @@ struct EvaluationView: View {
                                     .padding()
                                     // Width
                                     .frame(maxWidth: .infinity)
-                                    // Olive green color
-                                    .background(buttonColor)
+                                    // Olive green color, grey if invalid
+                                    .background(form.validForm() ? buttonColor : Color.gray)
                                     .cornerRadius(30)
                             }
                             .disabled(!form.validForm())
