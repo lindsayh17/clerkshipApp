@@ -3,7 +3,7 @@
 
 
 import SwiftUI
-//import FirebaseCore
+import FirebaseCore
 
 @main
 struct clerkshipAppApp: App {
