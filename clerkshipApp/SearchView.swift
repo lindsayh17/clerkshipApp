@@ -4,7 +4,8 @@
 import SwiftUI
 
 struct SearchView: View {
-    private let backgroundColor = Color(red: 0.10, green: 0.26, blue: 0.22)
+    private let backgroundColor = Color("BackgroundColor")
+    private let buttonColor = Color("ButtonColor")
     
     var body: some View {
         NavigationStack {

@@ -4,8 +4,8 @@
 import SwiftUI
 
 struct PreceptorProfile: View {
-    private let backgroundColor = Color(red: 0.10, green: 0.26, blue: 0.22)
-    private let buttonColor = Color(red: 0.68, green: 0.69, blue: 0.53)
+    private let backgroundColor = Color("BackgroundColor")
+    private let buttonColor = Color("ButtonColor")
     
     var body: some View {
         NavigationStack {
