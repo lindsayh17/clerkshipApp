@@ -7,6 +7,7 @@ import Foundation
 
 struct EvaluationView: View {
     @EnvironmentObject var firebase: FirebaseService
+    @EnvironmentObject var evalStore: EvalStore
     // Create new evaluation
     @State private var form = Form()
     // Navigation after submission
@@ -85,7 +86,9 @@ struct EvaluationView: View {
                             Button(action: {
                                 print("Form submitted")
                                 submitted = true
-                                download()
+                                // download()
+                                evalStore.add(form: form)
+                                evalStore.saveChanges()
                             }) {
                                 Text("Submit Form")
                                     .foregroundColor(.white)
