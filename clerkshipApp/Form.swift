@@ -3,17 +3,14 @@
 
 import Foundation
 
-struct Form /*:Identifiable, Codable*/ {
-    // var id: UUID
+struct Form:Identifiable, Codable {
+    var id: UUID
     var questions: [Question]
-    
-//    init(id: UUID) {
-//        self.id = id
-//        self.questions = []
-//    }
     
     // Initializer
     init() {
+        self.id = UUID()
+
         // Default form questions
         let q1 = Question(
             question: "Patient assessment ~ Can student take patient history?",

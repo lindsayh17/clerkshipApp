@@ -16,6 +16,7 @@ struct clerkshipAppApp: App {
         WindowGroup {
             EvaluationView()
                 .environmentObject(FirebaseService())
+                .environmentObject(EvalStore())
         }
     }
 }

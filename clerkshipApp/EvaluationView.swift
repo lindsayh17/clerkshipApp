@@ -7,7 +7,7 @@ import Foundation
 
 struct EvaluationView: View {
     @EnvironmentObject var firebase: FirebaseService
-    // State variables to track user answers
+    // Create new evaluation
     @State private var form = Form()
     // Navigation after submission
     @State private var submitted = false
