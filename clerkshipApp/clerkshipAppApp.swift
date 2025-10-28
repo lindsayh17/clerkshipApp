@@ -8,6 +8,8 @@ import FirebaseCore
 @main
 struct clerkshipAppApp: App {
 //    var firebase = FirebaseService()
+    
+    
     init() {
         // Use Firebase library to configure APIs
         FirebaseApp.configure()
@@ -17,6 +19,7 @@ struct clerkshipAppApp: App {
             EvaluationView()
                 .environmentObject(FirebaseService())
                 .environmentObject(EvalStore())
+                .environmentObject(AuthService())
         }
     }
 }

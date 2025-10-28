@@ -9,6 +9,7 @@ import SwiftUI
 
 struct LoginView: View {
     @EnvironmentObject var firebase: FirebaseService
+    @EnvironmentObject var auth: AuthService
     
     // Colors
     private let backgroundColor = Color("BackgroundColor")
