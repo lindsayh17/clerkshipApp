@@ -1,0 +1,27 @@
+[
+    {
+        "user_id": "1",
+        "first_name": "Mia",
+        "last_name": "Corcoran",
+        "position": "Student"
+    },
+    {
+        "user_id": "2",
+        "first_name": "Hannah",
+        "last_name": "Deyst",
+        "position": "Student"
+    },
+    {
+        "user_id": "3",
+        "first_name": "Lindsay",
+        "last_name": "Hall",
+        "position": "Student"
+    },
+    {
+        "user_id": "4",
+        "first_name": "Tim",
+        "last_name": "Hwang",
+        "position": "Preceptor"
+    }
+]
+
