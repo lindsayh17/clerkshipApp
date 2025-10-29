@@ -23,7 +23,7 @@ struct BigButtonView: View {
                 .foregroundColor(foregroundColor)
                 .background(backgroundColor)
                 .overlay(RoundedRectangle(cornerRadius: 5)
-                          .stroke(Color.black, lineWidth: 2))
+                          .stroke(backgroundColor, lineWidth: 2))
                         .cornerRadius(5)
         }
         .padding()
