@@ -34,7 +34,11 @@ struct LoginView: View {
             // Color fills the entire screen
             backgroundColor.ignoresSafeArea()
             VStack {
-                Text("UVM OBGYN Clerkship App")
+                Image("clerkshipAppLogo")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .padding()
+                Text("Welcome Back")
                     .font(.title)
                     .foregroundColor(.white)
                     .bold()
@@ -46,11 +50,15 @@ struct LoginView: View {
                     .padding()
                     .cornerRadius(10)
                     .background(Color.gray.opacity(0.4))
+                    .textInputAutocapitalization(.never)
+                    .foregroundColor(.white)
                 
                 SecureField("Password...", text: $password)
                     .padding()
                     .cornerRadius(10)
                     .background(Color.gray.opacity(0.4))
+                    .textInputAutocapitalization(.never)
+                    .foregroundColor(.white)
                 
                 // TODO: add navigation if sign in successful
                 BigButtonView(buttonText: "Log In", action: signin, foregroundColor: .white, backgroundColor: backgroundColor)
