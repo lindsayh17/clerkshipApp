@@ -60,7 +60,12 @@ struct LoginView: View {
                     .foregroundColor(.white)
                 
                 // TODO: add navigation if sign in successful
-                BigButtonView(buttonText: "Log In", action: signin, foregroundColor: .white, backgroundColor: backgroundColor)
+                BigButtonView(
+                    text: "Log In",
+                    action: signin,
+                    foregroundColor: .white,
+                    backgroundColor: backgroundColor
+                )
                     
             }
             .padding()
@@ -71,6 +76,7 @@ struct LoginView: View {
 
 // Preview
 #Preview {
-    LoginView().environmentObject(FirebaseService())
+    LoginView()
+        .environmentObject(FirebaseService())
         .environmentObject(AuthService())
 }
