@@ -44,7 +44,12 @@ struct CreateAccountView: View {
                 .background(Color.gray.opacity(0.4))
             
             // TODO: add navigation if sign in successful
-            BigButtonView(buttonText: "Create Account", action: createAccount, foregroundColor: .white, backgroundColor: backgroundColor)
+            BigButtonView(
+                text: "Create Account",
+                action: createAccount,
+                foregroundColor: .white,
+                backgroundColor: backgroundColor
+            )
         }
         .padding()
     }
