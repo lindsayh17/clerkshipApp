@@ -30,6 +30,16 @@ struct NavView: View {
                         .foregroundColor(.black)
                         .padding(.top, 4)
                 }
+                // Home Button
+                VStack {
+                    Circle()
+                        // Olive green
+                        .fill(buttonColor)
+                        .frame(width: 50, height: 50)
+                    Text("Home")
+                        .foregroundColor(.black)
+                        .padding(.top, 4)
+                }
                 // Profile Button
                 VStack {
                     Circle()
