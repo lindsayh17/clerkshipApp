@@ -7,7 +7,7 @@ import Foundation
 
 struct EvaluationView: View {
     @EnvironmentObject var firebase: FirebaseService
-    //@EnvironmentObject var evalStore: EvalStore
+    @EnvironmentObject var evalStore: EvalStore
     // Create new evaluation
     @State private var form = Form()
     // Navigation after submission
@@ -87,7 +87,7 @@ struct EvaluationView: View {
                                 print("Form submitted")
                                 submitted = true
                                 // download()
-                                // evalStore.add(form: form)
+                                evalStore.add(form: form)
                                 // evalStore.saveChanges()
                             }) {
                                 Text("Submit Form")
@@ -149,4 +149,5 @@ struct SubmittedView: View {
 // Preview
 #Preview {
     EvaluationView().environmentObject(FirebaseService())
+        .environmentObject(EvalStore())
 }
