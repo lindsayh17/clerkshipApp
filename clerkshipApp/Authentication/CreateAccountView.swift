@@ -13,6 +13,8 @@ struct CreateAccountView: View {
     @EnvironmentObject var auth: AuthService
     @State private var email = ""
     @State private var password = ""
+    @State private var firstname = ""
+    @State private var lastname = ""
     
     // Colors
     private let backgroundColor = Color("BackgroundColor")
@@ -31,6 +33,14 @@ struct CreateAccountView: View {
         VStack {
             // Color fills the entire screen
             // backgroundColor.ignoresSafeArea()
+            TextField("First name...", text: $firstname)
+                .padding()
+                .cornerRadius(10)
+                .background(Color.gray.opacity(0.4))
+            SecureField("Last name...", text: $lastname)
+                .padding()
+                .cornerRadius(10)
+                .background(Color.gray.opacity(0.4))
             
             // TODO: email validation
             // TODO: remove autocapitilization
