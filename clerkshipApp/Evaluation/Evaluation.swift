@@ -25,7 +25,12 @@ struct Evaluation: Identifiable, Codable {
 }
 
 struct Response: Identifiable, Codable {
-    var id: UUID
+    var id = UUID()
     var questionId: String
     var answer: String
+    
+    init(questionId: String, answer: String) {
+        self.questionId = questionId
+        self.answer = answer
+    }
 }
