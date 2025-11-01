@@ -27,6 +27,25 @@ struct EvaluationView: View {
         }
     }
     
+    func submitForm(){
+        // Collect responses and create the Evaluation object
+        let responses = form.questions.compactMap { question -> Response? in
+            guard let responseText = question.responseString else { return nil }
+            return Response(questionId: question.id.uuidString, answer: responseText)
+        }
+        
+        // Create the Evaluation object
+        let evaluation = Evaluation(
+            formId: "obgyn",
+            preceptorId: "1",
+            studentId: "2",
+            responses: responses,
+            submittedAt: Date()
+        )
+        
+        evalStore.add(evaluation: evaluation)
+    }
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -86,9 +105,7 @@ struct EvaluationView: View {
                             Button(action: {
                                 print("Form submitted")
                                 submitted = true
-                                // download()
-                                evalStore.add(form: form)
-                                // evalStore.saveChanges()
+                                submitForm()
                             }) {
                                 Text("Submit Form")
                                     .foregroundColor(.white)

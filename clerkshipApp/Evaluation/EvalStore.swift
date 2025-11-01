@@ -11,12 +11,12 @@ import Firebase
 class EvalStore: ObservableObject {
     private var db = Firestore.firestore()
     
-    func add(form: Form) {
+    func add(evaluation: Evaluation) {
         do {
-          try db.collection("Forms").document("2").setData(from: form)
+          try db.collection("Evaluations").addDocument(from: evaluation)
         } catch let error {
-          print("Error writing city to Firestore: \(error)")
+          print("Error writing responses to Firestore: \(error)")
         }
     }
   
-} // class QuizStore
+} // class EvalStore
