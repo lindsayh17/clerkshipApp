@@ -15,7 +15,7 @@ struct Evaluation: Identifiable, Codable {
     var responses: [Response]
     var submittedAt: Date
     
-    init(id: UUID, formId: String, preceptorId: String, studentId: String, responses: [Response], submittedAt: Date) {
+    init(formId: String, preceptorId: String, studentId: String, responses: [Response], submittedAt: Date) {
         self.formId = formId
         self.preceptorId = preceptorId
         self.studentId = studentId
