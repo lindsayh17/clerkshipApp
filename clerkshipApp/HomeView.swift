@@ -7,6 +7,7 @@ struct HomeView: View {
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
+    @State private var currentView = 1
     
     var body: some View {
         NavigationStack {
@@ -35,9 +36,10 @@ struct HomeView: View {
                             }
                         }
                         .padding()
+                        
                     }
                     // Bottom Navigation
-                    NavView()
+                    NavTab(currentTab: $currentView)
                 }
             }
         }

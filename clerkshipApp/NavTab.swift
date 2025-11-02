@@ -6,38 +6,25 @@
 //
 import SwiftUI
 
+// The whole nav bar
 struct NavTab: View {
-    @State private var currentTab = 0
-      
+    @Binding var currentTab: Int
+    
     var body: some View {
         ZStack {
-            VStack {
-                // if we need more nav buttons, add them here
-                Group {
-                    switch currentTab {
-                    case 1:
-                        HomeView()
-                    case 2:
-                        ResourcesView()
-                    default:
-                        StudentProfile()
-                    }
-                }
+            Color.gray
+                .opacity(0.4)
+                .cornerRadius(35)
+                .frame(height: 95)
+                // Side spacing
+                .padding(.horizontal, 25)
+            
+            HStack {
+                NavBarButton(icon: "house", index: 1, text: "Home", currentTab: $currentTab).padding()
+                NavBarButton(icon: "text.document", index: 2, text: "Documents", currentTab: $currentTab).padding()
+                NavBarButton(icon: "person.crop.circle.fill", index: 3, text: "Profile", currentTab: $currentTab).padding()
             }
-            ZStack {
-                Color.gray
-                    .opacity(0.4)
-                    .cornerRadius(35)
-                    .frame(height: 95)
-                    // Side spacing
-                    .padding(.horizontal, 25)
-                
-                HStack {
-                    NavBarButton(icon: "house", index: 1, text: "Home", currentTab: $currentTab).padding()
-                    NavBarButton(icon: "text.document", index: 2, text: "Documents", currentTab: $currentTab).padding()
-                    NavBarButton(icon: "person.crop.circle.fill", index: 3, text: "Profile", currentTab: $currentTab).padding()
-                }
-            }
+            
         }
     }
 }
@@ -70,6 +57,6 @@ struct NavBarButton: View {
     }
 }
 
-#Preview {
-    NavTab()
-}
+//#Preview {
+//    NavTab(currentTab: $currentTab)
+//}
