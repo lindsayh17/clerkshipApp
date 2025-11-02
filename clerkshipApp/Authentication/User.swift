@@ -9,7 +9,7 @@ import SwiftUI
 
 struct User: Identifiable, Codable {
     
-    enum AccessLevel: Codable {
+    enum AccessLevel: String, Codable {
         case student
         case preceptor
         case admin
