@@ -27,6 +27,9 @@ struct CreateAccountView: View {
                 try await auth.createAccount(email: email, password: password)
             }
         }
+        
+        // TODO: put in a task?
+        auth.createUser(fname: firstname, lname: lastname, email: email, password: password)
     }
     
     var body: some View {
@@ -37,7 +40,7 @@ struct CreateAccountView: View {
                 .padding()
                 .cornerRadius(10)
                 .background(Color.gray.opacity(0.4))
-            SecureField("Last name...", text: $lastname)
+            TextField("Last name...", text: $lastname)
                 .padding()
                 .cornerRadius(10)
                 .background(Color.gray.opacity(0.4))
