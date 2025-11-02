@@ -13,34 +13,37 @@ struct RootView: View {
     @State var newAccountFlag = false
     
     var body: some View {
-        ZStack {
-            backgroundColor.ignoresSafeArea()
-            VStack {
-                // TODO: put logo here
-                
-                Text("UVM OBGYN Clerkship")
-                    .padding()
-                    .font(.title)
-                    .bold()
-                    .foregroundColor(.white)
-                
-                // log in button
-                BigButtonView(
-                    text: "Log In",
-                    action: {loginFlag = true},
-                    foregroundColor: .white,
-                    backgroundColor: backgroundColor
-                ).padding()
-                
-                // create account button
-                BigButtonView(
-                    text: "Create Account",
-                    action: {newAccountFlag = true},
-                    foregroundColor: backgroundColor,
-                    backgroundColor: .white
-                ).padding()
-                
-            }
+        NavigationStack{
+            ZStack {
+                backgroundColor.ignoresSafeArea()
+                VStack {
+                    // TODO: put logo here
+                    
+                    Text("UVM OBGYN Clerkship")
+                        .padding()
+                        .font(.title)
+                        .bold()
+                        .foregroundColor(.white)
+                    
+                    // log in button
+                    BigButtonView(
+                        text: "Log In",
+                        action: {loginFlag = true},
+                        foregroundColor: .white,
+                        backgroundColor: backgroundColor
+                    ).padding()
+                    
+                    // create account button
+                    BigButtonView(
+                        text: "Create Account",
+                        action: {newAccountFlag = true},
+                        foregroundColor: backgroundColor,
+                        backgroundColor: .white
+                    ).padding()
+                    
+                }
+            }.navigationDestination(isPresented: $loginFlag){ LoginView()}
+                .navigationDestination(isPresented: $newAccountFlag){ CreateAccountView()}
         }
         
     }
