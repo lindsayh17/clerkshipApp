@@ -7,9 +7,10 @@
 
 import SwiftUI
 import FirebaseAuth
-import FirebaseCore
+import Firebase
 
 class AuthService: ObservableObject {
+    private var db = Firestore.firestore()
   var userSession: FirebaseAuth.User!
   var firebaseAuth: Auth!
   @Published var currentUser: String!
@@ -45,6 +46,16 @@ class AuthService: ObservableObject {
       throw DBError.registrationFailed(errorMessage: error.localizedDescription)
     }
   }
+    
+    func createUser(fname: String, lname: String, email: String, password: String){
+        var u = User(firstName: fname, lastName: lname, email: email, password: password, privelege: .student)
+        
+        do {
+            try db.collection("Users").addDocument(from: u)
+        } catch let error {
+            print("Error writing responses to Firestore: \(error)")
+        }
+    }
   
   func signIn(email: String, password: String) async throws {
     do {
