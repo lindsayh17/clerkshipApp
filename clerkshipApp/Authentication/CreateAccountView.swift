@@ -32,6 +32,14 @@ struct CreateAccountView: View {
         auth.createUser(fname: firstname, lname: lastname, email: email)
     }
     
+    func checkComplete() -> Bool{
+        if email != "" && firstname != "" && lastname != ""{
+            return true
+        }else{
+            return false
+        }
+    }
+    
     var body: some View {
         ZStack {
             // Color fills the entire screen
@@ -59,25 +67,32 @@ struct CreateAccountView: View {
                 .cornerRadius(10)
                 .background(Color.gray.opacity(0.4))
             
-            // TODO: email validation
-            // TODO: remove autocapitilization
             TextField("Email...", text: $email)
                 .padding()
                 .cornerRadius(10)
                 .background(Color.gray.opacity(0.4))
+                .textInputAutocapitalization(.never)
+            // TODO: remove password
             SecureField("Password...", text: $password)
                 .padding()
                 .cornerRadius(10)
                 .background(Color.gray.opacity(0.4))
+                .textInputAutocapitalization(.never)
+            
+            if auth.errorMessage != nil{
+                Text(auth.errorMessage)
+            }
             
             // TODO: add navigation if sign in successful
             BigButtonView(
                 text: "Create Account",
                 action: createAccount,
                 foregroundColor: .white,
-                backgroundColor: backgroundColor
-            ).padding()
-        }.padding()
+                backgroundColor: backgroundColor,
+                disabled: !checkComplete()
+            )
+        }
+        .padding()
     }
 }
 
