@@ -46,17 +46,21 @@ struct CreateAccountView: View {
                 .background(Color.gray.opacity(0.4))
             
             // TODO: email validation
-            // TODO: remove autocapitilization
             TextField("Email...", text: $email)
                 .padding()
                 .cornerRadius(10)
                 .background(Color.gray.opacity(0.4))
                 .textInputAutocapitalization(.never)
+            // TODO: remove password
             SecureField("Password...", text: $password)
                 .padding()
                 .cornerRadius(10)
                 .background(Color.gray.opacity(0.4))
                 .textInputAutocapitalization(.never)
+            
+            if auth.errorMessage != nil{
+                Text(auth.errorMessage)
+            }
             
             // TODO: add navigation if sign in successful
             BigButtonView(

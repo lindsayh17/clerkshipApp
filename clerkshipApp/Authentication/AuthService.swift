@@ -15,6 +15,7 @@ class AuthService: ObservableObject {
   var firebaseAuth: Auth!
   @Published var currentUser: String!
   @Published var isLoggedIn = false
+    @Published var errorMessage: String! = nil
   
   init() {
     self.currentUser = nil
@@ -42,6 +43,7 @@ class AuthService: ObservableObject {
         }
       }
     } catch {
+        errorMessage = error.localizedDescription
       print("Error registering user or saving user data: \(error.localizedDescription)")
       throw DBError.registrationFailed(errorMessage: error.localizedDescription)
     }
