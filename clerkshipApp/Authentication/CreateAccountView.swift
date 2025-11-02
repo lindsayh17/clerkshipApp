@@ -32,6 +32,14 @@ struct CreateAccountView: View {
         auth.createUser(fname: firstname, lname: lastname, email: email)
     }
     
+    func checkComplete() -> Bool{
+        if email != "" && firstname != "" && lastname != ""{
+            return true
+        }else{
+            return false
+        }
+    }
+    
     var body: some View {
         VStack {
             // Color fills the entire screen
@@ -45,7 +53,6 @@ struct CreateAccountView: View {
                 .cornerRadius(10)
                 .background(Color.gray.opacity(0.4))
             
-            // TODO: email validation
             TextField("Email...", text: $email)
                 .padding()
                 .cornerRadius(10)
@@ -67,7 +74,8 @@ struct CreateAccountView: View {
                 text: "Create Account",
                 action: createAccount,
                 foregroundColor: .white,
-                backgroundColor: backgroundColor
+                backgroundColor: backgroundColor,
+                disabled: !checkComplete()
             )
         }
         .padding()
