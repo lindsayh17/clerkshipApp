@@ -16,7 +16,9 @@ struct clerkshipAppApp: App {
     }
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            RootView()
+                .environmentObject(FirebaseService())
+                    .environmentObject(AuthService())
         }
     }
 }

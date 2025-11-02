@@ -77,6 +77,4 @@ struct LoginView: View {
 // Preview
 #Preview {
     LoginView()
-        .environmentObject(FirebaseService())
-        .environmentObject(AuthService())
 }

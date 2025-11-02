@@ -70,6 +70,5 @@ struct CreateAccountView: View {
 
 // Preview
 #Preview {
-    CreateAccountView().environmentObject(FirebaseService())
-        .environmentObject(AuthService())
+    CreateAccountView()
 }
