@@ -29,16 +29,27 @@ class FirebaseService: ObservableObject {
     }
     
     // function to fetch user info from firebase
-    // TODO: right now fetchUsers is defunct b/c no collection like that so far
-    func fetchUsers() async throws {
+    func fetchUsers() async throws -> [User] {
+        var users: [User] = []
         do {
           let querySnapshot = try await db.collection("Users").getDocuments()
           for document in querySnapshot.documents {
-            print("\(document.documentID) => \(document.data())")
+              let data = document.data()
+              
+              // try to cast to strings otherwise return empty
+              let firstName = data["firstName"] as? String ?? ""
+              let lastName = data["lastName"] as? String ?? ""
+              let email = data["email"] as? String ?? ""
+
+
+              let u = User(firstName: firstName, lastName: lastName, email: email)
+              users.append(u)
           }
         } catch {
           print("Error getting documents: \(error)")
         }
+        
+        return users
     }
 
     // data is a dictionary; keys are field names in the document

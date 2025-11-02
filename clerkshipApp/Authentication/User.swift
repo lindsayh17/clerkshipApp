@@ -9,7 +9,7 @@ import SwiftUI
 
 struct User: Identifiable, Codable {
     
-    enum AccessLevel: Codable {
+    enum AccessLevel: String, Codable {
         case student
         case preceptor
         case admin
@@ -28,4 +28,10 @@ struct User: Identifiable, Codable {
         self.privelege = privelege
     }
     
+    init(firstName: String, lastName: String, email: String){
+        self.firstName = firstName
+        self.lastName = lastName
+        self.email = email
+        self.privelege = .student
+    }
 }
