@@ -47,8 +47,8 @@ class AuthService: ObservableObject {
     }
   }
     
-    func createUser(fname: String, lname: String, email: String, password: String){
-        var u = User(firstName: fname, lastName: lname, email: email, password: password, privelege: .student)
+    func createUser(fname: String, lname: String, email: String){
+        let u = User(firstName: fname, lastName: lname, email: email, privelege: .student)
         
         do {
             try db.collection("Users").addDocument(from: u)

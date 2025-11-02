@@ -29,7 +29,7 @@ struct CreateAccountView: View {
         }
         
         // TODO: put in a task?
-        auth.createUser(fname: firstname, lname: lastname, email: email, password: password)
+        auth.createUser(fname: firstname, lname: lastname, email: email)
     }
     
     var body: some View {

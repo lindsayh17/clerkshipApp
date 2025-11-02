@@ -19,14 +19,12 @@ struct User: Identifiable, Codable {
     var firstName: String
     var lastName: String
     var email: String
-    var password: String
     var privelege: AccessLevel
     
-    init(firstName: String, lastName: String, email: String, password: String, privelege: AccessLevel) {
+    init(firstName: String, lastName: String, email: String, privelege: AccessLevel) {
         self.firstName = firstName
         self.lastName = lastName
         self.email = email
-        self.password = password
         self.privelege = privelege
     }
     
