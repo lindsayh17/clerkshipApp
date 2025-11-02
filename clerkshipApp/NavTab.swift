@@ -6,65 +6,66 @@
 //
 import SwiftUI
 
-struct NavTab2: View {
-    @State private var selection = 1
-    private let backgroundColor = Color("BackgroundColor")
-    private let buttonColor = Color("ButtonColor")
-
+struct NavTab: View {
+    @State private var currentTab = 0
+      
     var body: some View {
-            TabView(selection: $selection) {
-                HomeView()
-                    .tabItem() {
-                        Image(systemName: "house")
-                    }.tag(1)
-                ResourcesView()
-                    .tabItem() {
-                        Image(systemName:)
+        ZStack {
+            VStack {
+                // if we need more nav buttons, add them here
+                Group {
+                    switch currentTab {
+                    case 1:
+                        HomeView()
+                    case 2:
+                        ResourcesView()
+                    default:
+                        StudentProfile()
                     }
-                StudentProfile()
-                    .tabItem() {
-                        Image(systemName: "person.crop.circle.fill")
-                    }.tag(3)
+                }
             }
+            ZStack {
+                Color.gray
+                    .opacity(0.4)
+                    .cornerRadius(35)
+                    .frame(height: 95)
+                // Side spacing
+                    .padding(.horizontal, 25)
+                
+                HStack {
+                    NavBarButton(icon: "house", index: 1, text: "Home", currentTab: $currentTab).padding()
+                    NavBarButton(icon: "text.document", index: 2, text: "Documents", currentTab: $currentTab).padding()
+                    NavBarButton(icon: "person.crop.circle.fill", index: 3, text: "Profile", currentTab: $currentTab).padding()
+                }
+            }
+        }
     }
 }
 
-struct NavTab: View {
-    @SceneStorage("NavTab.currentTab") private var currentTab = 0
-      
-      var body: some View {
-        TabView(selection: $currentTab) {
-          HomeView()
-            .tabItem() {
-                Image(systemName: "house")
-                Text("Home")
-            }.tag(0)
-          StudentProfile()
-            .tabItem() {
-              Image(systemName: "person.crop.circle.fill")
-            }.tag(2)
-        }.frame(alignment: .bottomLeading)
-      }
-}
-
-
-struct circleNavButtonView: View {
+// individual buttons
+struct NavBarButton: View {
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
-    
+    let icon: String
+    let index: Int
     let text: String
-    var action: () -> Void = {}
+    @Binding var currentTab: Int
     
     var body: some View {
         VStack {
-            Button(action: action) {
-                Circle()
-                    .fill(buttonColor) // Olive green
-                    .frame(width: 50, height: 50)
-                Text(text)
-                    .foregroundColor(.black)
-                    .padding(.top, 4)
+            Button {
+                currentTab = index
+            } label: {
+                ZStack {
+                    Circle()
+                        .fill(buttonColor) // Olive green
+                        .frame(width: 50, height: 50)
+                    Image(systemName: icon)
+                        .padding()
+                        .foregroundColor(backgroundColor)
+                }
             }
+            Text(text)
         }
     }
 }
