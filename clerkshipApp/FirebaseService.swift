@@ -31,10 +31,13 @@ class FirebaseService: ObservableObject {
     // function to fetch user info from firebase
     // TODO: right now fetchUsers is defunct b/c no collection like that so far
     func fetchUsers() async throws {
-        let querySnapshot = try await db.collection(userCollectionName).getDocuments()
-        for document in querySnapshot.documents {
-            let data = document.data()
-            print(data)
+        do {
+          let querySnapshot = try await db.collection("Users").getDocuments()
+          for document in querySnapshot.documents {
+            print("\(document.documentID) => \(document.data())")
+          }
+        } catch {
+          print("Error getting documents: \(error)")
         }
     }
 

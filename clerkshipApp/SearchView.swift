@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct SearchView: View {
+    @EnvironmentObject var firebase: FirebaseService
     @State private var searchText = ""
     
     private let alphabet = Array("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
@@ -32,11 +33,19 @@ struct SearchView: View {
         }
     }
     
+    func getNames(){
+        Task {
+            do {
+                // Is there supposed to be a ? after try
+                try await firebase.fetchUsers()
+            }
+        }
+    }
+    
     var body: some View {
         NavigationStack {
             ZStack {
                 backgroundColor.ignoresSafeArea()
-                
                 VStack(spacing: 0) {
                     ScrollViewReader { proxy in
                         ZStack(alignment: .trailing) {
@@ -91,7 +100,7 @@ struct SearchView: View {
                     // Bottom nav
                     NavView()
                 }
-            }
+            }.onAppear(perform: getNames)
         }
     }
     
@@ -114,7 +123,7 @@ private extension SearchView {
 
 // MARK: - Preview
 #Preview {
-    SearchView()
+    SearchView().environmentObject(FirebaseService())
 }
 
 
