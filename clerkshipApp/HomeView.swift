@@ -18,21 +18,27 @@ struct HomeView: View {
                     // Scrollable content
                     ScrollView {
                         VStack(alignment: .leading, spacing: 40) {
-                            // Quick Facts Section
-                            SectionView(title: "Quick Facts") {
-                                Text("View Quick Facts")
-                            }
-                            // Orientation Section
-                            SectionView(title: "Orientation") {
-                                Text("View Orientation Details")
-                            }
-                            // Clerkship Requirements Section
-                            SectionView(title: "Clerkship Requirements") {
-                                Text("View Requirements")
-                            }
-                            // Location Section
-                            SectionView(title: "Location") {
-                                Text("View Location Info")
+                            if currentView == 1 {
+                                // Quick Facts Section
+                                SectionView(title: "Quick Facts") {
+                                    Text("View Quick Facts")
+                                }
+                                // Orientation Section
+                                SectionView(title: "Orientation") {
+                                    Text("View Orientation Details")
+                                }
+                                // Clerkship Requirements Section
+                                SectionView(title: "Clerkship Requirements") {
+                                    Text("View Requirements")
+                                }
+                                // Location Section
+                                SectionView(title: "Location") {
+                                    Text("View Location Info")
+                                }
+                            } else if currentView == 2 {
+                                ResourcesView()
+                            } else {
+                                StudentProfile()
                             }
                         }
                         .padding()
