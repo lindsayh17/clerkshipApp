@@ -51,10 +51,12 @@ struct CreateAccountView: View {
                 .padding()
                 .cornerRadius(10)
                 .background(Color.gray.opacity(0.4))
+                .textInputAutocapitalization(.never)
             SecureField("Password...", text: $password)
                 .padding()
                 .cornerRadius(10)
                 .background(Color.gray.opacity(0.4))
+                .textInputAutocapitalization(.never)
             
             // TODO: add navigation if sign in successful
             BigButtonView(
