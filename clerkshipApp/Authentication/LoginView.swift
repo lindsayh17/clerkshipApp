@@ -65,7 +65,7 @@ struct LoginView: View {
                     action: signin,
                     foregroundColor: .white,
                     backgroundColor: backgroundColor
-                )
+                ).padding()
                     
             }
             .padding()
