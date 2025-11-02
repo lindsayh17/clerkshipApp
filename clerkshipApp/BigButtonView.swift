@@ -24,9 +24,11 @@ struct BigButtonView: View {
                 Text(self.text)
                     .frame(maxWidth:.infinity)
             }
-            .buttonStyle(BigButtonStyle(backgroundColor: backgroundColor,
-                                          foregroundColor: foregroundColor,
-                                          isDisabled: disabled))
+            .buttonStyle(
+                BigButtonStyle(
+                    backgroundColor: backgroundColor,
+                    foregroundColor: foregroundColor,
+                    isDisabled: disabled))
                 .disabled(self.disabled)
         }
         .frame(width: width, height: height)

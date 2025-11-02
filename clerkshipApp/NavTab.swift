@@ -29,7 +29,7 @@ struct NavTab: View {
                     .opacity(0.4)
                     .cornerRadius(35)
                     .frame(height: 95)
-                // Side spacing
+                    // Side spacing
                     .padding(.horizontal, 25)
                 
                 HStack {
