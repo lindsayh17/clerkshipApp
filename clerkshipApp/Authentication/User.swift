@@ -28,4 +28,10 @@ struct User: Identifiable, Codable {
         self.privelege = privelege
     }
     
+    init(firstName: String, lastName: String, email: String){
+        self.firstName = firstName
+        self.lastName = lastName
+        self.email = email
+        self.privelege = .student
+    }
 }

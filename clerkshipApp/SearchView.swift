@@ -5,13 +5,7 @@ struct SearchView: View {
     @State private var searchText = ""
     
     private let alphabet = Array("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-    private let namesByLetter: [String: [String]] = [
-        "A": ["Amaya Johnson", "Anna Long"],
-        "B": ["Bella Wright"],
-        "C": ["Charlie Evans"],
-        "D": ["Denise Drake"],
-        "M": ["Mia Lee"],
-    ]
+    @State private var namesByLetter: [String: [String]] = [:]
     
     // Colors
     private let backgroundColor = Color("BackgroundColor")
@@ -33,14 +27,32 @@ struct SearchView: View {
         }
     }
     
-    func getNames(){
-        Task {
-            do {
-                // Is there supposed to be a ? after try
-                try await firebase.fetchUsers()
+    func getNames() async {
+        do {
+            // Fetch users directly
+            let users = try await firebase.fetchUsers()
+            
+            var newNamesByLetter: [String: [String]] = [:]
+            
+            for u in users {
+                // Get the first character of the first name as a String
+                let firstChar = String(u.firstName.prefix(1)).uppercased()
+                let fullName = "\(u.firstName) \(u.lastName)"
+                
+                // Append the name to the correct letter group
+                newNamesByLetter[firstChar, default: []].append(fullName)
             }
+            
+            // If you have a property `namesByLetter`, update it here
+            DispatchQueue.main.async {
+                self.namesByLetter = newNamesByLetter
+            }
+            
+        } catch {
+            print("Error fetching users: \(error)")
         }
     }
+
     
     var body: some View {
         NavigationStack {
@@ -59,7 +71,7 @@ struct SearchView: View {
                                     ) {
                                         ForEach(filteredNames[letter]!, id: \.self) { name in
                                             contactRow(name: name)
-                                                // 👇 Tighter vertical insets for each row
+                                            // 👇 Tighter vertical insets for each row
                                                 .listRowInsets(EdgeInsets(top: 1, leading: 16, bottom: 1, trailing: 10))
                                                 .listRowBackground(backgroundColor.opacity(0.8))
                                         }
@@ -100,7 +112,9 @@ struct SearchView: View {
                     // Bottom nav
                     NavView()
                 }
-            }.onAppear(perform: getNames)
+            }.task { // like onAppear but for async?
+                await getNames()
+            }
         }
     }
     
