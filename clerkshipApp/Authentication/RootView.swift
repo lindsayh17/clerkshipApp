@@ -18,12 +18,17 @@ struct RootView: View {
                 backgroundColor.ignoresSafeArea()
                 VStack {
                     // TODO: put logo here
-                    
-                    Text("UVM OBGYN Clerkship")
+                    Image("clerkshipAppLogo")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
                         .padding()
-                        .font(.title)
-                        .bold()
+                    
+                    Text("OBGYN Clerkship")
+                        .font(.system(size: 36))
                         .foregroundColor(.white)
+                        .bold()
+                        .frame(width: 350, height: 100, alignment: .bottomLeading)
+                        .padding()
                     
                     // log in button
                     BigButtonView(
