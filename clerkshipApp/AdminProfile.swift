@@ -61,7 +61,7 @@ struct AdminProfile: View {
                             .padding()
                         }
                     }
-                }
+                }.padding()
             }
         }
     }
