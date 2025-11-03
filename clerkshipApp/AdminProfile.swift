@@ -6,6 +6,20 @@ import SwiftUI
 struct AdminProfile: View {
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
+    @EnvironmentObject var auth: AuthService
+    
+    func getUserInfo(){
+        Task {
+            do {
+                if let user = try await auth.fetchCurrentUser() {
+                } else {
+                    print("No user found.")
+                }
+            } catch {
+                print("Error fetching current user: \(error)")
+            }
+        }
+    }
     
     var body: some View {
         NavigationStack {
@@ -22,8 +36,8 @@ struct AdminProfile: View {
                                 // Olive green
                                 .fill(buttonColor)
                                 .frame(width: 170, height: 170)
-                            // Pull from firebase
-                            Text("Firstname :")
+
+                            Text("Firstname : ")
                                 .foregroundColor(.white)
                                 .padding(.top, 20)
                                 .padding()
@@ -69,5 +83,5 @@ struct AdminProfile: View {
 
 // Preview
 #Preview {
-    AdminProfile()
+    AdminProfile().environmentObject(AuthService())
 }

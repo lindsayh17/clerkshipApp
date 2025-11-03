@@ -59,11 +59,9 @@ class AuthService: ObservableObject {
         }
     }
     
-    func fetchCurrentUser() async throws -> [User] {
-        var users: [User] = []
+    func fetchCurrentUser() async throws -> User? {
         do {
             let querySnapshot = try await db.collection("Users").whereField("email", isEqualTo: currentUser).getDocuments()
-            var u: User
             for document in querySnapshot.documents {
                 let data = document.data()
 
@@ -75,23 +73,20 @@ class AuthService: ObservableObject {
                 
                 switch privelege {
                 case "student":
-                    u = User(firstName: firstName, lastName: lastName, email: email, privelege: .student)
+                    return User(firstName: firstName, lastName: lastName, email: email, privelege: .student)
                 case "preceptor":
-                    u = User(firstName: firstName, lastName: lastName, email: email, privelege: .preceptor)
+                    return User(firstName: firstName, lastName: lastName, email: email, privelege: .preceptor)
                 case "admin":
-                    u = User(firstName: firstName, lastName: lastName, email: email, privelege: .admin)
+                    return User(firstName: firstName, lastName: lastName, email: email, privelege: .admin)
                 default:
-                    u = User(firstName: firstName, lastName: lastName, email: email)
+                    return User(firstName: firstName, lastName: lastName, email: email)
                 }
 
-                
-                users.append(u)
             }
         } catch {
           print("Error getting documents: \(error)")
         }
-        
-        return users
+        return nil
     }
   
   func signIn(email: String, password: String) async throws {
