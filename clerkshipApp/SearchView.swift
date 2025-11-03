@@ -71,14 +71,13 @@ struct SearchView: View {
                                     ) {
                                         ForEach(filteredNames[letter]!, id: \.self) { name in
                                             contactRow(name: name)
-                                            // 👇 Tighter vertical insets for each row
                                                 .listRowInsets(EdgeInsets(top: 1, leading: 16, bottom: 1, trailing: 10))
                                                 .listRowBackground(backgroundColor.opacity(0.8))
                                         }
                                     }
                                 }
                             }
-                            .environment(\.defaultMinListRowHeight, 28) // 👈 reduces row height globally
+                            .environment(\.defaultMinListRowHeight, 28)
                             .listSectionSpacing(.compact)
                             .scrollContentBackground(.hidden)
                             .background(backgroundColor)
@@ -120,7 +119,7 @@ struct SearchView: View {
     }
 }
 
-// MARK: - Components
+// Components
 private extension SearchView {
     func contactRow(name: String) -> some View {
         HStack {
@@ -128,11 +127,11 @@ private extension SearchView {
                 .font(.body)
                 .foregroundColor(.white)
         }
-        .padding(.vertical, 0) // 👈 no extra vertical padding
+        .padding(.vertical, 0)
     }
 }
 
-// MARK: - Preview
+// Preview
 #Preview {
     SearchView().environmentObject(FirebaseService())
 }
