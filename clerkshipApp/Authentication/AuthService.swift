@@ -49,7 +49,7 @@ class AuthService: ObservableObject {
     }
   }
     
-    func createUser(fname: String, lname: String, email: String){
+    func createUser(fname: String, lname: String, email: String) async throws{
         let u = User(firstName: fname, lastName: lname, email: email, privelege: .student)
         
         do {
