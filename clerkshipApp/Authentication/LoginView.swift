@@ -69,6 +69,8 @@ struct LoginView: View {
                 foregroundColor: .white,
                 backgroundColor: backgroundColor
             ).padding()
+            
+            // TODO: add cancel button and remove back button
                 
         }
         .padding()

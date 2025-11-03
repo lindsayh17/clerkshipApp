@@ -9,6 +9,17 @@ struct ProfileView: View {
     @EnvironmentObject var auth: AuthService
     @StateObject var navControl = NavControl()
     
+    func signOut(){
+        Task{
+            do{
+                try await auth.signOut()
+            }
+            catch{
+                
+            }
+        }
+    }
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -54,6 +65,7 @@ struct ProfileView: View {
                             // Logout button
                             Button(
                                 action: {navControl.showRoot = true
+                                    signOut()
                                 }
                             ) {
                                 Text("Log Out")

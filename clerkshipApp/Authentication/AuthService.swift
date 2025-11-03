@@ -115,6 +115,7 @@ class AuthService: ObservableObject {
         self.currentUser = nil
         self.isLoggedIn = false
       }
+        print("User Signed Out")
     } catch {
       print(error.localizedDescription)
     }
