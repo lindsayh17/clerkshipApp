@@ -49,6 +49,7 @@ struct RootView: View {
                 }
             }.navigationDestination(isPresented: $loginFlag){ LoginView()}
                 .navigationDestination(isPresented: $newAccountFlag){ CreateAccountView()}
+                .navigationBarBackButtonHidden()
         }
         
     }

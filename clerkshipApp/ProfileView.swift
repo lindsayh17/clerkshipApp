@@ -6,6 +6,8 @@ import SwiftUI
 struct ProfileView: View {
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
+    @EnvironmentObject var auth: AuthService
+    @StateObject var navControl = NavControl()
     
     var body: some View {
         NavigationStack {
@@ -51,7 +53,8 @@ struct ProfileView: View {
                             
                             // Logout button
                             Button(
-                                action: {print("Logged Out")}
+                                action: {navControl.showRoot = true
+                                }
                             ) {
                                 Text("Log Out")
                                     .foregroundColor(.white)
@@ -68,12 +71,12 @@ struct ProfileView: View {
                         }
                     }
                 }
-            }
+            }.navigationDestination(isPresented: $navControl.showRoot){RootView()}.navigationBarBackButtonHidden(true)
         }
     }
 }
 
 // Preview
 #Preview {
-    ProfileView()
+    ProfileView().environmentObject(AuthService())
 }
