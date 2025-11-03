@@ -9,4 +9,6 @@ import SwiftUI
 
 class NavControl: ObservableObject{
     @Published var showRoot: Bool = false
+    @Published var showCreateAccount: Bool = false
+    @Published var showSignIn: Bool = false
 }
