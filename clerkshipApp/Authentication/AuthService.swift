@@ -49,7 +49,7 @@ class AuthService: ObservableObject {
     }
   }
     
-    func createUser(fname: String, lname: String, email: String){
+    func createUser(fname: String, lname: String, email: String) async throws{
         let u = User(firstName: fname, lastName: lname, email: email, privelege: .student)
         
         do {
@@ -57,6 +57,41 @@ class AuthService: ObservableObject {
         } catch let error {
             print("Error writing responses to Firestore: \(error)")
         }
+    }
+    
+    func fetchCurrentUser() async throws -> [User] {
+        var users: [User] = []
+        do {
+            let querySnapshot = try await db.collection("Users").whereField("email", isEqualTo: currentUser).getDocuments()
+            var u: User
+            for document in querySnapshot.documents {
+                let data = document.data()
+
+                // try to cast to strings otherwise return empty
+                let firstName = data["firstName"] as? String ?? ""
+                let lastName = data["lastName"] as? String ?? ""
+                let email = data["email"] as? String ?? ""
+                let privelege = data["privilege"] as? String ?? ""
+                
+                switch privelege {
+                case "student":
+                    u = User(firstName: firstName, lastName: lastName, email: email, privelege: .student)
+                case "preceptor":
+                    u = User(firstName: firstName, lastName: lastName, email: email, privelege: .preceptor)
+                case "admin":
+                    u = User(firstName: firstName, lastName: lastName, email: email, privelege: .admin)
+                default:
+                    u = User(firstName: firstName, lastName: lastName, email: email)
+                }
+
+                
+                users.append(u)
+            }
+        } catch {
+          print("Error getting documents: \(error)")
+        }
+        
+        return users
     }
   
   func signIn(email: String, password: String) async throws {
