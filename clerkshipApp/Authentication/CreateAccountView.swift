@@ -40,9 +40,23 @@ struct CreateAccountView: View {
     }
     
     var body: some View {
-        VStack {
+        ZStack {
             // Color fills the entire screen
-            // backgroundColor.ignoresSafeArea()
+            backgroundColor.ignoresSafeArea()
+            VStack {
+                Image("clerkshipAppLogo")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .padding()
+                Text("Create Account")
+                    .font(.system(size: 36))
+                    .foregroundColor(.white)
+                    .bold()
+                    .frame(width: 350, height: 100, alignment: .bottomLeading)
+                    .padding()
+            }
+        }
+        VStack {
             TextField("First name...", text: $firstname)
                 .padding()
                 .cornerRadius(10)
@@ -83,5 +97,6 @@ struct CreateAccountView: View {
 
 // Preview
 #Preview {
-    CreateAccountView()
+    CreateAccountView().environmentObject(FirebaseService())
+        .environmentObject(AuthService())
 }

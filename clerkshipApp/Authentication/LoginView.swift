@@ -38,38 +38,41 @@ struct LoginView: View {
                     .aspectRatio(contentMode: .fit)
                     .padding()
                 Text("Welcome Back")
-                    .font(.title)
+                    .font(.system(size: 36))
                     .foregroundColor(.white)
                     .bold()
+                    .frame(width: 350, height: 100, alignment: .bottomLeading)
                     .padding()
-                
-                // TODO: email validation
-                // TODO: remove autocapitilization
-                TextField("Email...", text: $email)
-                    .padding()
-                    .cornerRadius(10)
-                    .background(Color.gray.opacity(0.4))
-                    .textInputAutocapitalization(.never)
-                    .foregroundColor(.white)
-                
-                SecureField("Password...", text: $password)
-                    .padding()
-                    .cornerRadius(10)
-                    .background(Color.gray.opacity(0.4))
-                    .textInputAutocapitalization(.never)
-                    .foregroundColor(.white)
-                
-                // TODO: add navigation if sign in successful
-                BigButtonView(
-                    text: "Log In",
-                    action: signin,
-                    foregroundColor: .white,
-                    backgroundColor: backgroundColor
-                ).padding()
-                    
             }
-            .padding()
         }
+        VStack {
+            // TODO: email validation
+            // TODO: remove autocapitilization
+            TextField("Email...", text: $email)
+                .padding()
+                .cornerRadius(10)
+                .background(Color.gray.opacity(0.4))
+                .textInputAutocapitalization(.never)
+                .foregroundColor(.white)
+            
+            SecureField("Password...", text: $password)
+                .padding()
+                .cornerRadius(10)
+                .background(Color.gray.opacity(0.4))
+                .textInputAutocapitalization(.never)
+                .foregroundColor(.white)
+            
+            // TODO: add navigation if sign in successful
+            BigButtonView(
+                text: "Log In",
+                action: signin,
+                foregroundColor: .white,
+                backgroundColor: backgroundColor
+            ).padding()
+                
+        }
+        .padding()
+        
     }
 }
 

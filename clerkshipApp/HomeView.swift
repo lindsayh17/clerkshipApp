@@ -7,7 +7,7 @@ struct HomeView: View {
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
-    @State private var currentView = 1
+    @State private var currentView = NavOption.home
     
     var body: some View {
         NavigationStack {
@@ -18,7 +18,8 @@ struct HomeView: View {
                     // Scrollable content
                     ScrollView {
                         VStack(alignment: .leading, spacing: 40) {
-                            if currentView == 1 {
+                            switch currentView {
+                            case .home:
                                 // Quick Facts Section
                                 SectionView(title: "Quick Facts") {
                                     Text("View Quick Facts")
@@ -35,9 +36,11 @@ struct HomeView: View {
                                 SectionView(title: "Location") {
                                     Text("View Location Info")
                                 }
-                            } else if currentView == 2 {
+                            case .resources:
                                 ResourcesView()
-                            } else {
+                            case .search:
+                                SearchView()
+                            case .profile:
                                 StudentProfile()
                             }
                         }
@@ -54,5 +57,5 @@ struct HomeView: View {
 
 // Preview
 #Preview {
-    HomeView()
+    HomeView().environmentObject(FirebaseService())
 }

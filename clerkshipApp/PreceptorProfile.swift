@@ -61,8 +61,6 @@ struct PreceptorProfile: View {
                             .padding()
                         }
                     }
-                    // Bottom Navigation Bar
-                    NavView()
                 }
             }
         }

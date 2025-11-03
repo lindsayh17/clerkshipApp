@@ -108,9 +108,6 @@ struct SearchView: View {
                             .padding(.trailing, 6)
                         }
                     }
-                    
-                    // Bottom nav
-                    NavView()
                 }
             }.task { // like onAppear but for async?
                 await getNames()

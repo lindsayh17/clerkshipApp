@@ -61,8 +61,6 @@ struct AdminProfile: View {
                             .padding()
                         }
                     }
-                    // Bottom Navigation Bar
-                    NavView()
                 }
             }
         }
