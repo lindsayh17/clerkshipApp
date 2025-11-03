@@ -97,6 +97,7 @@ struct CreateAccountView: View {
 
 // Preview
 #Preview {
+    // TODO: it's fine if we want these now, but should take out later
     CreateAccountView().environmentObject(FirebaseService())
         .environmentObject(AuthService())
 }
