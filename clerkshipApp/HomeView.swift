@@ -41,7 +41,7 @@ struct HomeView: View {
                             case .search:
                                 SearchView()
                             case .profile:
-                                StudentProfile()
+                                ProfileView()
                             }
                         }
                         .padding()
