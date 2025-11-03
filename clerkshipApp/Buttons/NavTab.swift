@@ -6,9 +6,16 @@
 //
 import SwiftUI
 
+enum NavOption {
+    case home
+    case resources
+    case search
+    case profile
+}
+
 // The whole nav bar
 struct NavTab: View {
-    @Binding var currentTab: Int
+    @Binding var currentTab: NavOption
     
     var body: some View {
         ZStack {
@@ -20,11 +27,15 @@ struct NavTab: View {
                 .padding(.horizontal, 25)
             
             HStack {
-                NavBarButton(icon: "house", index: 1, text: "Home", currentTab: $currentTab).padding()
-                NavBarButton(icon: "text.document", index: 2, text: "Documents", currentTab: $currentTab).padding()
-                NavBarButton(icon: "person.crop.circle.fill", index: 3, text: "Profile", currentTab: $currentTab).padding()
+                NavBarButton(icon: "house", selection: .home, text: "Home", currentTab: $currentTab).padding()
+                NavBarButton(icon: "text.document", selection: .resources, text: "Docs", currentTab: $currentTab).padding()
+                NavBarButton(icon: "magnifyingglass", selection: .search, text: "Search", currentTab: $currentTab).padding()
+                NavBarButton(icon: "person.crop.circle.fill", selection: .profile, text: "Profile", currentTab: $currentTab).padding()
             }
-            
+            .frame(height: 95)
+            // Side spacing
+            .padding(.horizontal, 25)
+//            
         }
     }
 }
@@ -34,14 +45,14 @@ struct NavBarButton: View {
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
     let icon: String
-    let index: Int
+    let selection: NavOption
     let text: String
-    @Binding var currentTab: Int
+    @Binding var currentTab: NavOption
     
     var body: some View {
         VStack {
             Button {
-                currentTab = index
+                currentTab = selection
             } label: {
                 ZStack {
                     Circle()
@@ -56,7 +67,3 @@ struct NavBarButton: View {
         }
     }
 }
-
-//#Preview {
-//    NavTab(currentTab: $currentTab)
-//}

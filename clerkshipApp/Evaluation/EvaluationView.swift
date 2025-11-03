@@ -121,7 +121,6 @@ struct EvaluationView: View {
                         }
                         .padding()
                     }
-                    NavView()
                 }
                 .navigationDestination(isPresented: $submitted) {
                     // Page after submitting
