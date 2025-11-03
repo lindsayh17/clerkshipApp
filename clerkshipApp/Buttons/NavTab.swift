@@ -22,7 +22,7 @@ struct NavTab: View {
             Color.gray
                 .opacity(0.4)
                 .cornerRadius(35)
-                .frame(height: 95)
+                .frame(height: 80)
                 // Side spacing
                 .padding(.horizontal, 25)
             
@@ -32,7 +32,7 @@ struct NavTab: View {
                 NavBarButton(icon: "magnifyingglass", selection: .search, text: "Search", currentTab: $currentTab).padding()
                 NavBarButton(icon: "person.crop.circle.fill", selection: .profile, text: "Profile", currentTab: $currentTab).padding()
             }
-            .frame(height: 95)
+            .frame(height: 80)
             // Side spacing
             .padding(.horizontal, 25)
 //            
@@ -63,7 +63,7 @@ struct NavBarButton: View {
                         .foregroundColor(backgroundColor)
                 }
             }
-            Text(text)
+//            Text(text)
         }
     }
 }

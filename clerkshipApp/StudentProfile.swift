@@ -18,35 +18,41 @@ struct StudentProfile: View {
                     ScrollView {
                         VStack(alignment: .leading, spacing: 30) {
                             // Add profile picture from firebase ?
-                            Circle()
-                                // Olive green
-                                .fill(buttonColor)
-                                .frame(width: 170, height: 170)
-                            // Pull from firebase
-                            Text("Firstname :")
-                                .foregroundColor(.white)
-                                .padding(.top, 20)
+                            Image(systemName: "person.crop.circle.fill")
+                                .font(.system(size: 170))
                                 .padding()
+                                .foregroundColor(buttonColor)
+                            
+                            // Pull from firebase
+                            Text("First Name :")
+                                .foregroundColor(.white)
+                                .font(.title2)
+                                .padding(.top, 20)
+                                .padding(.leading, 50)
                                 .bold()
                             
-                            Text("Lastname :")
+                            Text("Last Name :")
                                 .foregroundColor(.white)
-                                .padding()
+                                .font(.title2)
+                                .padding(.leading, 50)
                                 .bold()
                             
                             Text("Role :")
                                 .foregroundColor(.white)
-                                .padding()
+                                .font(.title2)
+                                .padding(.leading, 50)
                                 .bold()
                             
                             Text("Email :")
                                 .foregroundColor(.white)
-                                .padding()
+                                .font(.title2)
+                                .padding(.leading, 50)
                                 .bold()
+                            
                             // Logout button
-                            Button(action: {
-                                print("Logged Out")
-                            }) {
+                            Button(
+                                action: {print("Logged Out")}
+                            ) {
                                 Text("Log Out")
                                     .foregroundColor(.white)
                                     .padding()
