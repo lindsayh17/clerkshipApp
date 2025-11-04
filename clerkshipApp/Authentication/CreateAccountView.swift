@@ -6,12 +6,9 @@
 //
 //
 /*
- TODO: link to home view
- TODO: fix text color so more visible
  TODO: back/cancel button
  TODO: hide navigation back button
  TODO: make text fields and error messages look better
- 
  */
 
 import SwiftUI
@@ -91,7 +88,6 @@ struct CreateAccountView: View {
                     Text(auth.errorMessage)
                 }
                 
-                // TODO: add navigation if sign in successful
                 BigButtonView(
                     text: "Create Account",
                     action: createAccount,

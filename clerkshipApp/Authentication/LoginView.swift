@@ -8,12 +8,9 @@
 // password: 123456
 //
 /*
- TODO: link to home view when submitted
- TODO: fix text color so more visible
  TODO: back/cancel button
  TODO: hide navigation back button
  TODO: make errors look better
- 
  */
 
 import SwiftUI
