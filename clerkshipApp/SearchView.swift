@@ -8,6 +8,7 @@ import SwiftUI
 
 struct SearchView: View {
     @EnvironmentObject var firebase: FirebaseService
+    @EnvironmentObject var userStore: UserStore
     @State private var searchText = ""
     
     private let alphabet = Array("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
@@ -33,28 +34,13 @@ struct SearchView: View {
         }
     }
     
-    func getNames() async {
-        do {
-            // Fetch users directly
-            let users = try await firebase.fetchUsers()
-            var newNamesByLetter: [String: [String]] = [:]
+    func namesList(){
+        for u in userStore.allUsers{
+            let firstChar = String(u.firstName.prefix(1)).uppercased()
+            print(firstChar)
+            let fullName = "\(u.firstName) \(u.lastName)"
             
-            for u in users {
-                // Get the first character of the first name as a String
-                let firstChar = String(u.firstName.prefix(1)).uppercased()
-                let fullName = "\(u.firstName) \(u.lastName)"
-
-                // Append the name to the correct letter group
-                newNamesByLetter[firstChar, default: []].append(fullName)
-            }
-            
-            // If you have a property `namesByLetter`, update it here
-            DispatchQueue.main.async {
-                self.namesByLetter = newNamesByLetter
-            }
-            
-        } catch {
-            print("Error fetching users: \(error)")
+            namesByLetter[firstChar, default: []].append(fullName)
         }
     }
 
@@ -114,7 +100,7 @@ struct SearchView: View {
                     }
                 }
             }.task { // like onAppear but for async?
-                await getNames()
+                namesList()
             }
         }
     }
@@ -138,7 +124,7 @@ private extension SearchView {
 
 // Preview
 #Preview {
-    SearchView().environmentObject(FirebaseService())
+    SearchView().environmentObject(FirebaseService()).environmentObject(UserStore())
 }
 
 

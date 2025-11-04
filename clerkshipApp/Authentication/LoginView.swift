@@ -18,17 +18,35 @@ import SwiftUI
 struct LoginView: View {
     @EnvironmentObject var firebase: FirebaseService
     @EnvironmentObject var auth: AuthService
+    @EnvironmentObject var userStore: UserStore
     @State private var email = ""
     @State private var password = ""
     
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     
+    func getNames() {
+        Task{
+            do {
+                // Fetch users directly
+                try await firebase.fetchUsers()
+                if firebase.downloadSuccessful{
+                    for user in firebase.users{
+                        userStore.addUser(user)
+                    }
+                }
+            } catch {
+                print("Error fetching users: \(error)")
+            }
+        }
+    }
+    
     // Firebase Download
     func signin() {
         Task {
             do {
                 try await auth.signIn(email: email, password: password)
+                getNames()
                 auth.isLoggedIn = true
             }
         }
@@ -87,5 +105,5 @@ struct LoginView: View {
 // Preview
 #Preview {
     LoginView().environmentObject(FirebaseService())
-        .environmentObject(AuthService())
+        .environmentObject(AuthService()).environmentObject(UserStore())
 }
