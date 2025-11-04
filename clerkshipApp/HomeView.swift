@@ -89,7 +89,7 @@ struct HomeView: View {
                         }
                         .padding()
                         
-                    }
+                    }.padding()
                     // Bottom Navigation
                     NavTab(currentTab: $currentView)
                 }

@@ -51,9 +51,6 @@ struct ResourcesView: View {
                             .padding(.bottom, 50)
                         }
                     }
-                    
-                    // Bottom Navigation
-                    NavTab(currentTab: $currentView)
                 }
             }
         }

@@ -112,9 +112,6 @@ struct SearchView: View {
                             .padding(.trailing, 6)
                         }
                     }
-                    
-                    // Bottom Navigation
-                    NavTab(currentTab: $currentView)
                 }
             }
             .task {

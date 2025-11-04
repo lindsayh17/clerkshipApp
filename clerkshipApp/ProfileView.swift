@@ -69,8 +69,6 @@ struct ProfileView: View {
                         }
                     }
                     
-                    // Bottom navigation
-                    NavTab(currentTab: $currentView)
                 }
             }
         }

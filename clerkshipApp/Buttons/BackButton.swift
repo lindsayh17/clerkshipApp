@@ -8,9 +8,9 @@ import SwiftUI
 
 struct BackButton: View {
     @Environment(\.dismiss) var dismiss
+    private let color = Color("ButtonColor")
     
     let title = "\u{2190} Back"
-    let color: Color
     var action: () -> Void = {}
     
     var body: some View {

@@ -61,7 +61,7 @@ struct CreateAccountView: View {
                         .font(.system(size: 36))
                         .foregroundColor(.white)
                         .bold()
-                        .frame(width: 350, height: 100, alignment: .bottomLeading)
+                        .frame(width: 350, height: 100, alignment: .leading)
                 }
             }
             VStack {
