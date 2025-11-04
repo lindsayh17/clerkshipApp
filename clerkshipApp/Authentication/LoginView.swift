@@ -19,6 +19,7 @@ struct LoginView: View {
     @EnvironmentObject var firebase: FirebaseService
     @EnvironmentObject var auth: AuthService
     @EnvironmentObject var userStore: UserStore
+    @EnvironmentObject var currentUser: CurrentUser
     @State private var email = ""
     @State private var password = ""
     
@@ -41,12 +42,27 @@ struct LoginView: View {
         }
     }
     
+    func getCurrUser(){
+        Task{
+            do {
+                // Fetch users directly
+                try await firebase.fetchUser()
+                if firebase.downloadSuccessful{
+                    currentUser.user = firebase.currUser
+                }
+            } catch {
+                print("Error fetching users: \(error)")
+            }
+        }
+    }
+    
     // Firebase Download
     func signin() {
         Task {
             do {
                 try await auth.signIn(email: email, password: password)
                 getNames()
+                //getCurrUser()
                 auth.isLoggedIn = true
             }
         }
@@ -104,4 +120,5 @@ struct LoginView: View {
 #Preview {
     LoginView().environmentObject(FirebaseService())
         .environmentObject(AuthService()).environmentObject(UserStore())
+        .environmentObject(CurrentUser())
 }

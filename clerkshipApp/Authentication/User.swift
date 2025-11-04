@@ -34,4 +34,8 @@ struct User: Identifiable, Codable {
         self.email = email
         self.privelege = .student
     }
+    
+    func getPrivilege() -> AccessLevel{
+        return privelege
+    }
 }

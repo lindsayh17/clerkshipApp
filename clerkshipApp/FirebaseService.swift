@@ -12,6 +12,8 @@ class FirebaseService: ObservableObject {
     let formCollectionName = "Forms"
     @Published var users: [User]!
     @Published var downloadSuccessful = false
+    @Published var currUser: User!
+    @EnvironmentObject var auth: AuthService
     
     // TODO: user collection values
     let userCollection = "Users"
@@ -60,6 +62,46 @@ class FirebaseService: ObservableObject {
             }
         } catch {
           print("Error getting documents: \(error)")
+        }
+    }
+    
+    func fetchUser() async throws{
+        if auth.currentUser != nil{
+            var fetchedUser: User?
+            do {
+                let querySnapshot = try await db.collection(userCollection)
+                    .whereField("email", isEqualTo: auth.currentUser)
+                    .getDocuments()
+                print(querySnapshot.documents.count)
+                for document in querySnapshot.documents{
+                    let data = document.data()
+                    
+                    let firstName = data["firstName"] as? String ?? ""
+                    let lastName = data["lastName"] as? String ?? ""
+                    let email = data["email"] as? String ?? ""
+                    let userPriv = data["privilege"] as? String ?? ""
+                    
+                    switch userPriv {
+                    case "student":
+                        fetchedUser = User(firstName: firstName, lastName: lastName, email: email, privelege: .student)
+                    case "preceptor":
+                        fetchedUser = User(firstName: firstName, lastName: lastName, email: email, privelege: .preceptor)
+                    case "admin":
+                        fetchedUser = User(firstName: firstName, lastName: lastName, email: email, privelege: .admin)
+                    default:
+                        fetchedUser = User(firstName: firstName, lastName: lastName, email: email)
+                    }
+                }
+                
+                DispatchQueue.main.async{
+                    self.currUser = fetchedUser
+                }
+                
+                DispatchQueue.main.async{
+                    self.downloadSuccessful = true
+                }
+                
+            }
         }
     }
 
