@@ -1,9 +1,16 @@
 //  EvaluationView.swift
 //  clerkshipApp
 
+/*
+ TODO: pull questions from firebase
+ TODO: 3 different form types
+ TODO: link student, preceptor, form type ids to firebase write
+ TODO: get his sample form questions/include images
+ TODO: display a list of completed evaluations somewhere for the preceptors
+ 
+ */
+
 import SwiftUI
-// I don't think we ned import foundation ?
-import Foundation
 
 struct EvaluationView: View {
     @EnvironmentObject var firebase: FirebaseService

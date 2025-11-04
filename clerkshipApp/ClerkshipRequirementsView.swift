@@ -1,6 +1,12 @@
 //  ClerkshipRequirementsView.swift
 //  clerkshipApp
 
+/*
+ TODO: change format (so it looks different from current)
+ TODO: link each button to empty dummy page
+ TODO: only display for students
+ */
+
 import SwiftUI
 
 struct ClerkshipRequirementsView: View {

@@ -5,6 +5,14 @@
 //  Created by Lindsay on 10/28/25.
 //
 //
+/*
+ TODO: link to home view
+ TODO: fix text color so more visible
+ TODO: back/cancel button
+ TODO: hide navigation back button
+ TODO: make text fields and error messages look better
+ 
+ */
 
 import SwiftUI
 

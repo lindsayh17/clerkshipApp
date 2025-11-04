@@ -1,6 +1,11 @@
 //  HomeView.swift
 //  clerkshipApp
 
+/*
+ TODO: change display options for students vs. preceptors
+ TODO: send each link to a dummy page
+ */
+
 import SwiftUI
 
 struct HomeView: View {

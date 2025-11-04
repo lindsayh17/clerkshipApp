@@ -31,14 +31,13 @@ struct SearchView: View {
         do {
             // Fetch users directly
             let users = try await firebase.fetchUsers()
-            
             var newNamesByLetter: [String: [String]] = [:]
             
             for u in users {
                 // Get the first character of the first name as a String
                 let firstChar = String(u.firstName.prefix(1)).uppercased()
                 let fullName = "\(u.firstName) \(u.lastName)"
-                
+
                 // Append the name to the correct letter group
                 newNamesByLetter[firstChar, default: []].append(fullName)
             }

@@ -7,6 +7,14 @@
 // username: lhall11@uvm.edu
 // password: 123456
 //
+/*
+ TODO: link to home view when submitted
+ TODO: fix text color so more visible
+ TODO: back/cancel button
+ TODO: hide navigation back button
+ TODO: make errors look better
+ 
+ */
 
 import SwiftUI
 
@@ -46,8 +54,6 @@ struct LoginView: View {
             }
         }
         VStack {
-            // TODO: email validation
-            // TODO: remove autocapitilization
             TextField("Email...", text: $email)
                 .padding()
                 .cornerRadius(10)
@@ -62,16 +68,13 @@ struct LoginView: View {
                 .textInputAutocapitalization(.never)
                 .foregroundColor(.white)
             
-            // TODO: add navigation if sign in successful
             BigButtonView(
                 text: "Log In",
                 action: signin,
                 foregroundColor: .white,
                 backgroundColor: backgroundColor
             ).padding()
-            
-            // TODO: add cancel button and remove back button
-                
+                            
         }
         .padding()
         
