@@ -10,13 +10,16 @@ class FirebaseService: ObservableObject {
 //    @Published private(set) var forms: [EvaluationForm]
 //    @Published var downloadSuccessful = false
     let formCollectionName = "Forms"
+    @Published var users: [User]!
+    @Published var downloadSuccessful = false
     
     // TODO: user collection values
-    let userCollectionName = " "
+    let userCollection = "Users"
     var db: Firestore!
     
     init() {
         db = Firestore.firestore()
+        users = []
     }
 
     // function to fetch form info from firebase
@@ -29,10 +32,10 @@ class FirebaseService: ObservableObject {
     }
     
     // function to fetch user info from firebase
-    func fetchUsers() async throws -> [User] {
-        var users: [User] = []
+    func fetchUsers() async throws{
+        var fecthedUsers: [User] = []
         do {
-          let querySnapshot = try await db.collection("Users").getDocuments()
+          let querySnapshot = try await db.collection(userCollection).getDocuments()
           for document in querySnapshot.documents {
               let data = document.data()
               
@@ -41,15 +44,23 @@ class FirebaseService: ObservableObject {
               let lastName = data["lastName"] as? String ?? ""
               let email = data["email"] as? String ?? ""
 
-
-              let u = User(firstName: firstName, lastName: lastName, email: email)
-              users.append(u)
+              if firstName != "" && lastName != "" && email != ""{
+                  let u = User(firstName: firstName, lastName: lastName, email: email)
+                  fecthedUsers.append(u)
+              }
           }
+            for user in fecthedUsers {
+                DispatchQueue.main.async{
+                    self.users.append(user)
+                }
+            }
+            
+            DispatchQueue.main.async{
+                self.downloadSuccessful = true
+            }
         } catch {
           print("Error getting documents: \(error)")
         }
-        
-        return users
     }
 
     // data is a dictionary; keys are field names in the document

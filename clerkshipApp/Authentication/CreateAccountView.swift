@@ -13,6 +13,7 @@ import SwiftUI
 struct CreateAccountView: View {
     @EnvironmentObject var firebase: FirebaseService
     @EnvironmentObject var auth: AuthService
+    @EnvironmentObject var userStore: UserStore
     @State private var email = ""
     @State private var password = ""
     @State private var firstname = ""
@@ -34,6 +35,7 @@ struct CreateAccountView: View {
                 auth.isLoggedIn = true
                 // Navigate to HomeView
                 navigateToHome = true
+                getNames()
             } catch {
                 print("Error creating account")
             }
@@ -45,6 +47,22 @@ struct CreateAccountView: View {
             return true
         } else {
             return false
+        }
+    }
+    
+    func getNames() {
+        Task{
+            do {
+                // Fetch users directly
+                try await firebase.fetchUsers()
+                if firebase.downloadSuccessful{
+                    for user in firebase.users{
+                        userStore.addUser(user)
+                    }
+                }
+            } catch {
+                print("Error fetching users: \(error)")
+            }
         }
     }
     
@@ -109,5 +127,5 @@ struct CreateAccountView: View {
 #Preview {
     // TODO: it's fine if we want these now, but should take out later
     CreateAccountView().environmentObject(FirebaseService())
-        .environmentObject(AuthService())
+        .environmentObject(AuthService()).environmentObject(UserStore())
 }

@@ -11,6 +11,7 @@ import SwiftUI
 
 struct SearchView: View {
     @EnvironmentObject var firebase: FirebaseService
+    @EnvironmentObject var userStore: UserStore
     @State private var searchText = ""
     
     private let alphabet = Array("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
@@ -39,22 +40,13 @@ struct SearchView: View {
         }
     }
     
-    func getNames() async {
-        do {
-            let users = try await firebase.fetchUsers()
-            var newNamesByLetter: [String: [String]] = [:]
+    func namesList(){
+        for u in userStore.allUsers{
+            let firstChar = String(u.firstName.prefix(1)).uppercased()
+            print(firstChar)
+            let fullName = "\(u.firstName) \(u.lastName)"
             
-            for u in users {
-                let firstChar = String(u.firstName.prefix(1)).uppercased()
-                let fullName = "\(u.firstName) \(u.lastName)"
-                newNamesByLetter[firstChar, default: []].append(fullName)
-            }
-            
-            DispatchQueue.main.async {
-                self.namesByLetter = newNamesByLetter
-            }
-        } catch {
-            print("Error fetching users: \(error)")
+            namesByLetter[firstChar, default: []].append(fullName)
         }
     }
     
@@ -113,9 +105,8 @@ struct SearchView: View {
                         }
                     }
                 }
-            }
-            .task {
-                await getNames()
+            }.task { // like onAppear but for async?
+                namesList()
             }
         }
     }
@@ -139,5 +130,5 @@ private extension SearchView {
 
 // Preview
 #Preview {
-    SearchView().environmentObject(FirebaseService())
+    SearchView().environmentObject(FirebaseService()).environmentObject(UserStore())
 }
