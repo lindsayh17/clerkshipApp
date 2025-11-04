@@ -32,51 +32,56 @@ struct LoginView: View {
         Task {
             do {
                 try await auth.signIn(email: email, password: password)
+                auth.isLoggedIn = true
             }
         }
     }
     
     var body: some View {
-        ZStack {
-            // Color fills the entire screen
-            backgroundColor.ignoresSafeArea()
-            VStack {
-                Image("clerkshipAppLogo")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .padding()
-                Text("Welcome Back")
-                    .font(.system(size: 36))
-                    .foregroundColor(.white)
-                    .bold()
-                    .frame(width: 350, height: 100, alignment: .bottomLeading)
-                    .padding()
+        if !auth.isLoggedIn {
+            ZStack {
+                // Color fills the entire screen
+                backgroundColor.ignoresSafeArea()
+                VStack {
+                    Image("clerkshipAppLogo")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .padding()
+                    Text("Welcome Back")
+                        .font(.system(size: 36))
+                        .foregroundColor(.white)
+                        .bold()
+                        .frame(width: 350, height: 100, alignment: .bottomLeading)
+                        .padding()
+                }
             }
+            VStack {
+                TextField("Email...", text: $email)
+                    .padding()
+                    .cornerRadius(10)
+                    .background(Color.gray.opacity(0.4))
+                    .textInputAutocapitalization(.never)
+                    .foregroundColor(.black)
+                
+                SecureField("Password...", text: $password)
+                    .padding()
+                    .cornerRadius(10)
+                    .background(Color.gray.opacity(0.4))
+                    .textInputAutocapitalization(.never)
+                    .foregroundColor(.black)
+                
+                BigButtonView(
+                    text: "Log In",
+                    action: signin,
+                    foregroundColor: .white,
+                    backgroundColor: backgroundColor
+                ).padding()
+                
+            }
+            .padding()
+        } else {
+            HomeView()
         }
-        VStack {
-            TextField("Email...", text: $email)
-                .padding()
-                .cornerRadius(10)
-                .background(Color.gray.opacity(0.4))
-                .textInputAutocapitalization(.never)
-                .foregroundColor(.white)
-            
-            SecureField("Password...", text: $password)
-                .padding()
-                .cornerRadius(10)
-                .background(Color.gray.opacity(0.4))
-                .textInputAutocapitalization(.never)
-                .foregroundColor(.white)
-            
-            BigButtonView(
-                text: "Log In",
-                action: signin,
-                foregroundColor: .white,
-                backgroundColor: backgroundColor
-            ).padding()
-                            
-        }
-        .padding()
         
     }
 }

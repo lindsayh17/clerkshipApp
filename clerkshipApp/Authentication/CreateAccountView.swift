@@ -48,58 +48,62 @@ struct CreateAccountView: View {
     }
     
     var body: some View {
-        ZStack {
-            // Color fills the entire screen
-            backgroundColor.ignoresSafeArea()
+        if !auth.isLoggedIn {
+            ZStack {
+                // Color fills the entire screen
+                backgroundColor.ignoresSafeArea()
+                VStack {
+                    Image("clerkshipAppLogo")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .padding()
+                    Text("Create Account")
+                        .font(.system(size: 36))
+                        .foregroundColor(.white)
+                        .bold()
+                        .frame(width: 350, height: 100, alignment: .bottomLeading)
+                        .padding()
+                }
+            }
             VStack {
-                Image("clerkshipAppLogo")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
+                TextField("First name...", text: $firstname)
                     .padding()
-                Text("Create Account")
-                    .font(.system(size: 36))
-                    .foregroundColor(.white)
-                    .bold()
-                    .frame(width: 350, height: 100, alignment: .bottomLeading)
+                    .cornerRadius(10)
+                    .background(Color.gray.opacity(0.4))
+                TextField("Last name...", text: $lastname)
                     .padding()
+                    .cornerRadius(10)
+                    .background(Color.gray.opacity(0.4))
+                
+                TextField("Email...", text: $email)
+                    .padding()
+                    .cornerRadius(10)
+                    .background(Color.gray.opacity(0.4))
+                    .textInputAutocapitalization(.never)
+                // TODO: remove password
+                SecureField("Password...", text: $password)
+                    .padding()
+                    .cornerRadius(10)
+                    .background(Color.gray.opacity(0.4))
+                    .textInputAutocapitalization(.never)
+                
+                if auth.errorMessage != nil{
+                    Text(auth.errorMessage)
+                }
+                
+                // TODO: add navigation if sign in successful
+                BigButtonView(
+                    text: "Create Account",
+                    action: createAccount,
+                    foregroundColor: .white,
+                    backgroundColor: backgroundColor,
+                    disabled: !checkComplete()
+                )
             }
+            .padding()
+        } else {
+            HomeView()
         }
-        VStack {
-            TextField("First name...", text: $firstname)
-                .padding()
-                .cornerRadius(10)
-                .background(Color.gray.opacity(0.4))
-            TextField("Last name...", text: $lastname)
-                .padding()
-                .cornerRadius(10)
-                .background(Color.gray.opacity(0.4))
-            
-            TextField("Email...", text: $email)
-                .padding()
-                .cornerRadius(10)
-                .background(Color.gray.opacity(0.4))
-                .textInputAutocapitalization(.never)
-            // TODO: remove password
-            SecureField("Password...", text: $password)
-                .padding()
-                .cornerRadius(10)
-                .background(Color.gray.opacity(0.4))
-                .textInputAutocapitalization(.never)
-            
-            if auth.errorMessage != nil{
-                Text(auth.errorMessage)
-            }
-            
-            // TODO: add navigation if sign in successful
-            BigButtonView(
-                text: "Create Account",
-                action: createAccount,
-                foregroundColor: .white,
-                backgroundColor: backgroundColor,
-                disabled: !checkComplete()
-            )
-        }
-        .padding()
     }
 }
 

@@ -13,6 +13,7 @@ struct HomeView: View {
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
     @State private var currentView = NavOption.home
+//    @State var loginManager
     
     var body: some View {
         NavigationStack {
@@ -56,7 +57,7 @@ struct HomeView: View {
                     NavTab(currentTab: $currentView)
                 }
             }
-        }
+        }.navigationBarBackButtonHidden()
     }
 }
 
