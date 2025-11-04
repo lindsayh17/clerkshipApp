@@ -1,6 +1,7 @@
 /*
  TODO: link each name to evaluation form
- TODO: figure out why it's printing weird/why extra users 
+ TODO: figure out why it's printing weird/why extra users
+    // I think its printing extra users cuz Ive tried the same name for myself multiple times lol
  */
 
 import SwiftUI
