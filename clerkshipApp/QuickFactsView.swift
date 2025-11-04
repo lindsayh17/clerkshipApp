@@ -13,6 +13,9 @@ struct QuickFactsView: View {
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     
+    // State for nav tab
+    @State private var currentView: NavOption = .resources
+    
     // Quick Facts data
     private let quickFacts: [QuickFactItem] = [
         QuickFactItem(title: "Orientation",
@@ -50,36 +53,41 @@ struct QuickFactsView: View {
             ZStack {
                 backgroundColor.ignoresSafeArea()
                 
-                ScrollView {
-                    VStack(spacing: 20) {
-                        // Title - centered
-                        Text("Quick Facts")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                            .padding(.top, 30)
-                            .padding(.bottom, 15)
-                            .multilineTextAlignment(.center)
-                            .frame(maxWidth: .infinity)
-                        
-                        // Quick Facts list - left aligned
-                        VStack(alignment: .leading, spacing: 25) {
-                            ForEach(quickFacts) { item in
-                                VStack(alignment: .leading, spacing: 8) {
-                                    Text(item.title)
-                                        .font(.title)
-                                        .foregroundColor(.white)
-                                    
-                                    Text(item.description)
-                                        .font(.body)
-                                        .foregroundColor(.white.opacity(0.85))
-                                        .multilineTextAlignment(.leading)
+                VStack(spacing: 0) {
+                    ScrollView {
+                        VStack(spacing: 20) {
+                            // Title - centered
+                            Text("Quick Facts")
+                                .font(.largeTitle)
+                                .fontWeight(.bold)
+                                .foregroundColor(.white)
+                                .padding(.top, 30)
+                                .padding(.bottom, 15)
+                                .multilineTextAlignment(.center)
+                                .frame(maxWidth: .infinity)
+                            
+                            // Quick Facts list - left aligned
+                            VStack(alignment: .leading, spacing: 25) {
+                                ForEach(quickFacts) { item in
+                                    VStack(alignment: .leading, spacing: 8) {
+                                        Text(item.title)
+                                            .font(.title)
+                                            .foregroundColor(.white)
+                                        
+                                        Text(item.description)
+                                            .font(.body)
+                                            .foregroundColor(.white.opacity(0.85))
+                                            .multilineTextAlignment(.leading)
+                                    }
                                 }
                             }
+                            .padding(.horizontal, 30)
+                            .padding(.bottom, 30)
                         }
-                        .padding(.horizontal, 30)
-                        .padding(.bottom, 30)
                     }
+                    
+                    // Bottom Navigation
+                    NavTab(currentTab: $currentView)
                 }
             }
         }
