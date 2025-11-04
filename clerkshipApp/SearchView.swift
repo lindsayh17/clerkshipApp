@@ -1,3 +1,8 @@
+/*
+ TODO: link each name to evaluation form
+ TODO: figure out why it's printing weird/why extra users 
+ */
+
 import SwiftUI
 
 struct SearchView: View {
