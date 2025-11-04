@@ -11,30 +11,33 @@ import Firebase
 
 class AuthService: ObservableObject {
     private var db = Firestore.firestore()
-  var userSession: FirebaseAuth.User!
-  var firebaseAuth: Auth!
-  @Published var currentUser: String!
-  @Published var isLoggedIn = false
+    var userSession: FirebaseAuth.User!
+    var firebaseAuth: Auth!
+    
+    @Published var currentUser: String!
+    @Published var isLoggedIn = false
     @Published var errorMessage: String! = nil
   
-  init() {
-    self.currentUser = nil
-    self.firebaseAuth = Auth.auth()
-    if let user = self.firebaseAuth.currentUser {
-      self.currentUser = user.email
+    init() {
+        self.currentUser = nil
+        self.firebaseAuth = Auth.auth()
+        
+        if let user = self.firebaseAuth.currentUser {
+            self.currentUser = user.email
+        }
     }
-  }
   
-  func reset() {
-    self.isLoggedIn = false
-    self.currentUser = nil
-  }
+    func reset() {
+        self.isLoggedIn = false
+        self.currentUser = nil
+    }
   
   func createAccount(email: String, password: String) async throws {
     do {
       print("trying create with |\(email)|\(password)|")
       let authResult = try await firebaseAuth.createUser(withEmail: email, password: password)
       self.userSession = authResult.user
+        
       if let session = userSession {
         print("createUser success: \(session)")
         DispatchQueue.main.async {

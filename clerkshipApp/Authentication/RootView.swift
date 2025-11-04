@@ -44,7 +44,6 @@ struct RootView: View {
                         foregroundColor: backgroundColor,
                         backgroundColor: .white
                     ).padding()
-                    
                 }
             }.navigationDestination(isPresented: $navControl.showSignIn){ LoginView()}
                 .navigationDestination(isPresented: $navControl.showCreateAccount){ CreateAccountView()}

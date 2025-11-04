@@ -6,7 +6,6 @@
  TODO: back/cancel button
  TODO: hide navigation back button once in HomeView
  TODO: make text fields and error messages look better
- 
  */
 
 import SwiftUI
@@ -50,7 +49,7 @@ struct CreateAccountView: View {
     }
     
     var body: some View {
-        NavigationStack {
+        if !auth.isLoggedIn {
             ZStack {
                 // Color fills the entire screen
                 backgroundColor.ignoresSafeArea()
@@ -92,6 +91,7 @@ struct CreateAccountView: View {
                 if auth.errorMessage != nil{
                     Text(auth.errorMessage)
                 }
+                
                 BigButtonView(
                     text: "Create Account",
                     action: createAccount,
@@ -101,10 +101,8 @@ struct CreateAccountView: View {
                 )
             }
             .padding()
-            // Send to HomeView
-            NavigationLink(destination: HomeView(), isActive: $navigateToHome) {
-                EmptyView()
-            }
+        } else {
+            HomeView()
         }
     }
 }
