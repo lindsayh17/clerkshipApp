@@ -1,9 +1,6 @@
-//
 //  NavTab.swift
 //  clerkshipApp
-//
-//  Created by Hannah Deyst on 11/2/25.
-//
+
 import SwiftUI
 
 enum NavOption {
@@ -34,8 +31,7 @@ struct NavTab: View {
             }
             .frame(height: 80)
             // Side spacing
-            .padding(.horizontal, 25)
-//            
+            .padding(.horizontal, 25)          
         }
     }
 }
@@ -56,14 +52,13 @@ struct NavBarButton: View {
             } label: {
                 ZStack {
                     Circle()
-                        .fill(buttonColor) // Olive green
+                        .fill(buttonColor)
                         .frame(width: 50, height: 50)
                     Image(systemName: icon)
                         .padding()
                         .foregroundColor(backgroundColor)
                 }
             }
-//            Text(text)
         }
     }
 }
