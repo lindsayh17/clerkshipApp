@@ -1,9 +1,5 @@
-//
 //  RootView.swift
 //  clerkshipApp
-//
-//  Created by Hannah Deyst on 10/30/25.
-//
 
 import SwiftUI
 
@@ -16,18 +12,15 @@ struct RootView: View {
             ZStack {
                 backgroundColor.ignoresSafeArea()
                 VStack {
-                    // TODO: put logo here
-                    Image("clerkshipAppLogo")
+                    Image("GreenUVMLogo")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .padding()
                     
                     Text("OBGYN Clerkship")
                         .font(.system(size: 36))
                         .foregroundColor(.white)
                         .bold()
                         .frame(width: 350, height: 100, alignment: .bottomLeading)
-                        .padding()
                     
                     // log in button
                     BigButtonView(

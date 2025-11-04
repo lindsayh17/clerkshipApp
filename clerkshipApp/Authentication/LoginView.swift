@@ -40,16 +40,14 @@ struct LoginView: View {
                 // Color fills the entire screen
                 backgroundColor.ignoresSafeArea()
                 VStack {
-                    Image("clerkshipAppLogo")
+                    Image("GreenUVMLogo")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .padding()
                     Text("Welcome Back")
                         .font(.system(size: 36))
                         .foregroundColor(.white)
                         .bold()
                         .frame(width: 350, height: 100, alignment: .bottomLeading)
-                        .padding()
                 }
             }
             VStack {
