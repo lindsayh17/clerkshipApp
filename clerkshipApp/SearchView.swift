@@ -1,3 +1,6 @@
+//  SearchView.swift
+//  clerkshipApp
+
 /*
  TODO: link each name to evaluation form
  TODO: figure out why it's printing weird/why extra users
@@ -17,6 +20,9 @@ struct SearchView: View {
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
+    
+    // Nav state
+    @State private var currentView: NavOption = .search
     
     // Filtered data based on search text
     private var filteredNames: [String: [String]] {
@@ -43,12 +49,12 @@ struct SearchView: View {
             namesByLetter[firstChar, default: []].append(fullName)
         }
     }
-
     
     var body: some View {
         NavigationStack {
             ZStack {
                 backgroundColor.ignoresSafeArea()
+                
                 VStack(spacing: 0) {
                     ScrollViewReader { proxy in
                         ZStack(alignment: .trailing) {
@@ -98,6 +104,9 @@ struct SearchView: View {
                             .padding(.trailing, 6)
                         }
                     }
+                    
+                    // Bottom Navigation
+                    NavTab(currentTab: $currentView)
                 }
             }.task { // like onAppear but for async?
                 namesList()
@@ -126,5 +135,3 @@ private extension SearchView {
 #Preview {
     SearchView().environmentObject(FirebaseService()).environmentObject(UserStore())
 }
-
-

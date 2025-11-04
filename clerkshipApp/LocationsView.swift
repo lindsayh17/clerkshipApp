@@ -1,4 +1,5 @@
 //  LocationsView.swift
+//  clerkshipApp
 
 /*
  TODO: change display options for students vs. preceptors
@@ -12,43 +13,60 @@ struct LocationsView: View {
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
     
+    @State private var currentView: NavOption = .home
+    
     var body: some View {
         NavigationStack {
             ZStack {
-                // Background color fills the screen
                 backgroundColor.ignoresSafeArea()
                 
-                ScrollView {
-                    VStack(spacing: 5) {
-                        // Title
-                        Text("Locations")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                            .padding(.top, 30)
-                            .padding(.bottom, 100)
-                        
-                        // Buttons
+                VStack(spacing: 0) {
+                    ScrollView {
                         VStack(spacing: 20) {
-                            MainButtonView(title: "UVMMC", color: buttonColor)
-                            MainButtonView(title: "CVMC", color: buttonColor)
-                            MainButtonView(title: "CVPH", color: buttonColor)
-                            MainButtonView(title: "Porter Medical Center", color: buttonColor)
-                            MainButtonView(title: "RRMC", color: buttonColor)
+                            switch currentView {
+                            case .home:
+                                // Title
+                                Text("Locations")
+                                    .font(.largeTitle)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                                    .padding(.top, 30)
+                                    .padding(.bottom, 30)
+                                    .frame(maxWidth: .infinity, alignment: .center)
+                                
+                                // Location Buttons
+                                VStack(spacing: 15) {
+                                    MainButtonView(title: "UVMMC", color: buttonColor)
+                                    MainButtonView(title: "CVMC", color: buttonColor)
+                                    MainButtonView(title: "CVPH", color: buttonColor)
+                                    MainButtonView(title: "Porter Medical Center", color: buttonColor)
+                                    MainButtonView(title: "RRMC", color: buttonColor)
+                                }
+                                .padding(.horizontal, 20)
+                                .padding(.bottom, 30)
+                                
+                            case .resources:
+                                ResourcesView()
+                            case .search:
+                                SearchView()
+                            case .profile:
+                                ProfileView()
+                            }
                         }
-                        .padding(.horizontal, 40)
-                        .padding(.bottom, 50) // Extra space at the end
+                        .padding(.top, 10)
                     }
+                    
+                    // Bottom NavTab
+                    NavTab(currentTab: $currentView)
                 }
             }
         }
+        .navigationBarBackButtonHidden()
     }
 }
 
 // Preview
 #Preview {
-    LocationsView()
+    LocationsView().environmentObject(FirebaseService())
 }
-
-
 

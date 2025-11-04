@@ -16,7 +16,7 @@ struct HomeView: View {
     // @State var loginManager
     // Daily question
     // TODO : Fetch questions from firebase
-    @State private var dailyQuestion = "What is the most common cause of postoperative fever within 24 hours ?"
+    @State private var dailyQuestion = "What is the most common cause of postoperative fever within 24 hours?"
     // State for showing daily question answer
     @State private var showDailyQuestionAnswer = false
     
@@ -36,7 +36,8 @@ struct HomeView: View {
                                     VStack(alignment: .leading, spacing: 10) {
                                         Text(dailyQuestion)
                                             .foregroundColor(.white)
-                                            .font(.headline)
+                                            .font(.title3)
+                                            .bold()
                                         Button(action: {
                                             withAnimation {
                                                 // Show answer
@@ -57,18 +58,26 @@ struct HomeView: View {
                                 // Quick Facts Section
                                 SectionView(title: "Quick Facts") {
                                     Text("View Quick Facts")
+                                        .font(.title3)
+                                        .bold()
                                 }
                                 // Orientation Section
                                 SectionView(title: "Orientation") {
                                     Text("View Orientation Details")
+                                        .font(.title3)
+                                        .bold()
                                 }
                                 // Clerkship Requirements Section
                                 SectionView(title: "Clerkship Requirements") {
                                     Text("View Requirements")
+                                        .font(.title3)
+                                        .bold()
                                 }
                                 // Location Section
                                 SectionView(title: "Location") {
                                     Text("View Location Info")
+                                        .font(.title3)
+                                        .bold()
                                 }
                             case .resources:
                                 ResourcesView()
