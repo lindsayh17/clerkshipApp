@@ -1,15 +1,10 @@
-//
 //  LoginView.swift
 //  clerkshipApp
-//
-//  Created by Lindsay on 10/28/25.
-//
-//
+
 /*
- TODO: link to home view
  TODO: fix text color so more visible
  TODO: back/cancel button
- TODO: hide navigation back button
+ TODO: hide navigation back button once in HomeView
  TODO: make text fields and error messages look better
  
  */
@@ -23,6 +18,8 @@ struct CreateAccountView: View {
     @State private var password = ""
     @State private var firstname = ""
     @State private var lastname = ""
+    // To HomeView
+    @State private var navigateToHome: Bool = false
     
     // Colors
     private let backgroundColor = Color("BackgroundColor")
@@ -33,8 +30,13 @@ struct CreateAccountView: View {
         Task {
             do {
                 try await auth.createAccount(email: email, password: password)
-                
                 try await auth.createUser(fname: firstname, lname: lastname, email: email)
+                // Mark user as signed in
+                auth.isLoggedIn = true
+                // Navigate to HomeView
+                navigateToHome = true
+            } catch {
+                print("Error creating account")
             }
         }
     }
@@ -42,64 +44,68 @@ struct CreateAccountView: View {
     func checkComplete() -> Bool{
         if email != "" && firstname != "" && lastname != ""{
             return true
-        }else{
+        } else {
             return false
         }
     }
     
     var body: some View {
-        ZStack {
-            // Color fills the entire screen
-            backgroundColor.ignoresSafeArea()
+        NavigationStack {
+            ZStack {
+                // Color fills the entire screen
+                backgroundColor.ignoresSafeArea()
+                VStack {
+                    Image("clerkshipAppLogo")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .padding()
+                    Text("Create Account")
+                        .font(.system(size: 36))
+                        .foregroundColor(.white)
+                        .bold()
+                        .frame(width: 350, height: 100, alignment: .bottomLeading)
+                        .padding()
+                }
+            }
             VStack {
-                Image("clerkshipAppLogo")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
+                TextField("First name...", text: $firstname)
                     .padding()
-                Text("Create Account")
-                    .font(.system(size: 36))
-                    .foregroundColor(.white)
-                    .bold()
-                    .frame(width: 350, height: 100, alignment: .bottomLeading)
+                    .cornerRadius(10)
+                    .background(Color.gray.opacity(0.4))
+                TextField("Last name...", text: $lastname)
                     .padding()
+                    .cornerRadius(10)
+                    .background(Color.gray.opacity(0.4))
+                
+                TextField("Email...", text: $email)
+                    .padding()
+                    .cornerRadius(10)
+                    .background(Color.gray.opacity(0.4))
+                    .textInputAutocapitalization(.never)
+                // TODO: remove password
+                SecureField("Password...", text: $password)
+                    .padding()
+                    .cornerRadius(10)
+                    .background(Color.gray.opacity(0.4))
+                    .textInputAutocapitalization(.never)
+                
+                if auth.errorMessage != nil{
+                    Text(auth.errorMessage)
+                }
+                BigButtonView(
+                    text: "Create Account",
+                    action: createAccount,
+                    foregroundColor: .white,
+                    backgroundColor: backgroundColor,
+                    disabled: !checkComplete()
+                )
+            }
+            .padding()
+            // Send to HomeView
+            NavigationLink(destination: HomeView(), isActive: $navigateToHome) {
+                EmptyView()
             }
         }
-        VStack {
-            TextField("First name...", text: $firstname)
-                .padding()
-                .cornerRadius(10)
-                .background(Color.gray.opacity(0.4))
-            TextField("Last name...", text: $lastname)
-                .padding()
-                .cornerRadius(10)
-                .background(Color.gray.opacity(0.4))
-            
-            TextField("Email...", text: $email)
-                .padding()
-                .cornerRadius(10)
-                .background(Color.gray.opacity(0.4))
-                .textInputAutocapitalization(.never)
-            // TODO: remove password
-            SecureField("Password...", text: $password)
-                .padding()
-                .cornerRadius(10)
-                .background(Color.gray.opacity(0.4))
-                .textInputAutocapitalization(.never)
-            
-            if auth.errorMessage != nil{
-                Text(auth.errorMessage)
-            }
-            
-            // TODO: add navigation if sign in successful
-            BigButtonView(
-                text: "Create Account",
-                action: createAccount,
-                foregroundColor: .white,
-                backgroundColor: backgroundColor,
-                disabled: !checkComplete()
-            )
-        }
-        .padding()
     }
 }
 
