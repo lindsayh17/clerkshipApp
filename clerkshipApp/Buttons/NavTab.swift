@@ -25,6 +25,7 @@ struct NavTab: View {
                 .frame(height: 80)
                 // Side spacing
                 .padding(.horizontal, 25)
+                .padding(.top, 15)
             
             HStack {
                 NavBarButton(icon: "house", selection: .home, text: "Home", currentTab: $currentTab).padding()
@@ -35,7 +36,8 @@ struct NavTab: View {
             .frame(height: 80)
             // Side spacing
             .padding(.horizontal, 25)
-//            
+            .padding(.top, 15)
+//
         }
     }
 }
