@@ -8,10 +8,22 @@
 
 import SwiftUI
 
+enum HomeDestination {
+    case dailyQuestion
+    case quickFacts
+    case orientation
+    case clerkshipReqs
+    case location
+}
+
+
+
 struct HomeView: View {
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
+//    @Binding var destination: HomeDestination
+    
     @State private var currentView = NavOption.home
     // @State var loginManager
     // Daily question
@@ -19,6 +31,9 @@ struct HomeView: View {
     @State private var dailyQuestion = "What is the most common cause of postoperative fever within 24 hours?"
     // State for showing daily question answer
     @State private var showDailyQuestionAnswer = false
+    
+    @State private var showLocationInfo = false
+    
     @EnvironmentObject var currUser: CurrentUser
     @EnvironmentObject var auth: AuthService
     

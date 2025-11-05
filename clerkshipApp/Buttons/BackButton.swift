@@ -11,7 +11,6 @@ struct BackButton: View {
     private let color = Color("ButtonColor")
     
     let title = "\u{2190} Back"
-    var action: () -> Void = {}
     
     var body: some View {
         VStack {
@@ -19,7 +18,9 @@ struct BackButton: View {
                 .navigationBarBackButtonHidden(true)
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
-                        Button(action: action) {
+                        Button {
+                            dismiss()
+                        } label: {
                             Text(title)
                                 .fontWeight(.semibold)
                                 .frame(width: 75, height: 30)

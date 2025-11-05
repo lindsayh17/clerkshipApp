@@ -5,14 +5,23 @@ import SwiftUI
 
 enum NavOption {
     case home
+    //case quiz // student only
     case resources
-    case search
+    case search // preceptor and admin
     case profile
 }
+
+enum UserType {
+    case student
+    case preceptor
+    case admin
+}
+
 
 // The whole nav bar
 struct NavTab: View {
     @Binding var currentTab: NavOption
+//    @Binding var currUserType: UserType
     
     var body: some View {
         ZStack {
