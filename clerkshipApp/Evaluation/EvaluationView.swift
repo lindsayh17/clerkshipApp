@@ -15,35 +15,32 @@ import SwiftUI
 struct EvaluationView: View {
     @EnvironmentObject var firebase: FirebaseService
     @EnvironmentObject var evalStore: EvalStore
-    // Create new evaluation
+    
     @State private var form = Form()
-    // Navigation after submission
     @State private var submitted = false
     
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
     
-    // Firebase Download
+    // Firebase download (if needed)
     func download() {
         Task {
             do {
-                // Is there supposed to be a ? after try
                 try await firebase.fetchForms()
             }
         }
     }
     
-    func submitForm(){
-        // Collect responses and create the Evaluation object
+    // Submit form data to Firestore
+    func submitForm() {
         let responses = form.questions.compactMap { question -> Response? in
             guard let responseText = question.responseString else { return nil }
             return Response(questionId: question.id.uuidString, answer: responseText)
         }
         
-        // Create the Evaluation object
         let evaluation = Evaluation(
-            formId: "obgyn",
+            formId: "historyGathering",
             preceptorId: "1",
             studentId: "2",
             responses: responses,
@@ -56,90 +53,123 @@ struct EvaluationView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                // Color fills the entire screen
                 backgroundColor.ignoresSafeArea()
                 
-                VStack(spacing: 0) {
-                    // Makes scrollable
+                VStack {
                     ScrollView {
-                        VStack(alignment: .leading, spacing: 30) {
-                            // Display all questions in the form
+                        VStack(alignment: .leading, spacing: 10) {
+                            
+                            // Title
+                            Text("History Gathering Evaluation")
+                                .font(.headline)
+                                .fontWeight(.bold)
+                                .foregroundColor(.white)
+                                .padding(.bottom, 6)
+                            // Assesment description
+                            Group {
+                                Text("**Novice:** Gathers too little or too much info, does not link info in a clinically relevant fashion, communication is not patient-focused, uses same broad template for all interactions.")
+                                Text("**Apprentice:** Gathers most relevant info, links most findings in a clinically relevant way, communication is mostly patient-focused but occasionally unidirectional, tailors history to specific encounters.")
+                                Text("**Expert:** Gathers complete and accurate history appropriate to the situation, demonstrates clinical reasoning useful in patient care, communication is bidirectional and patient-family centered, adapts history to multiple clinical settings (acute, chronic, inpatient, outpatient).")
+                            }
+                            .font(.caption2)
+                            .foregroundColor(.white)
+                            .lineSpacing(2)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                                                        
+                            // Header Row
+                            HStack {
+                                Text("Question")
+                                    .foregroundColor(.white)
+                                    .frame(width: 70, alignment: .leading)
+                                Spacer()
+                                ForEach(["Unable to Assess", "Novice", "Advanced Novice", "Apprentice", "Competent", "Expert"], id: \.self) { label in
+                                   Text(label)
+                                       .foregroundColor(.white)
+                                       .frame(maxWidth: .infinity)
+                               }
+                            }
+                            .font(.caption)
+                            .padding(.bottom, 3)
+                            Divider().background(Color.gray)
+                            
+                            // Question Rows
                             ForEach($form.questions) { $q in
-                                if q.required {
-                                    Text(q.question).foregroundColor(.white) + Text(" *").foregroundColor(.red)
-                                } else {
-                                    Text(q.question).foregroundColor(.white)
-                                }
-                                
-                                switch q.type {
-                                case .radio:
-                                    HStack {
-                                        RadioButton(label: "Yes", isSelected: (q.responseString == "Yes")) {
-                                            q.response = .text("Yes")
-                                        }
-                                        RadioButton(label: "No", isSelected: (q.responseString == "No")) {
-                                            q.response = .text("No")
+                                if q.type == .radio {
+                                    HStack(alignment: .center, spacing: 12) {
+                                        Text(q.question)
+                                            .foregroundColor(.white)
+                                            .frame(width: 70, alignment: .leading)
+                                            .font(.caption2)
+                                            .fixedSize(horizontal: false, vertical: true)
+                                        
+                                        Spacer()
+                                        
+                                        ForEach(["Unable to Assess", "Novice", "Advanced Novice", "Apprentice", "Competent", "Expert"], id: \.self) { option in
+                                            Button(action: {
+                                                q.response = .text(option)
+                                            }) {
+                                                Image(systemName: q.responseString == option ? "circle.inset.filled" : "circle")
+                                                    .foregroundColor(q.responseString == option ? .purple : .white)
+                                            }
+                                            .frame(maxWidth: .infinity)
                                         }
                                     }
-                                case .open:
-                                    VStack(alignment: .leading) {
-                                        // Box for comments
+                                    .padding(.vertical, 8)
+                                    Divider().background(Color.gray)
+                                }
+                                
+                                // Notes Field
+                                if q.type == .open {
+                                    VStack(alignment: .leading, spacing: 5) {
+                                        Text(q.question)
+                                            .foregroundColor(.white)
                                         TextEditor(
                                             text: Binding(
                                                 get: {
-                                                    if case .text(let notes) = q.response {
-                                                        return notes
-                                                    }
+                                                    if case .text(let notes) = q.response { return notes }
                                                     return ""
                                                 },
-                                                set: { newVal in
-                                                    q.response = .text(newVal)
-                                                }
+                                                set: { q.response = .text($0) }
                                             )
                                         )
-                                        .frame(height: 100)
+                                        .frame(height: 80)
                                         .padding(8)
                                         .background(Color.white)
                                         .cornerRadius(10)
-                                        // Text(verifyAlphaNum(testString: notes)).foregroundColor(.red)
                                     }
-                                case .slider:
-                                    Text("Slide")
-                                    // slider code
+                                    .padding(.top, 10)
                                 }
                             }
-                            // Submit button
+                            
+                            // Submit Button
                             Button(action: {
-                                print("Form submitted")
                                 submitted = true
                                 submitForm()
                             }) {
                                 Text("Submit Form")
                                     .foregroundColor(.white)
                                     .padding()
-                                    // Width
                                     .frame(maxWidth: .infinity)
-                                    // Olive green color, grey if invalid
                                     .background(form.validForm() ? buttonColor : Color.gray)
                                     .cornerRadius(30)
                             }
                             .disabled(!form.validForm())
-                            .padding(.top, 10)
+                            .padding(.top, 20)
                         }
                         .padding()
                     }
                 }
                 .navigationDestination(isPresented: $submitted) {
-                    // Page after submitting
                     SubmittedView()
-                        .onAppear() { }
                 }
             }
         }
     }
 }
 
-// RadioButton Subview
+//
+// Radio Button
+//
 struct RadioButton: View {
     let label: String
     let isSelected: Bool
@@ -148,9 +178,8 @@ struct RadioButton: View {
     var body: some View {
         Button(action: action) {
             HStack {
-                // Filled or empty circle based on selection
                 Image(systemName: isSelected ? "circle.inset.filled" : "circle")
-                    .foregroundColor(.white)
+                    .foregroundColor(isSelected ? .purple : .white)
                 Text(label)
                     .foregroundColor(.white)
             }
@@ -158,7 +187,8 @@ struct RadioButton: View {
     }
 }
 
-// SubmittedView Subview
+
+// SubmittedView
 struct SubmittedView: View {
     var body: some View {
         VStack(spacing: 30) {
