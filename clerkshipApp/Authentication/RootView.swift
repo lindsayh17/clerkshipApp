@@ -40,7 +40,6 @@ struct RootView: View {
                 }
             }.navigationDestination(isPresented: $navControl.showSignIn){ LoginView()}
                 .navigationDestination(isPresented: $navControl.showCreateAccount){ CreateAccountView()}
-                .navigationBarBackButtonHidden()
         }
         
     }

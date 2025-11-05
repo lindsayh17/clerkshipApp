@@ -2,9 +2,6 @@
 //  clerkshipApp
 
 /*
- TODO: fix text color so more visible
- TODO: back/cancel button
- TODO: hide navigation back button once in HomeView
  TODO: make text fields and error messages look better
  */
 
@@ -120,6 +117,7 @@ struct CreateAccountView: View {
         } else {
             HomeView()
         }
+        BackButton()
     }
 }
 

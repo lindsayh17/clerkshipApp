@@ -19,12 +19,14 @@ struct BackButton: View {
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
                         Button {
+                            // this pops the view from the nav stack
+                            // i.e. goes back to previous page
                             dismiss()
                         } label: {
                             Text(title)
                                 .fontWeight(.semibold)
                                 .frame(width: 75, height: 30)
-                                .background(color.opacity(0.6))
+                                .background(color.opacity(0.4))
                                 .foregroundColor(.white)
                                 .cornerRadius(15)
                         }
