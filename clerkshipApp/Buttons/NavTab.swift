@@ -24,12 +24,28 @@ struct NavTab: View {
                 .padding(.horizontal, 25)
                 .padding(.top, 5)
             
+            // Student Version
             HStack {
                 NavBarButton(icon: "house", selection: .home, text: "Home", currentTab: $currentTab).padding()
+                // Quiz nav button //NavBarButton(icon: "house", selection: .quiz, text: "Home", currentTab: $currentTab).padding()
                 NavBarButton(icon: "text.document", selection: .resources, text: "Docs", currentTab: $currentTab).padding()
-                NavBarButton(icon: "magnifyingglass", selection: .search, text: "Search", currentTab: $currentTab).padding()
                 NavBarButton(icon: "person.crop.circle.fill", selection: .profile, text: "Profile", currentTab: $currentTab).padding()
             }
+            
+            // Preceptor Version
+//            HStack{
+//                NavBarButton(icon: "house", selection: .home, text: "Home", currentTab: $currentTab).padding()
+//                NavBarButton(icon: "magnifyingglass", selection: .search, text: "Search", currentTab: $currentTab).padding()
+//                NavBarButton(icon: "person.crop.circle.fill", selection: .profile, text: "Profile", currentTab: $currentTab).padding()
+//            }
+            
+            // Admin Version
+//            HStack{
+//                NavBarButton(icon: "house", selection: .home, text: "Home", currentTab: $currentTab).padding()
+//                NavBarButton(icon: "magnifyingglass", selection: .users, text: "Users", currentTab: $currentTab).padding()
+//                NavBarButton(icon: "person.crop.circle.fill", selection: .profile, text: "Profile", currentTab: $currentTab).padding()
+//            }
+            
             .frame(height: 80)
             // Side spacing
             .padding(.horizontal, 25)
