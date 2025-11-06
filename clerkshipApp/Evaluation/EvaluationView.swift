@@ -22,6 +22,7 @@ enum OptionDefinition {
 struct EvaluationView: View {
     @EnvironmentObject var firebase: FirebaseService
     @EnvironmentObject var evalStore: EvalStore
+    @EnvironmentObject var currUser: CurrentUser
     
     @State private var form = Form()
     @State private var submitted = false
@@ -106,7 +107,7 @@ struct EvaluationView: View {
         
         let evaluation = Evaluation(
             formId: "historyGathering",
-            preceptorId: "1",
+            preceptorId: currUser.user?.firebaseID ?? "0",
             studentId: "2",
             responses: responses,
             submittedAt: Date()
@@ -243,6 +244,8 @@ struct SubmittedView: View {
 
 // Preview
 #Preview {
-    EvaluationView().environmentObject(FirebaseService())
+    EvaluationView()
+        .environmentObject(FirebaseService())
         .environmentObject(EvalStore())
+        .environmentObject(CurrentUser())
 }

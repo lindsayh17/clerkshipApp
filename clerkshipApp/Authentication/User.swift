@@ -16,10 +16,19 @@ struct User: Identifiable, Codable {
     }
     
     var id = UUID()
+    var firebaseID = ""
     var firstName: String
     var lastName: String
     var email: String
     var access: AccessLevel
+    
+    init(firebaseID: String, firstName: String, lastName: String, email: String, access: AccessLevel) {
+        self.firebaseID = firebaseID;
+        self.firstName = firstName
+        self.lastName = lastName
+        self.email = email
+        self.access = access
+    }
     
     init(firstName: String, lastName: String, email: String, access: AccessLevel) {
         self.firstName = firstName

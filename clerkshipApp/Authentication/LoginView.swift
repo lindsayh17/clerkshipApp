@@ -20,6 +20,7 @@ struct LoginView: View {
     @EnvironmentObject var currentUser: CurrentUser
     @State private var email = ""
     @State private var password = ""
+    @State private var loading = false
     
     // Colors
     private let backgroundColor = Color("BackgroundColor")
@@ -44,7 +45,7 @@ struct LoginView: View {
         Task{
             do {
                 // Fetch users directly
-                try await firebase.fetchUser()
+                try await firebase.fetchUser(currEmail: auth.currentUser)
                 if firebase.downloadSuccessful{
                     currentUser.user = firebase.currUser
                 }
@@ -60,9 +61,9 @@ struct LoginView: View {
             do {
                 try await auth.signIn(email: email, password: password)
                 getNames()
-                //getCurrUser()
-                auth.isLoggedIn = true
+                getCurrUser()
             }
+            auth.isLoggedIn = true
         }
     }
     
@@ -118,6 +119,7 @@ struct LoginView: View {
 // Preview
 #Preview {
     LoginView().environmentObject(FirebaseService())
-        .environmentObject(AuthService()).environmentObject(UserStore())
+        .environmentObject(UserStore())
         .environmentObject(CurrentUser())
+        .environmentObject(AuthService())
 }

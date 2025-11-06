@@ -49,14 +49,17 @@ struct NavTab: View {
             default:
                 // use student view as default
                 HStack {
-                    Spacer()
-                    NavBarButton(icon: "house", selection: .home, text: "Home", currentTab: $currentTab)
-                    Spacer()
-                    // Quiz nav button //NavBarButton(icon: "house", selection: .quiz, text: "Home", currentTab: $currentTab).padding()
-                    NavBarButton(icon: "text.document", selection: .resources, text: "Docs", currentTab: $currentTab)
-                    Spacer()
-                    NavBarButton(icon: "person.crop.circle.fill", selection: .profile, text: "Profile", currentTab: $currentTab)
-                    Spacer()
+                    NavBarButton(icon: "house", selection: .home, text: "Home", currentTab: $currentTab).padding()
+                    NavBarButton(icon: "magnifyingglass", selection: .search, text: "Search", currentTab: $currentTab).padding()
+                    NavBarButton(icon: "person.crop.circle.fill", selection: .profile, text: "Profile", currentTab: $currentTab).padding()
+//                    Spacer()
+//                    NavBarButton(icon: "house", selection: .home, text: "Home", currentTab: $currentTab)
+//                    Spacer()
+//                    // Quiz nav button //NavBarButton(icon: "house", selection: .quiz, text: "Home", currentTab: $currentTab).padding()
+//                    NavBarButton(icon: "text.document", selection: .resources, text: "Docs", currentTab: $currentTab)
+//                    Spacer()
+//                    NavBarButton(icon: "person.crop.circle.fill", selection: .profile, text: "Profile", currentTab: $currentTab)
+//                    Spacer()
                 }
             }
             

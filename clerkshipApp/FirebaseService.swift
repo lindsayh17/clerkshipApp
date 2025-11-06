@@ -13,7 +13,6 @@ class FirebaseService: ObservableObject {
     @Published var users: [User]!
     @Published var downloadSuccessful = false
     @Published var currUser: User!
-    @EnvironmentObject var auth: AuthService
     
     // TODO: user collection values
     let userCollection = "Users"
@@ -65,17 +64,18 @@ class FirebaseService: ObservableObject {
         }
     }
     
-    func fetchUser() async throws{
-        if auth.currentUser != nil{
+    func fetchUser(currEmail: String) async throws{
+        if currEmail != nil{
             var fetchedUser: User?
             do {
                 let querySnapshot = try await db.collection(userCollection)
-                    .whereField("email", isEqualTo: auth.currentUser)
+                    .whereField("email", isEqualTo: currEmail)
                     .getDocuments()
                 print(querySnapshot.documents.count)
                 for document in querySnapshot.documents{
                     let data = document.data()
                     
+                    let id = data["id"] as? String ?? ""
                     let firstName = data["firstName"] as? String ?? ""
                     let lastName = data["lastName"] as? String ?? ""
                     let email = data["email"] as? String ?? ""
@@ -83,7 +83,7 @@ class FirebaseService: ObservableObject {
                     
                     switch userPriv {
                     case "student":
-                        fetchedUser = User(firstName: firstName, lastName: lastName, email: email, access: .student)
+                        fetchedUser = User(firebaseID: id, firstName: firstName, lastName: lastName, email: email, access: .student)
                     case "preceptor":
                         fetchedUser = User(firstName: firstName, lastName: lastName, email: email, access: .preceptor)
                     case "admin":
