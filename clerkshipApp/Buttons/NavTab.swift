@@ -16,21 +16,19 @@ struct NavTab: View {
     
     var body: some View {
         ZStack {
-            Color.gray
-                .opacity(0.4)
-                .cornerRadius(35)
-                .frame(height: 80)
-                // Side spacing
-                .padding(.horizontal, 25)
-                .padding(.top, 5)
+            Spacer()
             
             // Student Version
             HStack {
-                NavBarButton(icon: "house", selection: .home, text: "Home", currentTab: $currentTab).padding()
+                Spacer()
+                NavBarButton(icon: "house", selection: .home, text: "Home", currentTab: $currentTab)
+                Spacer()
                 // Quiz nav button //NavBarButton(icon: "house", selection: .quiz, text: "Home", currentTab: $currentTab).padding()
-                NavBarButton(icon: "text.document", selection: .resources, text: "Docs", currentTab: $currentTab).padding()
-                NavBarButton(icon: "person.crop.circle.fill", selection: .profile, text: "Profile", currentTab: $currentTab).padding()
-            }
+                NavBarButton(icon: "text.document", selection: .resources, text: "Docs", currentTab: $currentTab)
+                Spacer()
+                NavBarButton(icon: "person.crop.circle.fill", selection: .profile, text: "Profile", currentTab: $currentTab)
+                Spacer()
+            }.padding()
             
             // Preceptor Version
 //            HStack{
@@ -46,12 +44,12 @@ struct NavTab: View {
 //                NavBarButton(icon: "person.crop.circle.fill", selection: .profile, text: "Profile", currentTab: $currentTab).padding()
 //            }
             
-            .frame(height: 80)
-            // Side spacing
-            .padding(.horizontal, 25)
-            .padding(.top, 5)
-//
         }
+        .padding()
+        .background(Color.gray.opacity(0.8))
+        .frame(height: 70)
+        .cornerRadius(0)
+        .shadow(radius: 3)
     }
 }
 
@@ -65,11 +63,12 @@ struct NavBarButton: View {
     @Binding var currentTab: NavOption
     
     var body: some View {
-        VStack {
-            Button {
-                currentTab = selection
-            } label: {
-                ZStack {
+        let isSelected = currentTab == selection
+        Button {
+            currentTab = selection
+        } label: {
+            VStack(){
+                ZStack{
                     Circle()
                         .fill(buttonColor)
                         .frame(width: 50, height: 50)
@@ -77,7 +76,10 @@ struct NavBarButton: View {
                         .padding()
                         .foregroundColor(backgroundColor)
                 }
-            }
+                Text(text)
+                    .font(.caption)
+                    .foregroundColor(isSelected ? buttonColor: .gray)
+            }.padding()
         }
     }
 }
