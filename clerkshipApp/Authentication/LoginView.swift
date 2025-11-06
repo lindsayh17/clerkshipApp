@@ -8,8 +8,6 @@
 // password: 123456
 //
 /*
- TODO: back/cancel button
- TODO: hide navigation back button
  TODO: make errors look better
  */
 
@@ -111,6 +109,7 @@ struct LoginView: View {
         } else {
             HomeView()
         }
+        BackButton()
         
     }
 }
