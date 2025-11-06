@@ -64,12 +64,12 @@ class FirebaseService: ObservableObject {
         }
     }
     
-    func fetchUser(currEmail: String?) async throws{
+    func fetchUser(currEmail: String) async throws{
         if currEmail != nil{
             var fetchedUser: User?
             do {
                 let querySnapshot = try await db.collection(userCollection)
-                    .whereField("email", isEqualTo: currEmail!)
+                    .whereField("email", isEqualTo: currEmail)
                     .getDocuments()
                 print(querySnapshot.documents.count)
                 for document in querySnapshot.documents{
@@ -79,7 +79,6 @@ class FirebaseService: ObservableObject {
                     let lastName = data["lastName"] as? String ?? ""
                     let email = data["email"] as? String ?? ""
                     let userPriv = data["privilege"] as? String ?? ""
-                    print(userPriv)
                     
                     switch userPriv {
                     case "student":
