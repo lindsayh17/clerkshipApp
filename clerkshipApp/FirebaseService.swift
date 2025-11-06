@@ -75,6 +75,7 @@ class FirebaseService: ObservableObject {
                 for document in querySnapshot.documents{
                     let data = document.data()
                     
+                    let id = data["id"] as? String ?? ""
                     let firstName = data["firstName"] as? String ?? ""
                     let lastName = data["lastName"] as? String ?? ""
                     let email = data["email"] as? String ?? ""
@@ -82,7 +83,7 @@ class FirebaseService: ObservableObject {
                     
                     switch userPriv {
                     case "student":
-                        fetchedUser = User(firstName: firstName, lastName: lastName, email: email, access: .student)
+                        fetchedUser = User(firebaseID: id, firstName: firstName, lastName: lastName, email: email, access: .student)
                     case "preceptor":
                         fetchedUser = User(firstName: firstName, lastName: lastName, email: email, access: .preceptor)
                     case "admin":

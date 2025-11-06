@@ -11,6 +11,7 @@ struct CreateAccountView: View {
     @EnvironmentObject var firebase: FirebaseService
     @EnvironmentObject var auth: AuthService
     @EnvironmentObject var userStore: UserStore
+    @EnvironmentObject var currentUser: CurrentUser
     @State private var email = ""
     @State private var password = ""
     @State private var firstname = ""
@@ -33,6 +34,7 @@ struct CreateAccountView: View {
                 // Navigate to HomeView
                 navigateToHome = true
                 getNames()
+                getCurrUser()
             } catch {
                 print("Error creating account")
             }
@@ -56,6 +58,20 @@ struct CreateAccountView: View {
                     for user in firebase.users{
                         userStore.addUser(user)
                     }
+                }
+            } catch {
+                print("Error fetching users: \(error)")
+            }
+        }
+    }
+    
+    func getCurrUser(){
+        Task{
+            do {
+                // Fetch users directly
+                try await firebase.fetchUser(currEmail: auth.currentUser)
+                if firebase.downloadSuccessful{
+                    currentUser.user = firebase.currUser
                 }
             } catch {
                 print("Error fetching users: \(error)")
@@ -124,6 +140,9 @@ struct CreateAccountView: View {
 // Preview
 #Preview {
     // TODO: it's fine if we want these now, but should take out later
-    CreateAccountView().environmentObject(FirebaseService())
-        .environmentObject(AuthService()).environmentObject(UserStore())
+    CreateAccountView()
+        .environmentObject(FirebaseService())
+        .environmentObject(AuthService())
+        .environmentObject(UserStore())
+        .environmentObject(CurrentUser())
 }
