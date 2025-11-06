@@ -37,7 +37,7 @@ struct NavTab: View {
                 Spacer()
                 NavBarButton(icon: "person.crop.circle.fill", selection: .profile, text: "Profile", currentTab: $currentTab)
                 Spacer()
-            }.padding()
+            }
             
             // Preceptor Version
 //            HStack{
@@ -54,11 +54,8 @@ struct NavTab: View {
 //            }
             
         }
-        .padding()
+        .edgesIgnoringSafeArea(.bottom)
         .background(Color.gray.opacity(0.8))
-        .frame(height: 70)
-        .cornerRadius(0)
-        .shadow(radius: 3)
     }
 }
 
@@ -88,7 +85,8 @@ struct NavBarButton: View {
                 Text(text)
                     .font(.caption)
                     .foregroundColor(isSelected ? buttonColor: .gray)
-            }.padding()
+            }
+            .padding(.top)
         }
     }
 }

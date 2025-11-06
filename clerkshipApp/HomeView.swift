@@ -107,7 +107,7 @@ struct HomeView: View {
                             }
                             .padding()
                             
-                        }.padding()
+                        }.padding(.horizontal)
                         // Bottom Navigation
                         NavTab(currentTab: $currentView)
                     }
