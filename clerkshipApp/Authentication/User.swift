@@ -19,23 +19,23 @@ struct User: Identifiable, Codable {
     var firstName: String
     var lastName: String
     var email: String
-    var privelege: AccessLevel
+    var access: AccessLevel
     
-    init(firstName: String, lastName: String, email: String, privelege: AccessLevel) {
+    init(firstName: String, lastName: String, email: String, access: AccessLevel) {
         self.firstName = firstName
         self.lastName = lastName
         self.email = email
-        self.privelege = privelege
+        self.access = access
     }
     
     init(firstName: String, lastName: String, email: String){
         self.firstName = firstName
         self.lastName = lastName
         self.email = email
-        self.privelege = .student
+        self.access = .student
     }
     
     func getPrivilege() -> AccessLevel{
-        return privelege
+        return access
     }
 }

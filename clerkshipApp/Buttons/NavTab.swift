@@ -9,49 +9,56 @@ enum NavOption {
     case resources
     case search // preceptor and admin
     case profile
-}
-
-enum UserType {
-    case student
-    case preceptor
-    case admin
+    case users
 }
 
 
 // The whole nav bar
 struct NavTab: View {
     @Binding var currentTab: NavOption
-//    @Binding var currUserType: UserType
-    
+    @EnvironmentObject var currUser: CurrentUser
+
     var body: some View {
         ZStack {
             Spacer()
             
-            // Student Version
-            HStack {
-                Spacer()
-                NavBarButton(icon: "house", selection: .home, text: "Home", currentTab: $currentTab)
-                Spacer()
-                // Quiz nav button //NavBarButton(icon: "house", selection: .quiz, text: "Home", currentTab: $currentTab).padding()
-                NavBarButton(icon: "text.document", selection: .resources, text: "Docs", currentTab: $currentTab)
-                Spacer()
-                NavBarButton(icon: "person.crop.circle.fill", selection: .profile, text: "Profile", currentTab: $currentTab)
-                Spacer()
+            switch currUser.user?.access{
+            case .student:
+                HStack {
+                    Spacer()
+                    NavBarButton(icon: "house", selection: .home, text: "Home", currentTab: $currentTab)
+                    Spacer()
+                    // Quiz nav button //NavBarButton(icon: "house", selection: .quiz, text: "Home", currentTab: $currentTab).padding()
+                    NavBarButton(icon: "text.document", selection: .resources, text: "Docs", currentTab: $currentTab)
+                    Spacer()
+                    NavBarButton(icon: "person.crop.circle.fill", selection: .profile, text: "Profile", currentTab: $currentTab)
+                    Spacer()
+                }
+            case .preceptor:
+                HStack{
+                    NavBarButton(icon: "house", selection: .home, text: "Home", currentTab: $currentTab).padding()
+                    NavBarButton(icon: "magnifyingglass", selection: .search, text: "Search", currentTab: $currentTab).padding()
+                    NavBarButton(icon: "person.crop.circle.fill", selection: .profile, text: "Profile", currentTab: $currentTab).padding()
+                }
+            case .admin:
+                HStack{
+                    NavBarButton(icon: "house", selection: .home, text: "Home", currentTab: $currentTab).padding()
+                    NavBarButton(icon: "magnifyingglass", selection: .users, text: "Users", currentTab: $currentTab).padding()
+                    NavBarButton(icon: "person.crop.circle.fill", selection: .profile, text: "Profile", currentTab: $currentTab).padding()
+                }
+            default:
+                // use student view as default
+                HStack {
+                    Spacer()
+                    NavBarButton(icon: "house", selection: .home, text: "Home", currentTab: $currentTab)
+                    Spacer()
+                    // Quiz nav button //NavBarButton(icon: "house", selection: .quiz, text: "Home", currentTab: $currentTab).padding()
+                    NavBarButton(icon: "text.document", selection: .resources, text: "Docs", currentTab: $currentTab)
+                    Spacer()
+                    NavBarButton(icon: "person.crop.circle.fill", selection: .profile, text: "Profile", currentTab: $currentTab)
+                    Spacer()
+                }
             }
-            
-            // Preceptor Version
-//            HStack{
-//                NavBarButton(icon: "house", selection: .home, text: "Home", currentTab: $currentTab).padding()
-//                NavBarButton(icon: "magnifyingglass", selection: .search, text: "Search", currentTab: $currentTab).padding()
-//                NavBarButton(icon: "person.crop.circle.fill", selection: .profile, text: "Profile", currentTab: $currentTab).padding()
-//            }
-            
-            // Admin Version
-//            HStack{
-//                NavBarButton(icon: "house", selection: .home, text: "Home", currentTab: $currentTab).padding()
-//                NavBarButton(icon: "magnifyingglass", selection: .users, text: "Users", currentTab: $currentTab).padding()
-//                NavBarButton(icon: "person.crop.circle.fill", selection: .profile, text: "Profile", currentTab: $currentTab).padding()
-//            }
             
         }
         .edgesIgnoringSafeArea(.bottom)
