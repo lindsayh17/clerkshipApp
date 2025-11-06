@@ -51,6 +51,8 @@ struct LocationsView: View {
                                 SearchView()
                             case .profile:
                                 ProfileView()
+                            case .users:
+                                SearchView()
                             }
                         }
                         .padding(.top, 10)

@@ -103,6 +103,8 @@ struct HomeView: View {
                                     SearchView()
                                 case .profile:
                                     ProfileView()
+                                case .users:
+                                    SearchView()
                                 }
                             }
                             .padding()
