@@ -83,11 +83,11 @@ class FirebaseService: ObservableObject {
                     
                     switch userPriv {
                     case "student":
-                        fetchedUser = User(firstName: firstName, lastName: lastName, email: email, privelege: .student)
+                        fetchedUser = User(firstName: firstName, lastName: lastName, email: email, access: .student)
                     case "preceptor":
-                        fetchedUser = User(firstName: firstName, lastName: lastName, email: email, privelege: .preceptor)
+                        fetchedUser = User(firstName: firstName, lastName: lastName, email: email, access: .preceptor)
                     case "admin":
-                        fetchedUser = User(firstName: firstName, lastName: lastName, email: email, privelege: .admin)
+                        fetchedUser = User(firstName: firstName, lastName: lastName, email: email, access: .admin)
                     default:
                         fetchedUser = User(firstName: firstName, lastName: lastName, email: email)
                     }

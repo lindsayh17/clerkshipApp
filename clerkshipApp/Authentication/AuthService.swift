@@ -53,7 +53,7 @@ class AuthService: ObservableObject {
   }
     
     func createUser(fname: String, lname: String, email: String) async throws{
-        let u = User(firstName: fname, lastName: lname, email: email, privelege: .student)
+        let u = User(firstName: fname, lastName: lname, email: email, access: .student)
         
         do {
             try db.collection("Users").addDocument(from: u)
@@ -76,11 +76,11 @@ class AuthService: ObservableObject {
                 
                 switch privelege {
                 case "student":
-                    return User(firstName: firstName, lastName: lastName, email: email, privelege: .student)
+                    return User(firstName: firstName, lastName: lastName, email: email, access: .student)
                 case "preceptor":
-                    return User(firstName: firstName, lastName: lastName, email: email, privelege: .preceptor)
+                    return User(firstName: firstName, lastName: lastName, email: email, access: .preceptor)
                 case "admin":
-                    return User(firstName: firstName, lastName: lastName, email: email, privelege: .admin)
+                    return User(firstName: firstName, lastName: lastName, email: email, access: .admin)
                 default:
                     return User(firstName: firstName, lastName: lastName, email: email)
                 }
