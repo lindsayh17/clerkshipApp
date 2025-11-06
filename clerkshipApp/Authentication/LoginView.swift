@@ -45,7 +45,7 @@ struct LoginView: View {
         Task{
             do {
                 // Fetch users directly
-                try await firebase.fetchUser()
+                try await firebase.fetchUser(currEmail: auth.currentUser)
                 if firebase.downloadSuccessful{
                     currentUser.user = firebase.currUser
                 }
