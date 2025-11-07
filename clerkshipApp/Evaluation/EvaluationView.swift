@@ -24,6 +24,9 @@ struct EvaluationView: View {
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
     
+    // TODO: display this somewhere
+    let currStudent: User
+    
     // Firebase download (if needed)
     func download() {
         Task {
@@ -202,7 +205,7 @@ struct SubmittedView: View {
 
 // Preview
 #Preview {
-    EvaluationView()
+    EvaluationView(currStudent: User(firstName: "Place", lastName: "Holder", email: "email"))
         .environmentObject(FirebaseService())
         .environmentObject(EvalStore())
         .environmentObject(CurrentUser())
