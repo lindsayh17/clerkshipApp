@@ -12,6 +12,13 @@
 
 import SwiftUI
 
+enum OptionDefinition {
+    case novice
+    case apprentice
+    case expert
+    case none
+}
+
 struct EvaluationView: View {
     @EnvironmentObject var firebase: FirebaseService
     @EnvironmentObject var evalStore: EvalStore
@@ -19,6 +26,9 @@ struct EvaluationView: View {
     
     @State private var form = Form()
     @State private var submitted = false
+    
+    @State private var showInfo = false
+    @State private var selection: OptionDefinition = .none
     
     // Colors
     private let backgroundColor = Color("BackgroundColor")
@@ -32,6 +42,61 @@ struct EvaluationView: View {
         Task {
             do {
                 try await firebase.fetchForms()
+            }
+        }
+    }
+    
+    private func infoBlurb(for opt: OptionDefinition) -> String {
+        switch opt {
+        case .novice:
+            return "Gathers too little or too much info, does not link info in a clinically relevant fashion, communication is not patient-focused, uses same broad template for all interactions."
+        case .apprentice: 
+            return "Gathers most relevant info, links most findings in a clinically relevant way, communication is mostly patient-focused but occasionally unidirectional, tailors history to specific encounters."
+        case .expert:
+            return "Gathers complete and accurate history appropriate to the situation, demonstrates clinical reasoning useful in patient care, communication is bidirectional and patient-family centered, adapts history to multiple clinical settings (acute, chronic, inpatient, outpatient)."
+        case .none: 
+            return ""
+        }
+    }
+    
+    private func infoTitle(for opt: OptionDefinition) -> String {
+        switch opt {
+        case .novice: return "Novice"
+        case .apprentice: return "Apprentice"
+        case .expert: return "Expert"
+        case .none: return "None"
+        }
+    }
+    
+    private func headerItem(title: String, option: OptionDefinition) -> some View {
+        HStack {
+            Text(title)
+                .foregroundColor(.white)
+            Button {
+                selection = option
+                showInfo = true
+            } label: {
+                Image(systemName: "info.circle")
+                    .foregroundColor(.white)
+                    .baselineOffset(1)
+                    .font(.system(size: 12))
+            }
+            .buttonStyle(BorderlessButtonStyle())
+        }
+    }
+    
+    private func labelledRow() -> some View {
+        // labelled row
+        HStack {
+            Group {
+                Text("N/A").foregroundColor(.white).padding()
+                headerItem(title: "Novice", option: .novice)
+                headerItem(title: "Apprentice", option: .apprentice)
+                headerItem(title: "Expert", option: .expert)
+            }.alert(infoTitle(for: selection), isPresented: $showInfo) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text(infoBlurb(for: selection))
             }
         }
     }
@@ -69,103 +134,80 @@ struct EvaluationView: View {
                                 .fontWeight(.bold)
                                 .foregroundColor(.white)
                                 .padding(.bottom, 6)
-                            // Assesment description
-                            Group {
-                                Text("**Novice:** Gathers too little or too much info, does not link info in a clinically relevant fashion, communication is not patient-focused, uses same broad template for all interactions.")
-                                Text("**Apprentice:** Gathers most relevant info, links most findings in a clinically relevant way, communication is mostly patient-focused but occasionally unidirectional, tailors history to specific encounters.")
-                                Text("**Expert:** Gathers complete and accurate history appropriate to the situation, demonstrates clinical reasoning useful in patient care, communication is bidirectional and patient-family centered, adapts history to multiple clinical settings (acute, chronic, inpatient, outpatient).")
-                            }
-                            .font(.caption2)
-                            .foregroundColor(.white)
-                            .lineSpacing(2)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                                                        
-                            // Header Row
-                            HStack {
-                                Text("Question")
-                                    .foregroundColor(.white)
-                                    .frame(width: 70, alignment: .leading)
-                                Spacer()
-                                ForEach(["Unable to Assess", "Novice", "Advanced Novice", "Apprentice", "Competent", "Expert"], id: \.self) { label in
-                                   Text(label)
-                                       .foregroundColor(.white)
-                                       .frame(maxWidth: .infinity)
-                               }
-                            }
-                            .font(.caption)
-                            .padding(.bottom, 3)
-                            Divider().background(Color.gray)
-                            
-                            // Question Rows
-                            ForEach($form.questions) { $q in
-                                if q.type == .radio {
-                                    HStack(alignment: .center, spacing: 12) {
-                                        Text(q.question)
-                                            .foregroundColor(.white)
-                                            .frame(width: 70, alignment: .leading)
-                                            .font(.caption2)
-                                            .fixedSize(horizontal: false, vertical: true)
-                                        
-                                        Spacer()
-                                        
-                                        ForEach(["Unable to Assess", "Novice", "Advanced Novice", "Apprentice", "Competent", "Expert"], id: \.self) { option in
-                                            Button(action: {
-                                                q.response = .text(option)
-                                            }) {
-                                                Image(systemName: q.responseString == option ? "circle.inset.filled" : "circle")
-                                                    .foregroundColor(q.responseString == option ? .purple : .white)
+                            labelledRow()
+                                Divider().background(Color.gray)
+                                
+                                
+                                // Question Rows
+                                ForEach($form.questions) { $q in
+                                    if q.type == .radio {
+                                        VStack {
+                                            Text(q.question)
+                                                .foregroundColor(.white)
+                                                .font(.headline)
+                                                .fixedSize(horizontal: false, vertical: true)
+                                            
+                                            HStack(alignment: .center, spacing: 12) {
+                                                
+                                                ForEach(["N/A", "Novice", "Apprentice", "Expert"], id: \.self) { option in
+                                                    Button(action: {
+                                                        q.response = .text(option)
+                                                    }) {
+                                                        Image(systemName: q.responseString == option ? "circle.inset.filled" : "circle")
+                                                            .foregroundColor(q.responseString == option ? .purple : .white)
+                                                    }
+                                                    .frame(maxWidth: .infinity)
+                                                }.padding(.vertical, 8)
                                             }
-                                            .frame(maxWidth: .infinity)
+                                            Divider().background(Color.gray)
                                         }
                                     }
-                                    .padding(.vertical, 8)
-                                    Divider().background(Color.gray)
+                                    
+                                    
+                                    // Notes Field
+                                    if q.type == .open {
+                                        VStack(alignment: .leading, spacing: 5) {
+                                            Text(q.question)
+                                                .foregroundColor(.white)
+                                            TextEditor(
+                                                text: Binding(
+                                                    get: {
+                                                        if case .text(let notes) = q.response { return notes }
+                                                        return ""
+                                                    },
+                                                    set: { q.response = .text($0) }
+                                                )
+                                            )
+                                            .frame(height: 80)
+                                            .padding(8)
+                                            .background(Color.white)
+                                            .cornerRadius(10)
+                                        }
+                                        .padding(.top, 10)
+                                    }
                                 }
                                 
-                                // Notes Field
-                                if q.type == .open {
-                                    VStack(alignment: .leading, spacing: 5) {
-                                        Text(q.question)
-                                            .foregroundColor(.white)
-                                        TextEditor(
-                                            text: Binding(
-                                                get: {
-                                                    if case .text(let notes) = q.response { return notes }
-                                                    return ""
-                                                },
-                                                set: { q.response = .text($0) }
-                                            )
-                                        )
-                                        .frame(height: 80)
-                                        .padding(8)
-                                        .background(Color.white)
-                                        .cornerRadius(10)
-                                    }
-                                    .padding(.top, 10)
+                                // Submit Button
+                                Button(action: {
+                                    submitted = true
+                                    submitForm()
+                                }) {
+                                    Text("Submit Form")
+                                        .foregroundColor(.white)
+                                        .padding()
+                                        .frame(maxWidth: .infinity)
+                                        .background(form.validForm() ? buttonColor : Color.gray)
+                                        .cornerRadius(30)
                                 }
+                                .disabled(!form.validForm())
+                                .padding(.top, 20)
                             }
-                            
-                            // Submit Button
-                            Button(action: {
-                                submitted = true
-                                submitForm()
-                            }) {
-                                Text("Submit Form")
-                                    .foregroundColor(.white)
-                                    .padding()
-                                    .frame(maxWidth: .infinity)
-                                    .background(form.validForm() ? buttonColor : Color.gray)
-                                    .cornerRadius(30)
-                            }
-                            .disabled(!form.validForm())
-                            .padding(.top, 20)
+                            .padding()
                         }
-                        .padding()
                     }
-                }
-                .navigationDestination(isPresented: $submitted) {
-                    SubmittedView()
-                }
+                    .navigationDestination(isPresented: $submitted) {
+                        SubmittedView()
+                    }
             }
         }
     }
