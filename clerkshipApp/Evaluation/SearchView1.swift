@@ -1,15 +1,20 @@
+//
+//  SearchView1.swift
+//  clerkshipApp
+//
+//  Created by Mia Corcoran on 11/10/25.
+//
+
 //  SearchView.swift
 //  clerkshipApp
 
 /*
  TODO: link each name to evaluation form
- TODO: figure out why it's printing weird/why extra users
-    // I think its printing extra users cuz Ive tried the same name for myself multiple times lol
  */
 
 import SwiftUI
 
-struct SearchView: View {
+struct SearchView1: View {
     @EnvironmentObject var firebase: FirebaseService
     @EnvironmentObject var userStore: UserStore
     @State private var searchText = ""
@@ -158,5 +163,6 @@ struct NamesView: View{
 
 // Preview
 #Preview {
-    SearchView().environmentObject(FirebaseService()).environmentObject(UserStore())
+    SearchView1().environmentObject(FirebaseService()).environmentObject(UserStore())
 }
+

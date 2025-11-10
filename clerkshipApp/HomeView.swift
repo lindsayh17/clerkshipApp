@@ -1,5 +1,6 @@
 //  HomeView.swift
 //  clerkshipApp
+//
 
 /*
  TODO: change display options for students vs. preceptors
@@ -7,6 +8,7 @@
  */
 
 import SwiftUI
+import WebKit
 
 enum HomeDestination {
     case dailyQuestion
@@ -16,13 +18,11 @@ enum HomeDestination {
     case location
 }
 
-
-
 struct HomeView: View {
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
-//    @Binding var destination: HomeDestination
+    // @Binding var destination: HomeDestination
     
     @State private var currentView = NavOption.home
     // @State var loginManager
@@ -38,89 +38,102 @@ struct HomeView: View {
     @EnvironmentObject var auth: AuthService
     
     var body: some View {
-        NavigationStack {
-            ZStack {
-                // Fill the screen with background color
-                backgroundColor.ignoresSafeArea()
-                //if currUser.user?.getPrivilege() == .student{
-                    VStack(spacing: 0) {
-                        // Scrollable content
-                        ScrollView {
-                            VStack(alignment: .leading, spacing: 40) {
-                                switch currentView {
-                                case .home:
-                                    // Daily Question
-                                    SectionView(title: "Daily Question") {
-                                        VStack(alignment: .leading, spacing: 10) {
-                                            Text(dailyQuestion)
-                                                .foregroundColor(.white)
+        // Single container view
+        Group {
+            // If user is admin show web dashboard
+            if currUser.user?.access == .admin {
+                AdminDashboardView()
+            } else {
+                // Otherwise show normal app content
+                NavigationStack {
+                    ZStack {
+                        // Fill the screen with background color
+                        backgroundColor.ignoresSafeArea()
+                        
+                        // if currUser.user?.getPrivilege() == .student{
+                        VStack(spacing: 0) {
+                            // Scrollable content
+                            ScrollView {
+                                VStack(alignment: .leading, spacing: 40) {
+                                    switch currentView {
+                                    case .home:
+                                        // Daily Question
+                                        SectionView(title: "Daily Question") {
+                                            VStack(alignment: .leading, spacing: 10) {
+                                                Text(dailyQuestion)
+                                                    .foregroundColor(.white)
+                                                    .font(.title3)
+                                                    .bold()
+                                                Button(action: {
+                                                    withAnimation {
+                                                        // Show answer
+                                                        showDailyQuestionAnswer.toggle()
+                                                    }
+                                                }) {
+                                                    Text(showDailyQuestionAnswer ? "Hide Answer" : "Show Answer")
+                                                        .underline()
+                                                }
+                                                // Answer
+                                                if showDailyQuestionAnswer {
+                                                    Text("Atelectasis")
+                                                        .foregroundColor(.white)
+                                                }
+                                            }
+                                        }
+                                        // Quick Facts Section
+                                        SectionView(title: "Quick Facts") {
+                                            Text("View Quick Facts")
                                                 .font(.title3)
                                                 .bold()
-                                            Button(action: {
-                                                withAnimation {
-                                                    // Show answer
-                                                    showDailyQuestionAnswer.toggle()
-                                                }
-                                            }) {
-                                                Text(showDailyQuestionAnswer ? "Hide Answer" : "Show Answer")
-                                                    .underline()
-                                            }
-                                            // Answer
-                                            if showDailyQuestionAnswer {
-                                                Text("Atelectasis")
-                                                    .foregroundColor(.white)
-                                            }
-                                            
                                         }
+                                        // Orientation Section
+                                        SectionView(title: "Orientation") {
+                                            Text("View Orientation Details")
+                                                .font(.title3)
+                                                .bold()
+                                        }
+                                        // Clerkship Requirements Section
+                                        SectionView(title: "Clerkship Requirements") {
+                                            Text("View Requirements")
+                                                .font(.title3)
+                                                .bold()
+                                        }
+                                        // Location Section
+                                        SectionView(title: "Location") {
+                                            Text("View Location Info")
+                                                .font(.title3)
+                                                .bold()
+                                        }
+                                    case .resources:
+                                        ResourcesView()
+                                    case .search:
+                                        SearchView()
+                                    case .profile:
+                                        ProfileView()
+                                    case .users:
+                                        SearchView()
                                     }
-                                    // Quick Facts Section
-                                    SectionView(title: "Quick Facts") {
-                                        Text("View Quick Facts")
-                                            .font(.title3)
-                                            .bold()
-                                    }
-                                    // Orientation Section
-                                    SectionView(title: "Orientation") {
-                                        Text("View Orientation Details")
-                                            .font(.title3)
-                                            .bold()
-                                    }
-                                    // Clerkship Requirements Section
-                                    SectionView(title: "Clerkship Requirements") {
-                                        Text("View Requirements")
-                                            .font(.title3)
-                                            .bold()
-                                    }
-                                    // Location Section
-                                    SectionView(title: "Location") {
-                                        Text("View Location Info")
-                                            .font(.title3)
-                                            .bold()
-                                    }
-                                case .resources:
-                                    ResourcesView()
-                                case .search:
-                                    SearchView()
-                                case .profile:
-                                    ProfileView()
-                                case .users:
-                                    SearchView()
                                 }
+                                .padding()
                             }
-                            .padding()
-                            
-                        }.padding(.horizontal)
-                        // Bottom Navigation
-                        NavTab(currentTab: $currentView)
+                            .padding(.horizontal)
+                            // Bottom Navigation
+                            NavTab(currentTab: $currentView)
+                        }
+                        // }
                     }
-                //}
+                }
+                .navigationBarBackButtonHidden()
             }
-        }.navigationBarBackButtonHidden()
+        } // End Group
     }
 }
 
 // Preview
 #Preview {
-    HomeView().environmentObject(FirebaseService())
-        .environmentObject(CurrentUser()).environmentObject(AuthService())
+    HomeView()
+        .environmentObject(FirebaseService())
+        .environmentObject(CurrentUser())
+        .environmentObject(AuthService())
 }
+

@@ -1,9 +1,5 @@
-//
 //  NavControl.swift
 //  clerkshipApp
-//
-//  Created by Lindsay on 11/3/25.
-//
 
 import SwiftUI
 

@@ -1,7 +1,5 @@
-//
 //  BigButtonView.swift
 //  clerkshipApp
-//
 
 import SwiftUI
 

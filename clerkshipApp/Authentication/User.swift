@@ -1,9 +1,5 @@
-//
 //  User.swift
 //  clerkshipApp
-//
-//  Created by Lindsay on 11/2/25.
-//
 
 import SwiftUI
 

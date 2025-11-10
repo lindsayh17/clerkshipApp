@@ -1,12 +1,9 @@
-//
 //  LoginView.swift
 //  clerkshipApp
 //
-//  Created by Lindsay on 10/27/25.
-//
 // username: lhall11@uvm.edu
 // password: 123456
-//
+
 /*
  TODO: make errors look better
  */

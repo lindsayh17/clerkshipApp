@@ -1,9 +1,6 @@
-//
 //  BackButton.swift
 //  clerkshipApp
-//
-//  Created by Hannah Deyst on 11/4/25.
-//
+
 import SwiftUI
 
 struct BackButton: View {
