@@ -26,6 +26,14 @@ struct User: Identifiable, Codable {
         self.access = access
     }
     
+    init(firebaseID: String, firstName: String, lastName: String, email: String) {
+        self.firebaseID = firebaseID;
+        self.firstName = firstName
+        self.lastName = lastName
+        self.email = email
+        self.access = .student
+    }
+    
     init(firstName: String, lastName: String, email: String, access: AccessLevel) {
         self.firstName = firstName
         self.lastName = lastName

@@ -111,7 +111,7 @@ struct EvaluationView: View {
         let evaluation = Evaluation(
             formId: "historyGathering",
             preceptorId: currUser.user?.firebaseID ?? "0",
-            studentId: "2",
+            studentId: currStudent.firebaseID,
             responses: responses,
             submittedAt: Date()
         )
