@@ -22,33 +22,30 @@ struct LoginView: View {
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     
-    func getNames() {
-        Task{
-            do {
-                // Fetch users directly
-                try await firebase.fetchUsers()
-                if firebase.downloadSuccessful{
-                    for user in firebase.users{
-                        userStore.addUser(user)
-                    }
+    func getNames() async{
+        do {
+            // Fetch users directly
+            try await firebase.fetchUsers()
+            if firebase.downloadSuccessful{
+                userStore.allUsers.removeAll()
+                for user in firebase.users{
+                    userStore.addUser(user)
                 }
-            } catch {
-                print("Error fetching users: \(error)")
             }
+        } catch {
+            print("Error fetching users: \(error)")
         }
     }
     
-    func getCurrUser(){
-        Task{
-            do {
-                // Fetch users directly
-                try await firebase.fetchUser(currEmail: auth.currentUser)
-                if firebase.downloadSuccessful{
-                    currentUser.user = firebase.currUser
-                }
-            } catch {
-                print("Error fetching users: \(error)")
+    func getCurrUser() async{
+        do {
+            // Fetch users directly
+            try await firebase.fetchUser(currEmail: auth.currentUser)
+            if firebase.downloadSuccessful{
+                currentUser.user = firebase.currUser
             }
+        } catch {
+            print("Error fetching users: \(error)")
         }
     }
     
@@ -57,10 +54,12 @@ struct LoginView: View {
         Task {
             do {
                 try await auth.signIn(email: email, password: password)
-                getNames()
-                getCurrUser()
+                await getNames()
+                await getCurrUser()
+                auth.isLoggedIn = true
+            }catch {
+                print("Login error: \(error.localizedDescription)")
             }
-            auth.isLoggedIn = true
         }
     }
     
