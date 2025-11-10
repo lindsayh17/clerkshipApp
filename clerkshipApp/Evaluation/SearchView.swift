@@ -67,20 +67,18 @@ struct SearchView1: View {
                 VStack(spacing: 0) {
                     ScrollViewReader { proxy in
                         ZStack(alignment: .trailing) {
-                            if let selected = selectedUser{
-                                NamesView(filteredNames: filteredNames, selectedUser: selected)
-                                    .environment(\.defaultMinListRowHeight, 28)
-                                    .listSectionSpacing(.compact)
-                                    .scrollContentBackground(.hidden)
-                                    .background(backgroundColor)
-                                    .listStyle(.insetGrouped)
-                                    .searchable(
-                                        text: $searchText,
-                                        placement: .navigationBarDrawer(displayMode: .always),
-                                        prompt: "Search"
-                                    )
-                                    .tint(buttonColor)
-                            }
+                            NamesView(filteredNames: filteredNames, selectedUser: $selectedUser)
+                                .environment(\.defaultMinListRowHeight, 28)
+                                .listSectionSpacing(.compact)
+                                .scrollContentBackground(.hidden)
+                                .background(backgroundColor)
+                                .listStyle(.insetGrouped)
+                                .searchable(
+                                    text: $searchText,
+                                    placement: .navigationBarDrawer(displayMode: .always),
+                                    prompt: "Search"
+                                )
+                                .tint(buttonColor)
                             
                             
                             // Alphabet index
@@ -134,7 +132,7 @@ struct NamesView: View{
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
-    @State var selectedUser: User
+    @Binding var selectedUser: User?
     
     var body: some View{
         // Contact list

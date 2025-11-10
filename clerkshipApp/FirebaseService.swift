@@ -34,33 +34,31 @@ class FirebaseService: ObservableObject {
     
     // function to fetch user info from firebase
     func fetchUsers() async throws{
-        var fecthedUsers: [User] = []
+        var fetchedUsers: [User] = []
         do {
-          let querySnapshot = try await db.collection(userCollection).getDocuments()
-          for document in querySnapshot.documents {
-              let data = document.data()
-              
-              // try to cast to strings otherwise return empty
-              let firstName = data["firstName"] as? String ?? ""
-              let lastName = data["lastName"] as? String ?? ""
-              let email = data["email"] as? String ?? ""
+            let querySnapshot = try await db.collection(userCollection).getDocuments()
+            for document in querySnapshot.documents {
+                let data = document.data()
 
-              if firstName != "" && lastName != "" && email != ""{
+                // try to cast to strings otherwise return empty
+                let firstName = data["firstName"] as? String ?? ""
+                let lastName = data["lastName"] as? String ?? ""
+                let email = data["email"] as? String ?? ""
+
+                if firstName != "" && lastName != "" && email != ""{
                   let u = User(firstName: firstName, lastName: lastName, email: email)
-                  fecthedUsers.append(u)
-              }
-          }
-            for user in fecthedUsers {
-                DispatchQueue.main.async{
-                    self.users.append(user)
+                  fetchedUsers.append(u)
                 }
             }
-            
             DispatchQueue.main.async{
+                self.users = fetchedUsers
                 self.downloadSuccessful = true
             }
         } catch {
-          print("Error getting documents: \(error)")
+            print("Error getting documents: \(error)")
+            DispatchQueue.main.async{
+                self.downloadSuccessful = false
+            }
         }
     }
     
