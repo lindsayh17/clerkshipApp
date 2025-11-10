@@ -14,7 +14,7 @@
 
 import SwiftUI
 
-struct SearchView1: View {
+struct SearchView: View {
     @EnvironmentObject var firebase: FirebaseService
     @EnvironmentObject var userStore: UserStore
     @State private var searchText = ""
@@ -67,7 +67,7 @@ struct SearchView1: View {
                 VStack(spacing: 0) {
                     ScrollViewReader { proxy in
                         ZStack(alignment: .trailing) {
-                            NamesView(filteredNames: filteredNames, selectedUser: $selectedUser)
+                            NamesView(filteredNames: filteredNames, selectedUser: $selectedUser, showEvalForm: $navControl.showEvalForm)
                                 .environment(\.defaultMinListRowHeight, 28)
                                 .listSectionSpacing(.compact)
                                 .scrollContentBackground(.hidden)
@@ -133,6 +133,7 @@ struct NamesView: View{
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
     @Binding var selectedUser: User?
+    @Binding var showEvalForm: Bool
     
     var body: some View{
         // Contact list
@@ -146,9 +147,16 @@ struct NamesView: View{
                     ForEach(filteredNames[letter, default: []], id: \.id) { student in
                         Button {
                             selectedUser = student
+                            showEvalForm = true
                         } label: {
-                            Text("\(student.firstName) \(student.lastName)")
-                                .foregroundColor(.white)
+                            HStack{
+                                Text("\(student.firstName) \(student.lastName)")
+                                    .foregroundColor(.white)
+                                Spacer()
+                            }
+                            .contentShape(Rectangle())
+                            .padding(.vertical, 8)
+                            .background(backgroundColor.opacity(0.8))
                         }
                         .listRowInsets(EdgeInsets(top: 1, leading: 16, bottom: 1, trailing: 10))
                         .listRowBackground(backgroundColor.opacity(0.8))
@@ -161,6 +169,6 @@ struct NamesView: View{
 
 // Preview
 #Preview {
-    SearchView1().environmentObject(FirebaseService()).environmentObject(UserStore())
+    SearchView().environmentObject(FirebaseService()).environmentObject(UserStore())
 }
 

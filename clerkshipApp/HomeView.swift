@@ -107,7 +107,7 @@ struct HomeView: View {
                                     case .resources:
                                         ResourcesView()
                                     case .search:
-                                        SearchView1()
+                                        SearchView()
                                     case .profile:
                                         ProfileView()
                                     case .users:
