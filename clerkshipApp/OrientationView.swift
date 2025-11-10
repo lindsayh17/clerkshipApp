@@ -9,6 +9,7 @@ struct OrientationView: View {
     private let buttonColor = Color("ButtonColor")
     
     @State private var currentView: NavOption = .home
+    @EnvironmentObject var currUser: CurrentUser
     
     var body: some View {
         NavigationStack {
@@ -73,6 +74,6 @@ struct OrientationView: View {
 
 // Preview
 #Preview {
-    OrientationView().environmentObject(FirebaseService())
+    OrientationView().environmentObject(FirebaseService()).environmentObject(CurrentUser())
 }
 
