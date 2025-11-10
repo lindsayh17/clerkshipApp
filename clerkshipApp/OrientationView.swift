@@ -74,6 +74,6 @@ struct OrientationView: View {
 
 // Preview
 #Preview {
-    OrientationView().environmentObject(FirebaseService())
+    OrientationView().environmentObject(FirebaseService()).environmentObject(CurrentUser())
 }
 
