@@ -13,6 +13,7 @@ struct ProfileView: View {
     @EnvironmentObject var auth: AuthService
     @State private var currentView: NavOption = .profile
     @StateObject var navControl = NavControl()
+    @EnvironmentObject var currUser: CurrentUser
     
     func signOut() {
         Task {
@@ -40,16 +41,25 @@ struct ProfileView: View {
                                 .frame(maxWidth: .infinity, alignment: .center)
                             
                             // Profile info
-                            Group {
-                                Text("First Name :")
-                                Text("Last Name :")
-                                Text("Role :")
-                                Text("Email :")
+                            if let current = currUser.user{
+                                Group {
+                                    Text("First Name : \(current.firstName)")
+                                    Text("Last Name : \(current.lastName)")
+                                    switch current.access {
+                                    case .student:
+                                        Text("Role : Student")
+                                    case .preceptor:
+                                        Text("Role : Preceptor")
+                                    case .admin:
+                                        Text("Role : Administrator")
+                                    }
+                                    Text("Email : \(current.email)")
+                                }
+                                .foregroundColor(.white)
+                                .font(.title2)
+                                .padding(.leading, 50)
+                                .bold()
                             }
-                            .foregroundColor(.white)
-                            .font(.title2)
-                            .padding(.leading, 50)
-                            .bold()
                             
                             // Logout button
                             Button(action: {
@@ -80,4 +90,5 @@ struct ProfileView: View {
 // Preview
 #Preview {
     ProfileView().environmentObject(AuthService())
+        .environmentObject(CurrentUser())
 }
