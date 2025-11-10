@@ -7,6 +7,7 @@ struct SearchView: View {
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
     @State private var currentView = NavOption.home
+    @EnvironmentObject var currUser: CurrentUser
     
     var body: some View {
         NavigationStack {

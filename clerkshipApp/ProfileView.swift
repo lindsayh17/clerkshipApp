@@ -11,6 +11,7 @@ struct ProfileView: View {
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
     @EnvironmentObject var auth: AuthService
+    @EnvironmentObject var currUser: CurrentUser
     @State private var currentView: NavOption = .profile
     @StateObject var navControl = NavControl()
     

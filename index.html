@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OBGYN Clerkship Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <img src="GreenUVMLogo.png" alt="UVM Logo" class="logo">
+    <h1>OBGYN Clerkship</h1>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <nav>
+    <button class="nav-btn" data-tab="resources">Resources</button>
+    <button class="nav-btn" data-tab="profile">Profile</button>
+    <button class="nav-btn" data-tab="users">Users</button>
+    <button class="nav-btn" data-tab="admin">Admin</button>
+  </nav>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Admin Tab -->
+    <section id="admin" class="tab-content">
+      <h2>Admin Dashboard</h2>
+
+      <!-- Upload Resources -->
+      <div class="section">
+        <h3>Upload Resources</h3>
+        <input type="file" id="resource-file" multiple>
+        <button id="upload-btn">Upload</button>
+        <ul id="uploaded-resources"></ul>
+      </div>
+
+      <!-- Student Evaluations -->
+      <div class="section">
+        <h3>Student Evaluations</h3>
+        <ul id="student-evals">
+          <!-- Mock data -->
+          <li>Jane Doe: Excellent performance</li>
+          <li>John Smith: Needs improvement</li>
+          <li>Emily Davis: Outstanding participation</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Other tabs (Profile, Users) -->
+
+    <section id="profile" class="tab-content">
+      <h2>Profile</h2>
+      <p>Profile content goes here...</p>
+    </section>
+
+    <section id="users" class="tab-content">
+      <h2>Users</h2>
+      <p>User list goes here...</p>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

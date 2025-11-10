@@ -15,6 +15,7 @@ struct QuickFactsView: View {
     
     // State for nav tab
     @State private var currentView: NavOption = .resources
+    @EnvironmentObject var currUser: CurrentUser
     
     // Quick Facts data
     private let quickFacts: [QuickFactItem] = [

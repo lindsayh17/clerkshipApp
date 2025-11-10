@@ -10,6 +10,7 @@ struct ResourcesView: View {
     
     // State for nav tab
     @State private var currentView: NavOption = .resources
+    @EnvironmentObject var currUser: CurrentUser
     
     var body: some View {
         NavigationStack {
