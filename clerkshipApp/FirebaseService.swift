@@ -48,9 +48,9 @@ class FirebaseService: ObservableObject {
                     guard key.starts(with: "q"), let qmap = value as? [String: Any] else { continue }
                     
                     // Question Category
-                    let category = qmap["category"] as? String ?? "No Category"
+                    let category = qmap["category"] as? String ?? ""
                     print("category: \(category)")
-                    
+
                     // create a list to hold all the questions
                     var questions: [Question] = []
                     
@@ -63,7 +63,17 @@ class FirebaseService: ObservableObject {
                     }
                     categories.append(QuestionCategory(category: category, questions: questions))
                 }
-                fetchedForms.append(EvalForm(categories: categories, type: type))
+                
+                switch type {
+                case "Clinic":
+                    fetchedForms.append(EvalForm(categories: categories, type: type, formChoice: .clinic))
+                case "Obstetrics":
+                    fetchedForms.append(EvalForm(categories: categories, type: type, formChoice: .obstetrics))
+                case "Inpatient":
+                    fetchedForms.append(EvalForm(categories: categories, type: type, formChoice: .inpatient))
+                default:
+                    fetchedForms.append(EvalForm(categories: categories, type: type, formChoice: .clinic))
+                }
             }
             DispatchQueue.main.async {
                 self.forms = fetchedForms

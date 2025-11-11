@@ -4,13 +4,22 @@
 import SwiftUI
 
 struct EvalForm: Identifiable, Codable {
+    
+    enum FormChoice: String, Codable {
+        case obstetrics
+        case clinic
+        case inpatient
+    }
+    
     var id = UUID()
     var type: String
     var categories: [QuestionCategory]
+    var formChoice: FormChoice
     
-    init(categories: [QuestionCategory], type: String) {
+    init(categories: [QuestionCategory], type: String, formChoice: FormChoice) {
         self.categories = categories
         self.type = type
+        self.formChoice = formChoice
     }
 }
 
