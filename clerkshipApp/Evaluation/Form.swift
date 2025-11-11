@@ -7,8 +7,7 @@ import Foundation
 struct Form: Identifiable, Codable {
     var id: UUID
     var questions: [Question]
-    var formType: String
-    
+    var type: String = ""
     
     // Initializer
     init() {
