@@ -6,30 +6,30 @@ import SwiftUI
 // Nav options for different screens
 enum NavOption {
     case home
-    //case quiz // student only
     case resources
-    case search // preceptor and admin
+    case search
     case profile
     case users
-    // Eval for form when pulling it up from student side
     case eval
 }
 
-// The whole nav bar
+// Bottom navigation bar
 struct NavTab: View {
     @Binding var currentTab: NavOption
     @EnvironmentObject var currUser: CurrentUser
+
     private let buttonColor = Color("ButtonColor")
     private let backgroundColor = Color("BackgroundColor")
 
-    // Helper function to determine which buttons to show for each user
+    // Determine which buttons to show for each user type
     private func buttonsForUser() -> [(icon: String, selection: NavOption, text: String)] {
         switch currUser.user?.access {
         case .student:
             return [
                 ("house", .home, "Home"),
                 ("text.document", .resources, "Docs"),
-                ("person.crop.circle.fill", .profile, "Profile")
+                ("person.crop.circle.fill", .profile, "Profile"),
+                ("", .eval, "Eval") 
             ]
         case .preceptor:
             return [
@@ -48,17 +48,18 @@ struct NavTab: View {
                 ("house", .home, "Home"),
                 ("magnifyingglass", .search, "Search"),
                 ("person.crop.circle.fill", .profile, "Profile"),
-                ("", .eval, "Eval") // default/student fallback
+                ("", .eval, "Eval")
             ]
         }
     }
 
     var body: some View {
         VStack {
-            // push nav bar to bottom
+            // Push nav bar to bottom
             Spacer()
+
             let buttons = buttonsForUser()
-                // HStack for buttons
+
             HStack {
                 ForEach(Array(buttons.enumerated()), id: \.offset) { index, button in
                     NavBarButton(
@@ -69,26 +70,25 @@ struct NavTab: View {
                         buttonColor: buttonColor,
                         backgroundColor: backgroundColor
                     )
-                    // Add spacer **between** buttons except after the last one
+
                     if index < buttons.count - 1 {
-                        // smaller spacing if 4 buttons
+                        // Adjust spacing between buttons
                         Spacer().frame(width: buttons.count == 4 ? 32 : 40)
                     }
                 }
             }
-          .padding(.vertical, 10)
-          .padding(.horizontal, 16)
-          .frame(maxWidth: UIScreen.main.bounds.width * 0.9, minHeight: 80)
-          .background(buttonColor)
-          // rounded edges
-          .cornerRadius(35)
-          .padding(.bottom, 0)
-          .edgesIgnoringSafeArea(.bottom)
+            .padding(.vertical, 10)
+            .padding(.horizontal, 16)
+            .frame(maxWidth: UIScreen.main.bounds.width * 0.9, minHeight: 80)
+            .background(buttonColor)
+            .cornerRadius(35)
+            .padding(.bottom, 12)
+            .edgesIgnoringSafeArea(.bottom)
         }
     }
 }
 
-// Individual nav buttons
+// Individual navigation button
 struct NavBarButton: View {
     let icon: String
     let selection: NavOption
@@ -96,7 +96,6 @@ struct NavBarButton: View {
     @Binding var currentTab: NavOption
     let buttonColor: Color
     let backgroundColor: Color
-   
 
     var body: some View {
         let isSelected = currentTab == selection
@@ -104,8 +103,8 @@ struct NavBarButton: View {
         Button {
             currentTab = selection
         } label: {
-            VStack (spacing: 4) {
-                // Circle with icon overlay
+            VStack(spacing: 4) {
+                // Circle icon
                 Circle()
                     .fill(isSelected ? backgroundColor : Color.white)
                     .frame(width: 50, height: 50)
@@ -121,5 +120,11 @@ struct NavBarButton: View {
             }
         }
     }
+}
+
+// Preview
+#Preview {
+    NavTab(currentTab: .constant(.home))
+        .environmentObject(CurrentUser())
 }
 

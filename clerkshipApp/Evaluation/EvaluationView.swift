@@ -116,6 +116,8 @@ struct EvaluationView: View {
         
         evalStore.add(evaluation: evaluation)
     }
+    // For if a student pulls the form up
+    @State private var preceptorEmail: String = ""
     
     var body: some View {
         NavigationStack {
@@ -183,6 +185,23 @@ struct EvaluationView: View {
                                         }
                                         .padding(.top, 10)
                                     }
+                                    
+                                    // Student-only preceptor email field
+                                    if currUser.user?.access == .student {
+                                        VStack(alignment: .leading, spacing: 5) {
+                                            Text("Preceptor Email")
+                                                .foregroundColor(.white)
+                                                .font(.headline)
+                                            
+                                            TextField("Enter preceptor email", text: $preceptorEmail)
+                                                .keyboardType(.emailAddress)
+                                                .autocapitalization(.none)
+                                                .padding(10)
+                                                .background(Color.white)
+                                                .cornerRadius(10)
+                                        }
+                                        .padding(.top, 15)
+                                    }
                                 }
                                 
                                 // Submit Button
@@ -197,7 +216,7 @@ struct EvaluationView: View {
                                         .background(form.validForm() ? buttonColor : Color.gray)
                                         .cornerRadius(30)
                                 }
-                                .disabled(!form.validForm())
+                                .disabled(!form.validForm() || (currUser.user?.access == .student && preceptorEmail.isEmpty))
                                 .padding(.top, 20)
                             }
                             .padding()
@@ -210,8 +229,6 @@ struct EvaluationView: View {
         }
     }
 }
-
-// Add if there is if you get here on a student view, put a question at the bottom where you have to put in preceptor email
 
 //
 // Radio Button
