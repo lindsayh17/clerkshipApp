@@ -3,9 +3,7 @@
 
 /*
  TODO: pull questions from firebase
- TODO: 3 different form types
  TODO: link student, preceptor, form type ids to firebase write
- TODO: get his sample form questions/include images
  TODO: display a list of completed evaluations somewhere for the preceptors
  
  */
@@ -212,6 +210,8 @@ struct EvaluationView: View {
         }
     }
 }
+
+// Add if there is if you get here on a student view, put a question at the bottom where you have to put in preceptor email
 
 //
 // Radio Button

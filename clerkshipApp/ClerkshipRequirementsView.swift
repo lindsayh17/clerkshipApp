@@ -80,6 +80,8 @@ struct ClerkshipRequirementsView: View {
                                 ProfileView()
                             case .users:
                                 SearchView()
+                            case .eval:
+                                SearchView()
                             }
                         }
                         .padding(.top, 10)
@@ -97,5 +99,8 @@ struct ClerkshipRequirementsView: View {
 // Preview
 #Preview {
     ClerkshipRequirementsView()
+        .environmentObject(FirebaseService())
+        .environmentObject(CurrentUser())
+        .environmentObject(AuthService())
 }
 

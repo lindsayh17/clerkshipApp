@@ -112,6 +112,8 @@ struct HomeView: View {
                                         ProfileView()
                                     case .users:
                                         SearchView()
+                                    case .eval:
+                                        SearchView()
                                     }
                                 }
                                 .padding()

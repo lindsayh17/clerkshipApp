@@ -1,9 +1,5 @@
-//
 //  Evaluation.swift
 //  clerkshipApp
-//
-//  Created by Lindsay on 11/1/25.
-//
 
 import SwiftUI
 

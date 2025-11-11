@@ -1,11 +1,4 @@
-//
 //  SearchView1.swift
-//  clerkshipApp
-//
-//  Created by Mia Corcoran on 11/10/25.
-//
-
-//  SearchView.swift
 //  clerkshipApp
 
 /*

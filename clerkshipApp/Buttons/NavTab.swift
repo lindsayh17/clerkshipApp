@@ -10,6 +10,8 @@ enum NavOption {
     case search // preceptor and admin
     case profile
     case users
+    // Eval for form when pulling it up from student side
+    case eval
 }
 
 
@@ -20,8 +22,6 @@ struct NavTab: View {
 
     var body: some View {
         ZStack {
-            Spacer()
-            
             switch currUser.user?.access{
             case .student:
                 HStack {
@@ -52,14 +52,7 @@ struct NavTab: View {
                     NavBarButton(icon: "house", selection: .home, text: "Home", currentTab: $currentTab).padding()
                     NavBarButton(icon: "magnifyingglass", selection: .search, text: "Search", currentTab: $currentTab).padding()
                     NavBarButton(icon: "person.crop.circle.fill", selection: .profile, text: "Profile", currentTab: $currentTab).padding()
-//                    Spacer()
-//                    NavBarButton(icon: "house", selection: .home, text: "Home", currentTab: $currentTab)
-//                    Spacer()
-//                    // Quiz nav button //NavBarButton(icon: "house", selection: .quiz, text: "Home", currentTab: $currentTab).padding()
-//                    NavBarButton(icon: "text.document", selection: .resources, text: "Docs", currentTab: $currentTab)
-//                    Spacer()
-//                    NavBarButton(icon: "person.crop.circle.fill", selection: .profile, text: "Profile", currentTab: $currentTab)
-//                    Spacer()
+                    NavBarButton(icon: " ", selection: .eval, text: "Eval", currentTab: $currentTab).padding()
                 }
             }
             
@@ -87,7 +80,7 @@ struct NavBarButton: View {
                 ZStack{
                     Circle()
                         .fill(buttonColor)
-                        .frame(width: 50, height: 50)
+                        .frame(width:  .infinity, height: 50)
                     Image(systemName: icon)
                         .padding()
                         .foregroundColor(backgroundColor)

@@ -14,7 +14,6 @@ struct ProfileView: View {
     @EnvironmentObject var currUser: CurrentUser
     @State private var currentView: NavOption = .profile
     @StateObject var navControl = NavControl()
-    @EnvironmentObject var currUser: CurrentUser
     
     func signOut() {
         Task {

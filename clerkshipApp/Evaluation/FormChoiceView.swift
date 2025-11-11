@@ -1,9 +1,5 @@
-//
 //  FormChoiceView.swift
 //  clerkshipApp
-//
-//  Created by Lindsay on 11/6/25.
-//
 
 import SwiftUI
 

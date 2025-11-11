@@ -61,5 +61,6 @@ struct ResourcesView: View {
 // Preview
 #Preview {
     ResourcesView()
+    
 }
 

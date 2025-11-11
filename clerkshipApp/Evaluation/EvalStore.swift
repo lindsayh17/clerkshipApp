@@ -1,10 +1,5 @@
-//
 //  FormStore.swift
 //  clerkshipApp
-//
-//  Created by Lindsay on 10/25/25.
-//
-
 
 import Firebase
 

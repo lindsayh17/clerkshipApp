@@ -97,5 +97,5 @@ struct QuickFactsView: View {
 
 // Preview
 #Preview {
-    QuickFactsView()
+    QuickFactsView().environmentObject(FirebaseService()).environmentObject(CurrentUser())
 }

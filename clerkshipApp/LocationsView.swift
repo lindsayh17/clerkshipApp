@@ -54,6 +54,8 @@ struct LocationsView: View {
                                 ProfileView()
                             case .users:
                                 SearchView()
+                            case .eval:
+                                SearchView()
                             }
                         }
                         .padding(.top, 10)
@@ -70,6 +72,9 @@ struct LocationsView: View {
 
 // Preview
 #Preview {
-    LocationsView().environmentObject(FirebaseService())
+    LocationsView()
+        .environmentObject(FirebaseService())
+        .environmentObject(CurrentUser())
+        .environmentObject(AuthService())
 }
 

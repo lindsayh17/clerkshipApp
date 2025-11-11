@@ -58,6 +58,8 @@ struct OrientationView: View {
                                 ProfileView()
                             case .users:
                                 SearchView()
+                            case .eval:
+                                SearchView()
                             }
                         }
                         .padding(.top, 10)
@@ -74,6 +76,8 @@ struct OrientationView: View {
 
 // Preview
 #Preview {
-    OrientationView().environmentObject(FirebaseService()).environmentObject(CurrentUser())
+    OrientationView()
+        .environmentObject(FirebaseService())
+        .environmentObject(CurrentUser())
 }
 
