@@ -26,7 +26,7 @@ struct OrientationView: View {
                                     .font(.largeTitle)
                                     .fontWeight(.bold)
                                     .foregroundColor(.white)
-                                    .padding(.top, 30)
+                                    .padding(.top, 25)
                                     .frame(maxWidth: .infinity, alignment: .center)
                                 
                                 // Description
@@ -35,8 +35,8 @@ struct OrientationView: View {
                                     .foregroundColor(.white.opacity(0.85))
                                     .multilineTextAlignment(.center)
                                     .padding(.horizontal, 30)
-                                    .padding(.vertical, 15)
-                                    .padding(.bottom, 20)
+                                    .padding(.vertical, 10)
+                                    .padding(.bottom, 10)
                                 
                                 // Buttons
                                 VStack(spacing: 15) {
