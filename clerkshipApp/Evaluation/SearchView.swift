@@ -17,6 +17,7 @@ import SwiftUI
 struct SearchView: View {
     @EnvironmentObject var firebase: FirebaseService
     @EnvironmentObject var userStore: UserStore
+    @EnvironmentObject var evalStore: EvalStore
     @State private var searchText = ""
     @State private var selectedUser: User? = nil
     
@@ -169,6 +170,6 @@ struct NamesView: View{
 
 // Preview
 #Preview {
-    SearchView().environmentObject(FirebaseService()).environmentObject(UserStore())
+    SearchView().environmentObject(FirebaseService()).environmentObject(UserStore()).environmentObject(EvalStore())
 }
 

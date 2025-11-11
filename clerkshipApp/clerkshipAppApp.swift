@@ -18,6 +18,7 @@ struct clerkshipAppApp: App {
             RootView()
                 .environmentObject(FirebaseService())
                 .environmentObject(AuthService()).environmentObject(UserStore()).environmentObject(CurrentUser())
+                .environmentObject(EvalStore())
         }
     }
 }
