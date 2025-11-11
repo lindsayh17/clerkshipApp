@@ -5,10 +5,12 @@ import SwiftUI
 
 struct EvalForm: Identifiable, Codable {
     var id = UUID()
+    var type: String
     var categories: [QuestionCategory]
     
-    init(categories: [QuestionCategory]) {
+    init(categories: [QuestionCategory], type: String) {
         self.categories = categories
+        self.type = type
     }
 }
 

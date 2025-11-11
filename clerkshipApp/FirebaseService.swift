@@ -12,6 +12,7 @@ class FirebaseService: ObservableObject {
     let formCollectionName = "Forms"
     @Published var users: [User]!
     @Published var downloadSuccessful = false
+    @Published var formDownloadSuccessful = false
     @Published var currUser: User!
     @Published var forms: [EvalForm]
     
@@ -27,43 +28,52 @@ class FirebaseService: ObservableObject {
 
     // function to fetch form info from firebase
     func fetchForms() async throws {
-        let querySnapshot = try await db.collection(formCollectionName).getDocuments()
         var fetchedForms: [EvalForm] = []
-        
-        for document in querySnapshot.documents {
-            let data = document.data()
-            print(data)
-            
-            // get the type of form
-            let type = data["type"] as? String ?? ""
-            
-            // create a list to hold categories
-            var categories: [QuestionCategory] = []
-            
-            // key: category, q1, q2, ...
-            // value: "category name", "question 1", ...
-            for (key, value) in data {
-                // only get the questions, of form q1, q2, q...
-                guard key.starts(with: "q"), let qmap = value as? [String: Any] else { continue }
+        let querySnapshot = try await db.collection(formCollectionName).getDocuments()
+        do {
+            for document in querySnapshot.documents {
+                let data = document.data()
+                print(data)
                 
-                // Question Category
-                let category = qmap["category"] as? String ?? "No Category"
+                // get the type of form
+                let type = data["type"] as? String ?? ""
                 
-                // create a list to hold all the questions
-                var questions: [Question] = []
+                // create a list to hold categories
+                var categories: [QuestionCategory] = []
                 
-                // add each question to the list
-                for (qNum, qQuestion) in qmap {
-                    if qNum != "category", let qQuestion = qQuestion as? String {
-                        questions.append(Question(question: qQuestion))
+                // key: category, q1, q2, ...
+                // value: "category name", "question 1", ...
+                for (key, value) in data {
+                    // only get the questions, of form q1, q2, q...
+                    guard key.starts(with: "q"), let qmap = value as? [String: Any] else { continue }
+                    
+                    // Question Category
+                    let category = qmap["category"] as? String ?? "No Category"
+                    print("category: \(category)")
+                    
+                    // create a list to hold all the questions
+                    var questions: [Question] = []
+                    
+                    // add each question to the list
+                    for (qNum, qQuestion) in qmap {
+                        if qNum != "category", let qQuestion = qQuestion as? String {
+                            questions.append(Question(question: qQuestion))
+                            print("question: \(qQuestion)")
+                        }
                     }
+                    categories.append(QuestionCategory(category: category, questions: questions))
                 }
-                categories.append(QuestionCategory(category: category, questions: questions))
+                fetchedForms.append(EvalForm(categories: categories, type: type))
             }
-            fetchedForms.append(EvalForm(categories: categories))
+            DispatchQueue.main.async {
+                self.forms = fetchedForms
+                self.formDownloadSuccessful = true
+                print(self.forms)
+            }
+        } catch {
+            print("Error getting forms \(error)")
+            self.formDownloadSuccessful = false
         }
-        self.forms = fetchedForms
-        print(self.forms)
     }
     
     // function to fetch user info from firebase
