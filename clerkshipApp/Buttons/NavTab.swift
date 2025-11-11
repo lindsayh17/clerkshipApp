@@ -54,37 +54,32 @@ struct NavTab: View {
     }
 
     var body: some View {
-        VStack {
-            // Push nav bar to bottom
-            Spacer()
+        let buttons = buttonsForUser()
 
-            let buttons = buttonsForUser()
+        HStack {
+            ForEach(Array(buttons.enumerated()), id: \.offset) { index, button in
+                NavBarButton(
+                    icon: button.icon,
+                    selection: button.selection,
+                    text: button.text,
+                    currentTab: $currentTab,
+                    buttonColor: buttonColor,
+                    backgroundColor: backgroundColor
+                )
 
-            HStack {
-                ForEach(Array(buttons.enumerated()), id: \.offset) { index, button in
-                    NavBarButton(
-                        icon: button.icon,
-                        selection: button.selection,
-                        text: button.text,
-                        currentTab: $currentTab,
-                        buttonColor: buttonColor,
-                        backgroundColor: backgroundColor
-                    )
-
-                    if index < buttons.count - 1 {
-                        // Adjust spacing between buttons
-                        Spacer().frame(width: buttons.count == 4 ? 32 : 40)
-                    }
+                if index < buttons.count - 1 {
+                    // Adjust spacing between buttons
+                    Spacer().frame(width: buttons.count == 4 ? 32 : 40)
                 }
             }
-            .padding(.vertical, 10)
-            .padding(.horizontal, 16)
-            .frame(maxWidth: UIScreen.main.bounds.width * 0.9, minHeight: 80)
-            .background(buttonColor)
-            .cornerRadius(35)
-            .padding(.bottom, 12)
-            .edgesIgnoringSafeArea(.bottom)
         }
+        .padding(.vertical, 18)
+        .padding(.horizontal, 16)
+        .frame(maxWidth: UIScreen.main.bounds.width * 0.9, minHeight: 80)
+        .background(buttonColor)
+        .cornerRadius(40)
+        .padding(.top, 15)
+        .padding(.bottom, 0)
     }
 }
 
