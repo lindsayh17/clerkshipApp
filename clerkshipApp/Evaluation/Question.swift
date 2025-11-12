@@ -87,7 +87,7 @@ struct Question: Identifiable, Codable {
 
 
 struct FormsListView: View {
-    @StateObject private var firebase: FirebaseService
+    @EnvironmentObject var firebase: FirebaseService
     
     var body: some View {
         // roght now each form links to own eval page.
@@ -97,10 +97,10 @@ struct FormsListView: View {
                 NavigationLink(destination: FormEvalView(form: form)) {
                     VStack(alignment: .leading) {
                         Text(form.type)
-                            .font(.headline)
+                            .font(.headline).foregroundColor(.black)
                         Text(form.formChoice.rawValue.capitalized)
                             .font(.subheadline)
-                            .foregroundColor(.secondary)
+                            .foregroundColor(.black)
                     }
                 }
             }
@@ -121,3 +121,10 @@ struct FormEvalView: View {
         
     }
 }
+
+
+#Preview {
+    FormsListView()
+        .environmentObject(FirebaseService())
+}
+

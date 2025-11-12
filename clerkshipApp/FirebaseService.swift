@@ -33,9 +33,10 @@ class FirebaseService: ObservableObject {
         var fetchedForms: [EvalForm] = []
         do {
             let querySnapshot = try await db.collection(formCollectionName).getDocuments()
+            print("documents: ", querySnapshot.documents)
             for document in querySnapshot.documents {
                 let data = document.data()
-                print(data)
+                print("data: ", data)
                 
                 // get the type of form
                 let type = data["type"] as? String ?? ""
@@ -80,7 +81,7 @@ class FirebaseService: ObservableObject {
             DispatchQueue.main.async {
                 self.forms = fetchedForms
                 self.formDownloadSuccessful = true
-                print(self.forms)
+                print("forms: ", self.forms)
             }
         } catch {
             print("Error getting forms \(error)")
