@@ -26,9 +26,7 @@ struct HomeView: View {
     
     @State private var currentView = NavOption.home
     // @State var loginManager
-    // Daily question
-    // TODO: Fetch questions from firebase
-    @State private var dailyQuestion = "What is the most common cause of postoperative fever within 24 hours?"
+    
     // State for showing daily question answer
     @State private var showDailyQuestionAnswer = false
     
@@ -36,6 +34,7 @@ struct HomeView: View {
     
     @EnvironmentObject var currUser: CurrentUser
     @EnvironmentObject var auth: AuthService
+    @EnvironmentObject var qod: QODStore
     
     var body: some View {
         // Single container view
@@ -60,10 +59,12 @@ struct HomeView: View {
                                         // Daily Question
                                         SectionView(title: "Daily Question") {
                                             VStack(alignment: .leading, spacing: 10) {
-                                                Text(dailyQuestion)
-                                                    .foregroundColor(.white)
-                                                    .font(.title3)
-                                                    .bold()
+                                                if let dailyQuestion = qod.qod{
+                                                    Text(dailyQuestion.questionText)
+                                                        .foregroundColor(.white)
+                                                        .font(.title3)
+                                                        .bold()
+                                                }
                                                 Button(action: {
                                                     withAnimation {
                                                         // Show answer
@@ -75,8 +76,10 @@ struct HomeView: View {
                                                 }
                                                 // Answer
                                                 if showDailyQuestionAnswer {
-                                                    Text("Atelectasis")
-                                                        .foregroundColor(.white)
+                                                    if let dailyAnswer = qod.qod{
+                                                        Text(dailyAnswer.answer)
+                                                            .foregroundColor(.white)
+                                                    }
                                                 }
                                             }
                                         }
@@ -137,5 +140,6 @@ struct HomeView: View {
         .environmentObject(FirebaseService())
         .environmentObject(CurrentUser())
         .environmentObject(AuthService())
+        .environmentObject(QODStore())
 }
 

@@ -1,15 +1,16 @@
-//  ScheduleView.swift
+//  SurgicalInstrumentsView.swift
 //  clerkshipApp
+
 
 import SwiftUI
 
-struct ScheduleData: Identifiable {
+struct Instruments: Identifiable {
     let id = UUID()
     let title: String
     let descriptions: [String]
 }
 
-struct ScheduleView: View {
+struct SurgicalInstrumentsView: View {
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     
@@ -18,31 +19,18 @@ struct ScheduleView: View {
     @EnvironmentObject var currUser: CurrentUser
     
     // Quick Facts data
-    private let schedule: [ScheduleData] = [
-        ScheduleData(title: "Monday, 10/13",
+    private let data: [Instruments] = [
+        Instruments(title: " ",
                       descriptions:  [
-                        "**All students**",
-                        "*Simulation Center - Rowell 2nd Floor*",
-                        "7:00am - 8:00am: Introduction & Pre-Rotation Knowledge Test (bring a computer)\n8:00am - 12:00pm: Simulation Activities & Hospital Tour",
-                        "**All students**",
-                        "*Meded 302/303*",
-                        "Hot lunch will be served - please email Sara Tourville with any food/allergy considerations.",
-                        "12:00pm: Lunch & Clerkship Information\n12:30pm - 1:30pm: Intrapartum FHR Interpretation Teaching Session\n1:30pm - 1:45pm: Break\n1:45pm - 2:30pm: Labor Support and Trauma Informed Care Session\n2:30pm - 3:30pm: Family Planning on the OBGyn Clerkship",
-                        "**L. Amaio, J. Bates, A. Gorbacheva, J. Reigle, B. Sebuufu**",
-                        "*Given Assessment Center*",
-                        "5:45pm - 8:45pm: Pelvic & Breast Refresher"
+                        "Used surgical instruments ca be obtained at the CSR - McClure Lobby"
                     ]),
-        ScheduleData(title: "Tuesday 10/14",
+        Instruments(title: "\nDirections: ",
                       descriptions:  [
-                        "**K. Blau, B. Canova, J. Hurley, R. Marawala**",
-                        "*Given Assessment Center*",
-                        "5:45pm - 8:15pm: Pelvic & Breast Refresher"
+                        "1. Go to the McClure staircase\n2. Go to the 1st floor (as if going to the Harvest Cafe)\n3. Walk through the first door but NOT the second (to go to Harvest Cafe you would walk through the second door)\n4. Turn left\n 5. See CSR sign and follow it (turn right, go down the hallway)\n6. The CSR should be down the hall on your left"
                     ]),
-        ScheduleData(title: "Wednesday 10/15",
+        Instruments(title: " ",
                       descriptions:  [
-                        "**C. Bauman, J. Du, M. Lapointe-Gagner, S. Tukel**",
-                        "*Given Assessment Center*",
-                        "5:45pm - 8:15pm: Pelvic & Breast Refresher"
+                        "Explain to staff that you are a medical student beginning a surgical rotation and would like a set of retired surgical tools and sutures."
                     ])
     ]
     
@@ -55,18 +43,17 @@ struct ScheduleView: View {
                     ScrollView {
                         VStack(spacing: 20) {
                             // Title - centered
-                            Text("Schedule")
+                            Text("Surgical Instruments")
                                 .font(.largeTitle)
                                 .fontWeight(.bold)
                                 .foregroundColor(.white)
                                 .padding(.top, 30)
-                                .padding(.bottom, 15)
                                 .multilineTextAlignment(.center)
                                 .frame(maxWidth: .infinity)
                             
                             // Quick Facts list - left aligned
-                            VStack(alignment: .leading, spacing: 25) {
-                                ForEach(schedule) { item in
+                            VStack(alignment: .leading, spacing: 20) {
+                                ForEach(data) { item in
                                     VStack(alignment: .leading, spacing: 8) {
                                         Text(item.title)
                                             .font(.title)
@@ -95,5 +82,5 @@ struct ScheduleView: View {
 
 // Preview
 #Preview {
-    ScheduleView().environmentObject(FirebaseService()).environmentObject(CurrentUser())
+    SurgicalInstrumentsView().environmentObject(FirebaseService()).environmentObject(CurrentUser())
 }
