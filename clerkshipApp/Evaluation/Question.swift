@@ -3,6 +3,40 @@
 
 import SwiftUI
 
+struct EvalForm: Identifiable, Codable {
+    
+    enum FormChoice: String, Codable {
+        case obstetrics
+        case clinic
+        case inpatient
+    }
+    
+    var id = UUID()
+    var type: String
+    var categories: [QuestionCategory]
+    var formChoice: FormChoice
+    
+    init(categories: [QuestionCategory], type: String, formChoice: FormChoice) {
+        self.categories = categories
+        self.type = type
+        self.formChoice = formChoice
+    }
+}
+
+// This is going to hold a bunch of questions
+struct QuestionCategory: Identifiable, Codable {
+    // Properties
+    var id = UUID()
+    var category: String // Physical exam, collecting info, etc
+    var questions: [Question] // sub aspects of the overall category
+    
+    init(category: String, questions: [Question]) {
+        self.category = category
+        self.questions = questions
+    }
+}
+
+
 struct Question: Identifiable, Codable {
     
     // Question Types
@@ -30,6 +64,14 @@ struct Question: Identifiable, Codable {
         self.question = question
         self.type = type
         self.required = required
+        self.response = nil
+    }
+    
+    // Initializer w/o questionType or required
+    init(question: String) {
+        self.question = question
+        self.type = .radio
+        self.required = true
         self.response = nil
     }
     

@@ -3,9 +3,11 @@
 
 import Foundation
 
-struct Form:Identifiable, Codable {
+
+struct Form: Identifiable, Codable {
     var id: UUID
     var questions: [Question]
+    var type: String = ""
     
     // Initializer
     init() {

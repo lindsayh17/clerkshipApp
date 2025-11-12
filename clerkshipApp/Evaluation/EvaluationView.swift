@@ -21,6 +21,7 @@ struct EvaluationView: View {
     @EnvironmentObject var firebase: FirebaseService
     @EnvironmentObject var evalStore: EvalStore
     @EnvironmentObject var currUser: CurrentUser
+    @EnvironmentObject var formStore: FormStore
     
     @State private var form = Form()
     @State private var submitted = false
@@ -40,22 +41,17 @@ struct EvaluationView: View {
         Task {
             do {
                 try await firebase.fetchForms()
+                if firebase.formDownloadSuccessful{
+                    for form in firebase.forms{
+                        formStore.addForm(form)
+                    }
+                }
+            } catch {
+                print("Error fetching forms: \(error)")
             }
         }
     }
     
-    private func infoBlurb(for opt: OptionDefinition) -> String {
-        switch opt {
-        case .novice:
-            return "Gathers too little or too much info, does not link info in a clinically relevant fashion, communication is not patient-focused, uses same broad template for all interactions."
-        case .apprentice: 
-            return "Gathers most relevant info, links most findings in a clinically relevant way, communication is mostly patient-focused but occasionally unidirectional, tailors history to specific encounters."
-        case .expert:
-            return "Gathers complete and accurate history appropriate to the situation, demonstrates clinical reasoning useful in patient care, communication is bidirectional and patient-family centered, adapts history to multiple clinical settings (acute, chronic, inpatient, outpatient)."
-        case .none: 
-            return ""
-        }
-    }
     
     private func infoTitle(for opt: OptionDefinition) -> String {
         switch opt {
@@ -94,7 +90,7 @@ struct EvaluationView: View {
             }.alert(infoTitle(for: selection), isPresented: $showInfo) {
                 Button("OK", role: .cancel) { }
             } message: {
-                Text(infoBlurb(for: selection))
+                Text("help")
             }
         }
     }
@@ -268,4 +264,21 @@ struct SubmittedView: View {
         .environmentObject(FirebaseService())
         .environmentObject(EvalStore())
         .environmentObject(CurrentUser())
+        .environmentObject(FormStore())
 }
+
+
+
+// TODO: delete this
+// private func infoBlurb(for opt: OptionDefinition) -> String {
+//switch opt {
+//case .novice:
+//    return "Gathers too little or too much info, does not link info in a clinically relevant fashion, communication is not patient-focused, uses same broad template for all interactions."
+//case .apprentice:
+//    return "Gathers most relevant info, links most findings in a clinically relevant way, communication is mostly patient-focused but occasionally unidirectional, tailors history to specific encounters."
+//case .expert:
+//    return "Gathers complete and accurate history appropriate to the situation, demonstrates clinical reasoning useful in patient care, communication is bidirectional and patient-family centered, adapts history to multiple clinical settings (acute, chronic, inpatient, outpatient)."
+//case .none:
+//    return ""
+//}
+//}
