@@ -24,6 +24,7 @@ struct CreateAccountView: View {
     private let buttonColor = Color("ButtonColor")
     
     // Firebase Download
+    // TODO: set up similar to loginview
     func createAccount() {
         Task {
             do {

@@ -48,5 +48,8 @@ struct RootView: View {
 #Preview {
     RootView().environmentObject(FirebaseService())
         .environmentObject(UserStore())
-                .environmentObject(CurrentUser()).environmentObject(AuthService())
+        .environmentObject(CurrentUser())
+        .environmentObject(AuthService())
+        .environmentObject(QODStore())
+
 }

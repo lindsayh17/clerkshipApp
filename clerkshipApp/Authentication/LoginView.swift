@@ -15,6 +15,7 @@ struct LoginView: View {
     @EnvironmentObject var auth: AuthService
     @EnvironmentObject var userStore: UserStore
     @EnvironmentObject var currentUser: CurrentUser
+    @EnvironmentObject var qod: QODStore
     @State private var email = ""
     @State private var password = ""
     @State private var loading = false
@@ -49,6 +50,17 @@ struct LoginView: View {
         }
     }
     
+    func getQOD() async{
+        do{
+            try await firebase.fetchRandomQuestion()
+            if firebase.downloadSuccessful{
+                qod.qod = firebase.question
+            }
+        } catch {
+            print("Error fetching questions: \(error)")
+        }
+    }
+    
     // Firebase Download
     func signin() {
         Task {
@@ -56,6 +68,7 @@ struct LoginView: View {
                 try await auth.signIn(email: email, password: password)
                 await getNames()
                 await getCurrUser()
+                await getQOD()
                 auth.isLoggedIn = true
             }catch {
                 print("Login error: \(error.localizedDescription)")
@@ -118,4 +131,5 @@ struct LoginView: View {
         .environmentObject(UserStore())
         .environmentObject(CurrentUser())
         .environmentObject(AuthService())
+        .environmentObject(QODStore())
 }
