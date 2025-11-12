@@ -3,13 +3,13 @@
 
 import SwiftUI
 
+enum FormChoice: String, Codable {
+    case obstetrics
+    case clinic
+    case inpatient
+}
+
 struct EvalForm: Identifiable, Codable {
-    
-    enum FormChoice: String, Codable {
-        case obstetrics
-        case clinic
-        case inpatient
-    }
     
     var id = UUID()
     var type: String
@@ -82,5 +82,42 @@ struct Question: Identifiable, Codable {
             return value
         }
         return nil
+    }
+}
+
+
+struct FormsListView: View {
+    @StateObject private var firebase: FirebaseService
+    
+    var body: some View {
+        // roght now each form links to own eval page.
+        // need to combine with the formchoiceview fie so that we can use the buttons
+        NavigationStack {
+            List(firebase.forms) { form in
+                NavigationLink(destination: FormEvalView(form: form)) {
+                    VStack(alignment: .leading) {
+                        Text(form.type)
+                            .font(.headline)
+                        Text(form.formChoice.rawValue.capitalized)
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                    }
+                }
+            }
+        }.task {
+            do {
+                try await firebase.fetchForms()
+            } catch {
+                print("Error fetching form data \(error)")
+            }
+        }
+    }
+}
+
+struct FormEvalView: View {
+    let form: EvalForm
+    
+    var body: some View {
+        
     }
 }

@@ -29,8 +29,8 @@ class FirebaseService: ObservableObject {
     // function to fetch form info from firebase
     func fetchForms() async throws {
         var fetchedForms: [EvalForm] = []
-        let querySnapshot = try await db.collection(formCollectionName).getDocuments()
         do {
+            let querySnapshot = try await db.collection(formCollectionName).getDocuments()
             for document in querySnapshot.documents {
                 let data = document.data()
                 print(data)
