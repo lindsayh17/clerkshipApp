@@ -10,10 +10,10 @@ import SwiftUI
 struct QuestionOfDay: Identifiable, Codable {
     var id = UUID()
     var questionText: String
-    var date: Date
+    var answer: String
     
-    init(questionText: String, date: Date) {
+    init(questionText: String, answer: String) {
         self.questionText = questionText
-        self.date = date
+        self.answer = answer
     }
 }

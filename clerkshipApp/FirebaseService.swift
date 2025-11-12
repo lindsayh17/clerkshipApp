@@ -7,10 +7,11 @@ import FirebaseFirestore
 // import FirebaseAuth
 
 class FirebaseService: ObservableObject {
-//    @Published private(set) var forms: [EvaluationForm]
-//    @Published var downloadSuccessful = false
+    //    @Published private(set) var forms: [EvaluationForm]
+    //    @Published var downloadSuccessful = false
     let formCollectionName = "Forms"
     @Published var users: [User]!
+    @Published var question: QuestionOfDay!
     @Published var downloadSuccessful = false
     @Published var formDownloadSuccessful = false
     @Published var currUser: User!
@@ -18,6 +19,7 @@ class FirebaseService: ObservableObject {
     
     // TODO: user collection values
     let userCollection = "Users"
+    let qCollection = "Questions"
     var db: Firestore!
     
     init() {
@@ -25,7 +27,7 @@ class FirebaseService: ObservableObject {
         users = []
         forms = []
     }
-
+    
     // function to fetch form info from firebase
     func fetchForms() async throws {
         var fetchedForms: [EvalForm] = []
@@ -50,7 +52,7 @@ class FirebaseService: ObservableObject {
                     // Question Category
                     let category = qmap["category"] as? String ?? ""
                     print("category: \(category)")
-
+                    
                     // create a list to hold all the questions
                     var questions: [Question] = []
                     
@@ -93,16 +95,16 @@ class FirebaseService: ObservableObject {
             let querySnapshot = try await db.collection(userCollection).getDocuments()
             for document in querySnapshot.documents {
                 let data = document.data()
-
+                
                 // try to cast to strings otherwise return empty
                 let id = data["id"] as? String ?? ""
                 let firstName = data["firstName"] as? String ?? ""
                 let lastName = data["lastName"] as? String ?? ""
                 let email = data["email"] as? String ?? ""
-
+                
                 if firstName != "" && lastName != "" && email != ""{
                     let u = User(firebaseID: id, firstName: firstName, lastName: lastName, email: email)
-                  fetchedUsers.append(u)
+                    fetchedUsers.append(u)
                 }
             }
             DispatchQueue.main.async{
@@ -157,6 +159,32 @@ class FirebaseService: ObservableObject {
             }
         }
     }
-
-    // data is a dictionary; keys are field names in the document
+    
+    func fetchRandomQuestion() async throws{
+        var fetchedQuestions: [QuestionOfDay] = []
+        do {
+            let querySnapshot = try await db.collection(qCollection).getDocuments()
+            for document in querySnapshot.documents {
+                let data = document.data()
+                
+                // try to cast to strings otherwise return empty
+                let question = data["question"] as? String ?? ""
+                let answer = data["answer"] as? String ?? ""
+                
+                if question != "" && answer != ""{
+                    let q = QuestionOfDay(questionText: question, answer: answer)
+                    fetchedQuestions.append(q)
+                }
+            }
+            DispatchQueue.main.async{
+                self.question = fetchedQuestions.randomElement()
+                self.downloadSuccessful = true
+            }
+        } catch {
+            print("Error getting documents: \(error)")
+            DispatchQueue.main.async{
+                self.downloadSuccessful = false
+            }
+        }
+    }
 }
