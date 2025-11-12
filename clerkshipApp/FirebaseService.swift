@@ -9,13 +9,14 @@ import FirebaseFirestore
 class FirebaseService: ObservableObject {
     //    @Published private(set) var forms: [EvaluationForm]
     //    @Published var downloadSuccessful = false
-    let formCollectionName = "Forms"
     @Published var users: [User]!
     @Published var question: QuestionOfDay!
     @Published var downloadSuccessful = false
     @Published var formDownloadSuccessful = false
     @Published var currUser: User!
-    @Published var forms: [EvalForm]
+    @Published var forms: [EvalForm]!
+    
+    let formCollection = "Forms"
     
     // TODO: user collection values
     let userCollection = "Users"
@@ -32,7 +33,7 @@ class FirebaseService: ObservableObject {
     func fetchForms() async throws {
         var fetchedForms: [EvalForm] = []
         do {
-            let querySnapshot = try await db.collection(formCollectionName).getDocuments()
+            let querySnapshot = try await db.collection(formCollection).getDocuments()
             print("documents: ", querySnapshot.documents)
             for document in querySnapshot.documents {
                 let data = document.data()
@@ -40,18 +41,19 @@ class FirebaseService: ObservableObject {
                 
                 // get the type of form
                 let type = data["type"] as? String ?? ""
+                print("type: \(type)\n")
                 
                 // create a list to hold categories
                 var categories: [QuestionCategory] = []
                 
-                // key: category, q1, q2, ...
+                // key: q1, q2, ...
                 // value: "category name", "question 1", ...
                 for (key, value) in data {
                     // only get the questions, of form q1, q2, q...
                     guard key.starts(with: "q"), let qmap = value as? [String: Any] else { continue }
                     
                     // Question Category
-                    let category = qmap["category"] as? String ?? ""
+                    let category = qmap["Category"] as? String ?? ""
                     print("category: \(category)")
                     
                     // create a list to hold all the questions
@@ -59,7 +61,7 @@ class FirebaseService: ObservableObject {
                     
                     // add each question to the list
                     for (qNum, qQuestion) in qmap {
-                        if qNum != "category", let qQuestion = qQuestion as? String {
+                        if qNum != "Category", let qQuestion = qQuestion as? String {
                             questions.append(Question(question: qQuestion))
                             print("question: \(qQuestion)")
                         }
@@ -85,7 +87,9 @@ class FirebaseService: ObservableObject {
             }
         } catch {
             print("Error getting forms \(error)")
-            self.formDownloadSuccessful = false
+            DispatchQueue.main.async {
+                self.formDownloadSuccessful = false
+            }
         }
     }
     
