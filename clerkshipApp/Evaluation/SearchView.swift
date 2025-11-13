@@ -54,8 +54,8 @@ struct SearchView: View {
     }
     
     init(){
-        // change search bar text to be more visible
-        UISearchBar.appearance().searchTextField.textColor = UIColor.white
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).attributedPlaceholder = NSAttributedString(string: "Search", attributes: [NSAttributedString.Key.foregroundColor: UIColor(.white)])
+
     }
     
     var body: some View {
@@ -78,6 +78,7 @@ struct SearchView: View {
                                     placement: .navigationBarDrawer(displayMode: .always),
                                     prompt: "Search"
                                 )
+                                .foregroundColor(.white)
                                 .tint(buttonColor)
                             
                             
