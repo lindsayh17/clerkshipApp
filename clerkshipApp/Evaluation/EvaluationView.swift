@@ -33,6 +33,9 @@ struct EvaluationView: View {
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
     
+    // For if a student pulls the form up
+    @State private var preceptorEmail: String = ""
+    
     // TODO: display this somewhere
     let currStudent: User
     
@@ -83,7 +86,7 @@ struct EvaluationView: View {
         // labelled row
         HStack {
             Group {
-                Text("N/A").foregroundColor(.white).padding()
+                headerItem(title: "N/A", option: .none)
                 headerItem(title: "Novice", option: .novice)
                 headerItem(title: "Apprentice", option: .apprentice)
                 headerItem(title: "Expert", option: .expert)
@@ -112,8 +115,6 @@ struct EvaluationView: View {
         
         evalStore.add(evaluation: evaluation)
     }
-    // For if a student pulls the form up
-    @State private var preceptorEmail: String = ""
     
     var body: some View {
         NavigationStack {

@@ -86,10 +86,12 @@ struct Question: Identifiable, Codable {
 }
 
 
-struct FormsListView: View {
+struct FormChoiceView: View {
     @EnvironmentObject var firebase: FirebaseService
     @EnvironmentObject var formStore: FormStore
-    @State private var selection: FormChoice = .clinic
+    
+    @State private var selectedForm: EvalForm? = nil
+    @State private var choiceMade = false
     
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
@@ -113,30 +115,44 @@ struct FormsListView: View {
     
     
     var body: some View {
-        // right now each form links to own eval page.
-        // need to combine with the formchoiceview fie so that we can use the buttons
         NavigationStack {
             ZStack {
                 backgroundColor.ignoresSafeArea()
                 VStack {
-                    ForEach (firebase.forms) { form in
-                        MainButtonView(title: form.type, color: buttonColor, action: {selection = form.formChoice})
+                    ScrollView {
+                        // Screen Label
+                        Text("Evaluation Type")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                            .padding(.top, 30)
+                            .padding(.bottom, 30)
+                            .multilineTextAlignment(.center)
+                            .frame(maxWidth: .infinity)
+                        
+                        ForEach (firebase.forms) { form in
+                            MainButtonView(title: form.type, color: buttonColor, action: {
+                                selectedForm = form
+                                choiceMade = true
+                            })
+                        }
                     }
                 }
             }
-
         }.task {
             do {
                 try await firebase.fetchForms()
             } catch {
                 print("Error fetching form data \(error)")
             }
+        }.navigationDestination(isPresented: $choiceMade) {
+            CompleteEvalView(currForm: selectedForm)
         }
     }
 }
 
-struct FormEvalView: View {
-    let form: EvalForm
+struct CompleteEvalView: View {
+    let currForm: EvalForm?
     
     var body: some View {
         
@@ -145,7 +161,7 @@ struct FormEvalView: View {
 
 
 #Preview {
-    FormsListView()
+    FormChoiceView()
         .environmentObject(FirebaseService())
         .environmentObject(FormStore())
 }
