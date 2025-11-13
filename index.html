@@ -4,56 +4,45 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OBGYN Clerkship Dashboard</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Header -->
+  <!-- Header with Top Navbar -->
   <header>
-    <img src="UVM recolored logo.jpg" alt="UVM Logo" class="logo">
-    <h1>OBGYN Clerkship</h1>
+    <div class="header-left">
+      <img src="UVM recolored logo.jpg" alt="UVM Logo" class="logo">
+      <h1>OBGYN Clerkship</h1>
+    </div>
+    <nav>
+      <a href="resources.html" class="nav-link">Resources</a>
+      <a href="profile.html" class="nav-link">Profile</a>
+      <a href="user-permissions.html" class="nav-link">Users</a>
+      <a href="student-grades.html" class="nav-link">Student Grades</a>
+    </nav>
   </header>
-
-  <!-- Navigation Tabs -->
-  <nav>
-    <button class="nav-btn" data-tab="resources">Resources</button>
-    <button class="nav-btn" data-tab="profile">Profile</button>
-    <button class="nav-btn" data-tab="users permissions">Users</button>
-    <button class="nav-btn" data-tab="student grades">Admin</button>
-  </nav>
 
   <!-- Main Content -->
   <main>
-    <!-- Resources Tab -->
-    <section id="Resources" class="tab-content">
-      <h2>Resources</h2>
-
-      <!-- Upload Resources -->
-      <div class="section">
-        <h3>Upload Resources</h3>
-        <input type="file" id="resource-file" multiple>
-        <button id="upload-btn">Upload</button>
-        <ul id="uploaded-resources"></ul>
-      </div>
-
-      <!-- Student Evaluations -->
-      <div class="section">
-        <h3>Student Evaluations</h3>
-        <ul id="student-evals">
-        </ul>
-      </div>
-    </section>
-
-    <!-- Other tabs (Profile, Users) -->
-
-    <section id="User Permissions" class="tab-content">
-      <h2>User Permissions</h2>
-    </section>
-
-    <section id="Admin" class="tab-content">
-      <h2>Admin</h2>
-    </section>
+    <h2>Welcome to the OBGYN Clerkship Dashboard</h2>
+    <p>Select a tab above to navigate to Resources, Profile, User Permissions, or Student Grades.</p>
   </main>
 
-  <script src="script.js"></script>
+</body>
+</html>
+
+  <script>
+    // Tab functionality
+    const tabs = document.querySelectorAll('.nav-btn');
+    const contents = document.querySelectorAll('.tab-content');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const target = tab.dataset.tab;
+
+        contents.forEach(c => c.classList.remove('active'));
+        document.getElementById(target).classList.add('active');
+      });
+    });
+  </script>
 </body>
 </html>
