@@ -1,0 +1,83 @@
+//  AttendanceView.swift
+//  clerkshipApp
+
+import SwiftUI
+
+struct AttendanceView: View {
+    // Colors
+    private let backgroundColor = Color("BackgroundColor")
+    private let buttonColor = Color("ButtonColor")
+    // @Binding var destination: HomeDestination
+    
+    @State private var currentView = NavOption.home
+    // @State var loginManager
+    @EnvironmentObject var currUser: CurrentUser
+    @EnvironmentObject var auth: AuthService
+    
+    var body: some View {
+        NavigationStack {
+            ZStack {
+                // Fill the screen with background color
+                backgroundColor.ignoresSafeArea()
+                
+                // if currUser.user?.getPrivilege() == .student{
+                VStack(spacing: 0) {
+                    // Scrollable content
+                    ScrollView {
+                        VStack(alignment: .center, spacing: 20) {
+                            // Page title
+                            Text("Attendance")
+                                .font(.largeTitle)
+                                .fontWeight(.bold)
+                                .foregroundColor(.white)
+                                .multilineTextAlignment(.center)
+                                .frame(maxWidth: .infinity, alignment: .center)
+                                .padding(.top, 20)
+                                .padding(.bottom, 20)
+                            }
+                            // Description area
+                            VStack(alignment: .leading, spacing: 10) {
+                                Text("For all absences you must complete an LCOM Abscence Request Form and submit in Oasis. This includes full days, late arrivals, early departure and appointments. This does not apply to times when you have no scheduled clerskip activities.\n\nIn addition to that LCOM requirement, you need to notify your clinical team and clerkship team about your absence. The clerkship team can be notified below.\n\nAbsences may require make up.")
+                                    .font(.body)
+                                    .foregroundColor(.white.opacity(0.85))
+                                    .multilineTextAlignment(.leading)
+                                    .padding(16)
+                                    .background(Color.white.opacity(0.1).cornerRadius(12))
+                            }
+                            .padding(.horizontal, 24)
+                            .padding(.top, 10)
+                            .padding(.bottom, 20)
+                            Spacer()
+                        // Buttons Section
+                        Button(action: {
+                        // do something for Pregnancy Counseling
+                        }) {
+                            Text("Contact Clerkship Team")
+                                .font(.headline)
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(buttonColor)
+                                .cornerRadius(12)
+                                .shadow(radius: 4)
+                        }
+                        .padding(.horizontal, 24)
+                        .padding(.bottom, 40)
+                    }
+
+                    NavTab(currentTab: $currentView)
+                }
+            }
+        }
+        .navigationBarBackButtonHidden()
+    }
+}
+
+// Preview
+#Preview {
+    AttendanceView()
+        .environmentObject(FirebaseService())
+        .environmentObject(CurrentUser())
+        .environmentObject(AuthService())
+}
+
