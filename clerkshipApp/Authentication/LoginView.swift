@@ -4,11 +4,9 @@
 // username: lhall11@uvm.edu
 // password: 123456
 
-/*
- TODO: make errors look better
- */
 
 import SwiftUI
+import FirebaseAuth
 
 struct LoginView: View {
     @EnvironmentObject var firebase: FirebaseService
@@ -16,9 +14,11 @@ struct LoginView: View {
     @EnvironmentObject var userStore: UserStore
     @EnvironmentObject var currentUser: CurrentUser
     @EnvironmentObject var qod: QODStore
+    
     @State private var email = ""
     @State private var password = ""
     @State private var loading = false
+    @State private var loginError: String? = nil
     
     // Colors
     private let backgroundColor = Color("BackgroundColor")
@@ -71,53 +71,66 @@ struct LoginView: View {
                 await getQOD()
                 auth.isLoggedIn = true
             }catch {
-                print("Login error: \(error.localizedDescription)")
+                let nsError = error as NSError
+                print("Login error: \(nsError.localizedDescription)")
+
+                loginError = "Wrong email or password"
             }
         }
     }
     
     var body: some View {
-        if !auth.isLoggedIn {
-            ZStack {
-                // Color fills the entire screen
-                backgroundColor.ignoresSafeArea()
-                VStack {
-                    Image("GreenUVMLogo")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                    Text("Welcome Back")
-                        .font(.system(size: 36))
-                        .foregroundColor(.white)
-                        .bold()
-                        .frame(width: 350, height: 100, alignment: .leading)
+        NavigationStack{
+            VStack{
+                ZStack {
+                    // Color fills the entire screen
+                    backgroundColor.ignoresSafeArea()
+                    VStack {
+                        Image("GreenUVMLogo")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                        Text("Welcome Back")
+                            .font(.system(size: 36))
+                            .foregroundColor(.white)
+                            .bold()
+                            .frame(width: 350, height: 100, alignment: .leading)
+                    }
                 }
-            }
-            VStack {
-                TextField("Email...", text: $email)
-                    .padding()
-                    .cornerRadius(10)
-                    .background(Color.gray.opacity(0.4))
-                    .textInputAutocapitalization(.never)
-                    .foregroundColor(.black)
-                
-                SecureField("Password...", text: $password)
-                    .padding()
-                    .cornerRadius(10)
-                    .background(Color.gray.opacity(0.4))
-                    .textInputAutocapitalization(.never)
-                    .foregroundColor(.black)
-                
-                BigButtonView(
-                    text: "Log In",
-                    action: signin,
-                    foregroundColor: .white,
-                    backgroundColor: backgroundColor
-                ).padding()
-                
-            }
-            .padding()
-        } else {
-            HomeView()
+                VStack {
+                    TextField("Email...", text: $email)
+                        .padding()
+                        .cornerRadius(10)
+                        .background(Color.gray.opacity(0.4))
+                        .textInputAutocapitalization(.never)
+                        .foregroundColor(.black)
+                        .onChange(of: email) {loginError = nil }
+                    
+                    SecureField("Password...", text: $password)
+                        .padding()
+                        .cornerRadius(10)
+                        .background(Color.gray.opacity(0.4))
+                        .textInputAutocapitalization(.never)
+                        .foregroundColor(.black)
+                        .onChange(of: password) {loginError = nil }
+                    
+                    if let error = loginError {
+                        Text(error)
+                            .foregroundColor(.red)
+                            .font(.footnote)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal)
+                    }
+                    
+                    BigButtonView(
+                        text: "Log In",
+                        action: signin,
+                        foregroundColor: .white,
+                        backgroundColor: backgroundColor
+                    ).padding()
+                    
+                }
+                .padding()
+            }.navigationDestination(isPresented: $auth.isLoggedIn){ HomeView()}
         }
         BackButton()
         

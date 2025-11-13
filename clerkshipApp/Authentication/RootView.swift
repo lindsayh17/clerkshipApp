@@ -16,11 +16,11 @@ struct RootView: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                     
-                    Text("OBGYN Clerkship")
-                        .font(.system(size: 36))
-                        .foregroundColor(.white)
-                        .bold()
-                        .frame(width: 350, height: 100, alignment: .bottomLeading)
+//                    Text("OBGYN Clerkship")
+//                        .font(.system(size: 36))
+//                        .foregroundColor(.white)
+//                        .bold()
+//                        .frame(width: 350, height: 100, alignment: .bottomLeading)
                     
                     // log in button
                     BigButtonView(
