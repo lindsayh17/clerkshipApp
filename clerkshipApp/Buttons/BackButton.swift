@@ -13,10 +13,10 @@ struct BackButton: View {
         }) {
             Text(title)
                 .fontWeight(.semibold)
-                .frame(width: 75, height: 30)
+                .frame(width: 85, height: 45)
                 .background(color)
                 .foregroundColor(.white)
-                .cornerRadius(15)
+                .cornerRadius(20)
         }
         .padding(.leading, 24)      
         .padding(.top, 10)
