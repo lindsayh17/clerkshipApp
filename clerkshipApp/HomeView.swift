@@ -4,8 +4,6 @@
 
 /*
  TODO: daily question styling
- TODO: get rid of back button
- TODO: less repetitive button labels
  TODO: nav bar eval
  TODO: home page for preceptors
  */
@@ -24,7 +22,8 @@ enum HomeDestination {
 struct HomeView: View {
     // Colors
     private let backgroundColor = Color("BackgroundColor")
-    private let buttonColor = Color("ButtonColor")
+    private let cardColor = Color("CardColor")
+    private let accentColor = Color("AccentColor")
     // @Binding var destination: HomeDestination
     
     @State private var currentView = NavOption.home
@@ -58,57 +57,63 @@ struct HomeView: View {
                                 VStack(alignment: .leading, spacing: 40) {
                                     switch currentView {
                                     case .home:
+                                        
+                                        HStack{
+                                            VStack(alignment: .leading, spacing: 4){
+                                                Text("Welcome, \(currUser.user?.firstName ?? "Student")")
+                                                    .font(.title2)
+                                                    .fontWeight(.bold)
+                                                    .foregroundColor(.white)
+                                            }
+                                            Spacer()
+                                        }
                                         // Daily Question
                                         SectionView(title: "Daily Question") {
-                                            VStack(alignment: .leading, spacing: 10) {
+                                            VStack(alignment: .leading, spacing: 12) {
                                                 if let dailyQuestion = qod.qod{
                                                     Text(dailyQuestion.questionText)
                                                         .foregroundColor(.white)
                                                         .font(.title3)
+                                                        .fontWeight(.semibold)
                                                         .bold()
-                                                }
                                                 Button(action: {
-                                                    withAnimation {
-                                                        // Show answer
-                                                        showDailyQuestionAnswer.toggle()
+                                                        withAnimation {
+                                                            // Show answer
+                                                            showDailyQuestionAnswer.toggle()
+                                                        }
+                                                    }) {
+                                                        Text(showDailyQuestionAnswer ? "Hide Answer" : "Show Answer")
+                                                            .underline()
                                                     }
-                                                }) {
-                                                    Text(showDailyQuestionAnswer ? "Hide Answer" : "Show Answer")
-                                                        .underline()
-                                                }
-                                                // Answer
-                                                if showDailyQuestionAnswer {
-                                                    if let dailyAnswer = qod.qod{
-                                                        Text(dailyAnswer.answer)
-                                                            .foregroundColor(.white)
+                                                    // Answer
+                                                    if showDailyQuestionAnswer {
+                                                        if let dailyAnswer = qod.qod{
+                                                            Text(dailyAnswer.answer)
+                                                                .foregroundColor(.white)
+                                                        }
                                                     }
+                                                }else {
+                                                    Text("No daily question available.")
+                                                        .foregroundColor(.white.opacity(0.7))
                                                 }
                                             }
                                         }
-                                        // Quick Facts Section
-                                        SectionView(title: "Quick Facts") {
-                                            Text("View Quick Facts")
-                                                .font(.title3)
-                                                .bold()
+                                        VStack(spacing: 20) {
+                                            HomeNavCard(title: "Quick Facts", icon: "book.fill", color: .purple) {
+                                                //currentTab = .resources
+                                            }
+                                            HomeNavCard(title: "Orientation", icon: "figure.wave", color: .teal) {
+                                                //currentTab = .resources
+                                            }
+                                            HomeNavCard(title: "Clerkship Requirements", icon: "checkmark.seal.fill", color: .pink) {
+                                                //currentTab = .resources
+                                            }
+                                            HomeNavCard(title: "Evaluation Form", icon: "doc.text.fill", color: .orange) {
+                                                //currentTab = .eval
+                                            }
                                         }
-                                        // Orientation Section
-                                        SectionView(title: "Orientation") {
-                                            Text("View Orientation Details")
-                                                .font(.title3)
-                                                .bold()
-                                        }
-                                        // Clerkship Requirements Section
-                                        SectionView(title: "Clerkship Requirements") {
-                                            Text("View Requirements")
-                                                .font(.title3)
-                                                .bold()
-                                        }
-                                        // Location Section
-                                        SectionView(title: "Location") {
-                                            Text("View Location Info")
-                                                .font(.title3)
-                                                .bold()
-                                        }
+                                        .padding(.horizontal)
+                                        .padding(.bottom, 50)
                                     case .resources:
                                         ResourcesView()
                                     case .search:
@@ -134,6 +139,40 @@ struct HomeView: View {
                 .navigationBarBackButtonHidden()
             }
         } // End Group
+    }
+}
+
+struct HomeNavCard: View {
+    var title: String
+    var icon: String
+    var color: Color
+    var action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            HStack {
+                Image(systemName: icon)
+                    .foregroundColor(.white)
+                    .font(.title2)
+                    .padding(12)
+                    .background(color.opacity(0.8))
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                
+                Text(title)
+                    .foregroundColor(.white)
+                    .font(.headline)
+                    .padding(.leading, 4)
+                
+                Spacer()
+                
+                Image(systemName: "chevron.right")
+                    .foregroundColor(.white.opacity(0.7))
+            }
+            .padding()
+            .background(Color.white.opacity(0.1))
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+        }
+        .buttonStyle(.plain)
     }
 }
 
