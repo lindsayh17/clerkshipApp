@@ -4,7 +4,6 @@
 
 /*
  TODO: daily question styling
- TODO: nav bar eval
  TODO: home page for preceptors
  */
 

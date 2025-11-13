@@ -46,7 +46,7 @@ struct NavTab: View {
         default:
             return [
                 ("house", .home, "Home"),
-                ("magnifyingglass", .search, "Search"),
+                ("text.document", .resources, "Docs"),
                 ("person.crop.circle.fill", .profile, "Profile"),
                 ("", .eval, "Eval")
             ]
