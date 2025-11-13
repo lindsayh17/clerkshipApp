@@ -131,7 +131,7 @@ struct LoginView: View {
                 }
                 .padding()
             }.navigationDestination(isPresented: $auth.isLoggedIn){ HomeView()}
-        }
+        }.navigationBarBackButtonHidden(true)
         BackButton()
         
     }

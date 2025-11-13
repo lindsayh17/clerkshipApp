@@ -93,15 +93,16 @@ struct FillOutFormView: View {
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
     
-    let currForm: EvalForm
-    
+    @State var currForm: EvalForm
+    @State var showLabels = false
     
     private func questionRow(q: Question) -> some View {
         VStack {
             Text(q.question)
                 .foregroundColor(.white)
-                .font(.headline)
+                .font(.subheadline)
                 .fixedSize(horizontal: false, vertical: true)
+                .padding()
             
             HStack {
                 ForEach(ResponseLabel.allCases, id: \.self) { opt in
@@ -113,6 +114,12 @@ struct FillOutFormView: View {
                             .foregroundColor(.white)
                             .baselineOffset(1)
                             .font(.system(size: 12))
+                        if showLabels {
+                            Text(infoTitle(for: opt))
+                                .foregroundColor(.white)
+                                .baselineOffset(1)
+                                .font(.system(size: 12))
+                        }
                     }
                     .buttonStyle(BorderlessButtonStyle())
                     .frame(maxWidth: .infinity)
@@ -128,7 +135,7 @@ struct FillOutFormView: View {
         case .novice: return "Novice"
         case .apprentice: return "Apprentice"
         case .expert: return "Expert"
-        case .none: return "None"
+        case .none: return "N/A"
         }
     }
         
@@ -138,15 +145,29 @@ struct FillOutFormView: View {
             backgroundColor.ignoresSafeArea()
             VStack {
                 // Title
-                Text(currForm.type)
-                    .font(.headline)
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
+                HStack {
+                    Text("\(currForm.type) Evaluation")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                    Button {
+                        showLabels = !showLabels
+                    } label: {
+                        Image(systemName: "info.circle")
+                            .foregroundColor(.white)
+                            .baselineOffset(1)
+                            .font(.system(size: 12))
+                    }
+                    .buttonStyle(BorderlessButtonStyle())
+                }
                 ScrollView {
-                    ForEach (currForm.categories) { category in
-                        Text(category.category)
+                    ForEach (currForm.categories) { cat in
+                        Text(cat.category)
+                            .foregroundColor(.white)
+                            .font(.headline)
+                            .fixedSize(horizontal: false, vertical: true)
                         
-                        ForEach (category.questions) { question in
+                        ForEach (cat.questions) { question in
                             questionRow(q: question)
                         }
                         
