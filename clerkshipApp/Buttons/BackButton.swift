@@ -7,7 +7,7 @@ struct BackButton: View {
     @Environment(\.dismiss) var dismiss
     private let color = Color("ButtonColor")
     
-    let title = "\u{2190} Back"
+    let title = "\u{2190}"
     
     var body: some View {
         VStack {

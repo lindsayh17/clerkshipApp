@@ -88,22 +88,43 @@ struct Question: Identifiable, Codable {
 
 struct FormsListView: View {
     @EnvironmentObject var firebase: FirebaseService
+    @EnvironmentObject var formStore: FormStore
+    @State private var selection: FormChoice = .clinic
+    
+    private let backgroundColor = Color("BackgroundColor")
+    private let buttonColor = Color("ButtonColor")
+
+    
+    // download forms from firebase
+    func downloadForms() {
+        Task {
+            do {
+                try await firebase.fetchForms()
+                if firebase.formDownloadSuccessful{
+                    for form in firebase.forms{
+                        formStore.addForm(form)
+                    }
+                }
+            } catch {
+                print("Error fetching forms: \(error)")
+            }
+        }
+    }
+    
     
     var body: some View {
-        // roght now each form links to own eval page.
+        // right now each form links to own eval page.
         // need to combine with the formchoiceview fie so that we can use the buttons
         NavigationStack {
-            List(firebase.forms) { form in
-                NavigationLink(destination: FormEvalView(form: form)) {
-                    VStack(alignment: .leading) {
-                        Text(form.type)
-                            .font(.headline).foregroundColor(.black)
-                        Text(form.formChoice.rawValue.capitalized)
-                            .font(.subheadline)
-                            .foregroundColor(.black)
+            ZStack {
+                backgroundColor.ignoresSafeArea()
+                VStack {
+                    ForEach (firebase.forms) { form in
+                        MainButtonView(title: form.type, color: buttonColor, action: {selection = form.formChoice})
                     }
                 }
             }
+
         }.task {
             do {
                 try await firebase.fetchForms()
@@ -126,5 +147,6 @@ struct FormEvalView: View {
 #Preview {
     FormsListView()
         .environmentObject(FirebaseService())
+        .environmentObject(FormStore())
 }
 
