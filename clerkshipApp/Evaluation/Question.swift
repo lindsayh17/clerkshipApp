@@ -1,16 +1,9 @@
 //  QuestionEntry.swift
 //  clerkshipApp
-
 import SwiftUI
 
-enum FormChoice: String, Codable {
-    case obstetrics
-    case clinic
-    case inpatient
-}
-
+// defines the form objects
 struct EvalForm: Identifiable, Codable {
-    
     var id = UUID()
     var type: String
     var categories: [QuestionCategory]
@@ -85,46 +78,26 @@ struct Question: Identifiable, Codable {
     }
 }
 
-
-struct FormsListView: View {
-    @EnvironmentObject var firebase: FirebaseService
+struct CompleteEvalView: View {
+    @State private var submitted = false
+    
+    // Colors
+    private let backgroundColor = Color("BackgroundColor")
+    private let buttonColor = Color("ButtonColor")
+    
+    let currForm: EvalForm
     
     var body: some View {
-        // roght now each form links to own eval page.
-        // need to combine with the formchoiceview fie so that we can use the buttons
-        NavigationStack {
-            List(firebase.forms) { form in
-                NavigationLink(destination: FormEvalView(form: form)) {
-                    VStack(alignment: .leading) {
-                        Text(form.type)
-                            .font(.headline).foregroundColor(.black)
-                        Text(form.formChoice.rawValue.capitalized)
-                            .font(.subheadline)
-                            .foregroundColor(.black)
+        ZStack {
+            backgroundColor.ignoresSafeArea()
+            VStack {
+                ScrollView {
+                    ForEach (currForm.categories) { category in
+                        //
+                        
                     }
                 }
-            }
-        }.task {
-            do {
-                try await firebase.fetchForms()
-            } catch {
-                print("Error fetching form data \(error)")
             }
         }
     }
 }
-
-struct FormEvalView: View {
-    let form: EvalForm
-    
-    var body: some View {
-        
-    }
-}
-
-
-#Preview {
-    FormsListView()
-        .environmentObject(FirebaseService())
-}
-

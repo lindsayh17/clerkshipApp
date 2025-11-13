@@ -124,7 +124,7 @@ struct HomeView: View {
                                         SearchView()
                                     case .eval:
 //                                        SearchView()
-                                        FormsListView()
+                                        FormChoiceView()
                                     }
                                 }
                                 .padding()
