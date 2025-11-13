@@ -22,8 +22,9 @@ struct FormChoiceView: View {
         Task {
             do {
                 try await firebase.fetchForms()
-                if firebase.formDownloadSuccessful{
-                    for form in firebase.forms{
+                
+                if firebase.formDownloadSuccessful {
+                    for form in firebase.forms {
                         formStore.addForm(form)
                     }
                 }
@@ -65,9 +66,10 @@ struct FormChoiceView: View {
             } catch {
                 print("Error fetching form data \(error)")
             }
-        }.navigationDestination(isPresented: $choiceMade) {
+        }
+        .navigationDestination(isPresented: $choiceMade) {
             if let selected = selectedForm {
-                CompleteEvalView(currForm: selected)
+                FillOutFormView(currForm: selected)
             }
         }
     }

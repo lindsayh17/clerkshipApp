@@ -78,8 +78,16 @@ struct Question: Identifiable, Codable {
     }
 }
 
-struct CompleteEvalView: View {
+enum ResponseLabel: CaseIterable {
+    case novice
+    case apprentice
+    case expert
+    case none
+}
+
+struct FillOutFormView: View {
     @State private var submitted = false
+//    @State var form: EvalForm
     
     // Colors
     private let backgroundColor = Color("BackgroundColor")
@@ -87,13 +95,60 @@ struct CompleteEvalView: View {
     
     let currForm: EvalForm
     
+    
+    private func questionRow(q: Question) -> some View {
+        VStack {
+            Text(q.question)
+                .foregroundColor(.white)
+                .font(.headline)
+                .fixedSize(horizontal: false, vertical: true)
+            
+            HStack {
+                ForEach(ResponseLabel.allCases, id: \.self) { opt in
+                    Button {
+//                        q.response = .text(infoTitle(for: opt))
+                        
+                    } label: {
+                        Image(systemName: "circle.inset.filled")
+                            .foregroundColor(.white)
+                            .baselineOffset(1)
+                            .font(.system(size: 12))
+                    }
+                    .buttonStyle(BorderlessButtonStyle())
+                    .frame(maxWidth: .infinity)
+                }.padding(.vertical, 8)
+            }
+            Divider().background(Color.gray)
+        }
+    }
+    
+
+    private func infoTitle(for opt: ResponseLabel) -> String {
+        switch opt {
+        case .novice: return "Novice"
+        case .apprentice: return "Apprentice"
+        case .expert: return "Expert"
+        case .none: return "None"
+        }
+    }
+        
+    
     var body: some View {
         ZStack {
             backgroundColor.ignoresSafeArea()
             VStack {
+                // Title
+                Text(currForm.type)
+                    .font(.headline)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
                 ScrollView {
                     ForEach (currForm.categories) { category in
-                        //
+                        Text(category.category)
+                        
+                        ForEach (category.questions) { question in
+                            questionRow(q: question)
+                        }
                         
                     }
                 }
