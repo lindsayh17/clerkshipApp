@@ -1,16 +1,9 @@
 //  QuestionEntry.swift
 //  clerkshipApp
-
 import SwiftUI
 
-enum FormChoice: String, Codable {
-    case obstetrics
-    case clinic
-    case inpatient
-}
-
+// defines the form objects
 struct EvalForm: Identifiable, Codable {
-    
     var id = UUID()
     var type: String
     var categories: [QuestionCategory]
@@ -85,84 +78,26 @@ struct Question: Identifiable, Codable {
     }
 }
 
-
-struct FormChoiceView: View {
-    @EnvironmentObject var firebase: FirebaseService
-    @EnvironmentObject var formStore: FormStore
+struct CompleteEvalView: View {
+    @State private var submitted = false
     
-    @State private var selectedForm: EvalForm? = nil
-    @State private var choiceMade = false
-    
+    // Colors
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
-
     
-    // download forms from firebase
-    func downloadForms() {
-        Task {
-            do {
-                try await firebase.fetchForms()
-                if firebase.formDownloadSuccessful{
-                    for form in firebase.forms{
-                        formStore.addForm(form)
-                    }
-                }
-            } catch {
-                print("Error fetching forms: \(error)")
-            }
-        }
-    }
-    
+    let currForm: EvalForm
     
     var body: some View {
-        NavigationStack {
-            ZStack {
-                backgroundColor.ignoresSafeArea()
-                VStack {
-                    ScrollView {
-                        // Screen Label
-                        Text("Evaluation Type")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                            .padding(.top, 30)
-                            .padding(.bottom, 30)
-                            .multilineTextAlignment(.center)
-                            .frame(maxWidth: .infinity)
+        ZStack {
+            backgroundColor.ignoresSafeArea()
+            VStack {
+                ScrollView {
+                    ForEach (currForm.categories) { category in
+                        //
                         
-                        ForEach (firebase.forms) { form in
-                            MainButtonView(title: form.type, color: buttonColor, action: {
-                                selectedForm = form
-                                choiceMade = true
-                            })
-                        }
                     }
                 }
             }
-        }.task {
-            do {
-                try await firebase.fetchForms()
-            } catch {
-                print("Error fetching form data \(error)")
-            }
-        }.navigationDestination(isPresented: $choiceMade) {
-            CompleteEvalView(currForm: selectedForm)
         }
     }
 }
-
-struct CompleteEvalView: View {
-    let currForm: EvalForm?
-    
-    var body: some View {
-        
-    }
-}
-
-
-#Preview {
-    FormChoiceView()
-        .environmentObject(FirebaseService())
-        .environmentObject(FormStore())
-}
-
