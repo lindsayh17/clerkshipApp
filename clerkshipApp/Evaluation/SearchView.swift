@@ -53,7 +53,13 @@ struct SearchView: View {
         }
     }
     
+    init(){
+        // change search bar text to be more visible
+        UISearchBar.appearance().searchTextField.textColor = UIColor.white
+    }
+    
     var body: some View {
+        
         NavigationStack {
             ZStack {
                 backgroundColor.ignoresSafeArea()
