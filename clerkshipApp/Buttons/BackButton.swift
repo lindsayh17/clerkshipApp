@@ -1,34 +1,26 @@
-//  BackButton.swift
-//  clerkshipApp
+// BackButton.swift
 
 import SwiftUI
 
 struct BackButton: View {
     @Environment(\.dismiss) var dismiss
     private let color = Color("ButtonColor")
-    
     let title = "\u{2190}"
-    
+
     var body: some View {
-        VStack {
-                }
-                .navigationBarBackButtonHidden(true)
-                .toolbar {
-                    ToolbarItem(placement: .topBarLeading) {
-                        Button {
-                            // this pops the view from the nav stack
-                            // i.e. goes back to previous page
-                            dismiss()
-                        } label: {
-                            Text(title)
-                                .fontWeight(.semibold)
-                                .frame(width: 75, height: 30)
-                                .background(color.opacity(0.4))
-                                .foregroundColor(.white)
-                                .cornerRadius(15)
-                        }
-                        .scaleEffect(0.97, anchor: .center)
-                    }
-                }
+        Button(action: {
+            dismiss()
+        }) {
+            Text(title)
+                .fontWeight(.semibold)
+                .frame(width: 75, height: 30)
+                .background(color)
+                .foregroundColor(.white)
+                .cornerRadius(15)
+        }
+        .padding(.leading, 24)      
+        .padding(.top, 10)
+        .zIndex(1)               
     }
 }
+

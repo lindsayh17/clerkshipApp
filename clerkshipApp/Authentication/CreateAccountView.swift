@@ -1,6 +1,3 @@
-//  LoginView.swift
-//  clerkshipApp
-
 import SwiftUI
 
 struct CreateAccountView: View {
@@ -37,19 +34,14 @@ struct CreateAccountView: View {
     }
     
     func checkComplete() -> Bool{
-        if email != "" && firstname != "" && lastname != ""{
-            return true
-        } else {
-            return false
-        }
+        !email.isEmpty && !firstname.isEmpty && !lastname.isEmpty
     }
     
-    func getNames() async{
+    func getNames() async {
         do {
-            // Fetch users directly
             try await firebase.fetchUsers()
             if firebase.downloadSuccessful{
-                for user in firebase.users{
+                for user in firebase.users {
                     userStore.addUser(user)
                 }
             }
@@ -58,22 +50,21 @@ struct CreateAccountView: View {
         }
     }
     
-    func getCurrUser() async{
+    func getCurrUser() async {
         do {
-            // Fetch users directly
             try await firebase.fetchUser(currEmail: auth.currentUser)
-            if firebase.downloadSuccessful{
+            if firebase.downloadSuccessful {
                 currentUser.user = firebase.currUser
             }
         } catch {
-            print("Error fetching users: \(error)")
+            print("Error fetching current user: \(error)")
         }
     }
     
-    func getQOD() async{
-        do{
+    func getQOD() async {
+        do {
             try await firebase.fetchRandomQuestion()
-            if firebase.downloadSuccessful{
+            if firebase.downloadSuccessful {
                 qod.qod = firebase.question
             }
         } catch {
@@ -83,83 +74,75 @@ struct CreateAccountView: View {
     
     var body: some View {
         NavigationStack {
-            VStack{
-                ZStack {
-                    // Color fills the entire screen
-                    backgroundColor.ignoresSafeArea()
-                    VStack {
-                        Image("GreenUVMLogo")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                        Text("Create Account")
-                            .font(.system(size: 36))
-                            .foregroundColor(.white)
-                            .bold()
-                            .frame(width: 350, height: 100, alignment: .leading)
-                    }
-                }
+            ZStack(alignment: .topLeading) {
                 VStack {
-                    TextField("First name...", text: $firstname)
-                        .padding()
-                        .cornerRadius(10)
-                        .background(Color.gray.opacity(0.4))
-                    TextField("Last name...", text: $lastname)
-                        .padding()
-                        .cornerRadius(10)
-                        .background(Color.gray.opacity(0.4))
-                    
-                    TextField("Email...", text: $email)
-                        .padding()
-                        .cornerRadius(10)
-                        .background(Color.gray.opacity(0.4))
-                        .textInputAutocapitalization(.never)
-                    SecureField("Password...", text: $password)
-                        .padding()
-                        .cornerRadius(10)
-                        .background(Color.gray.opacity(0.4))
-                        .textInputAutocapitalization(.never)
-                    
-                    if auth.errorMessage != nil{
-                        switch auth.errorMessage {
-                        case "The email address is badly formatted.":
-                            Text("Please enter a valid email address")
-                                .foregroundColor(.red)
-                                .font(.footnote)
-                                .multilineTextAlignment(.center)
-                                .padding(.horizontal)
-                        case "The password must be 6 characters long or more.":
-                            Text("Password must be at least 6 characters long")
-                                .foregroundColor(.red)
-                                .font(.footnote)
-                                .multilineTextAlignment(.center)
-                                .padding(.horizontal)
-                        default:
-                            Text("Error creating your account. Please try again later.")
+                    ZStack {
+                        backgroundColor.ignoresSafeArea()
+                        VStack {
+                            Image("GreenUVMLogo")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                            Text("Create Account")
+                                .font(.system(size: 36))
+                                .foregroundColor(.white)
+                                .bold()
+                                .frame(width: 350, height: 100, alignment: .leading)
+                        }
+                    }
+
+                    VStack {
+                        TextField("First name...", text: $firstname)
+                            .padding()
+                            .cornerRadius(10)
+                            .background(Color.gray.opacity(0.4))
+                        
+                        TextField("Last name...", text: $lastname)
+                            .padding()
+                            .cornerRadius(10)
+                            .background(Color.gray.opacity(0.4))
+                        
+                        TextField("Email...", text: $email)
+                            .padding()
+                            .cornerRadius(10)
+                            .background(Color.gray.opacity(0.4))
+                            .textInputAutocapitalization(.never)
+                        
+                        SecureField("Password...", text: $password)
+                            .padding()
+                            .cornerRadius(10)
+                            .background(Color.gray.opacity(0.4))
+                            .textInputAutocapitalization(.never)
+                        
+                        if let errorMessage = auth.errorMessage {
+                            Text(errorMessage)
                                 .foregroundColor(.red)
                                 .font(.footnote)
                                 .multilineTextAlignment(.center)
                                 .padding(.horizontal)
                         }
+                        
+                        BigButtonView(
+                            text: "Create Account",
+                            action: createAccount,
+                            foregroundColor: .white,
+                            backgroundColor: backgroundColor,
+                            disabled: !checkComplete()
+                        )
                     }
-                    
-                    BigButtonView(
-                        text: "Create Account",
-                        action: createAccount,
-                        foregroundColor: .white,
-                        backgroundColor: backgroundColor,
-                        disabled: !checkComplete()
-                    )
+                    .padding()
                 }
-                .padding()
-            }.navigationDestination(isPresented: $auth.isLoggedIn){ HomeView()}
+                
+                // Floating back button
+                BackButton()
+            }
+            .navigationDestination(isPresented: $auth.isLoggedIn) { HomeView() }
         }
-        BackButton()
+        .navigationBarBackButtonHidden(true)
     }
 }
 
 // Preview
 #Preview {
-    // TODO: it's fine if we want these now, but should take out later
     CreateAccountView()
         .environmentObject(FirebaseService())
         .environmentObject(AuthService())
@@ -167,3 +150,4 @@ struct CreateAccountView: View {
         .environmentObject(CurrentUser())
         .environmentObject(QODStore())
 }
+
