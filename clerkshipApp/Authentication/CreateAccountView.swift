@@ -18,6 +18,7 @@ struct CreateAccountView: View {
     @State private var password = ""
     @State private var firstname = ""
     @State private var lastname = ""
+    @State private var accountError: String? = nil
     
     // Colors
     private let backgroundColor = Color("BackgroundColor")
@@ -123,7 +124,26 @@ struct CreateAccountView: View {
                     .textInputAutocapitalization(.never)
                 
                 if auth.errorMessage != nil{
-                    Text(auth.errorMessage)
+                    switch auth.errorMessage {
+                    case "The email address is badly formatted.":
+                        Text("Please enter a valid email address")
+                            .foregroundColor(.red)
+                            .font(.footnote)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal)
+                    case "The password must be 6 characters long or more.":
+                        Text("Password must be at least 6 characters long")
+                            .foregroundColor(.red)
+                            .font(.footnote)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal)
+                    default:
+                        Text("Error creating your account. Please try again later.")
+                            .foregroundColor(.red)
+                            .font(.footnote)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal)
+                    }
                 }
                 
                 BigButtonView(
