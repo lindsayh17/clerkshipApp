@@ -9,6 +9,7 @@
  */
 
 import SwiftUI
+import FirebaseAuth
 
 struct LoginView: View {
     @EnvironmentObject var firebase: FirebaseService
@@ -16,9 +17,11 @@ struct LoginView: View {
     @EnvironmentObject var userStore: UserStore
     @EnvironmentObject var currentUser: CurrentUser
     @EnvironmentObject var qod: QODStore
+    
     @State private var email = ""
     @State private var password = ""
     @State private var loading = false
+    @State private var loginError: String? = nil
     
     // Colors
     private let backgroundColor = Color("BackgroundColor")
@@ -71,7 +74,10 @@ struct LoginView: View {
                 await getQOD()
                 auth.isLoggedIn = true
             }catch {
-                print("Login error: \(error.localizedDescription)")
+                let nsError = error as NSError
+                print("Login error: \(nsError.localizedDescription)")
+
+                loginError = "Wrong email or password"
             }
         }
     }
@@ -99,6 +105,7 @@ struct LoginView: View {
                     .background(Color.gray.opacity(0.4))
                     .textInputAutocapitalization(.never)
                     .foregroundColor(.black)
+                    .onChange(of: email) {loginError = nil }
                 
                 SecureField("Password...", text: $password)
                     .padding()
@@ -106,6 +113,15 @@ struct LoginView: View {
                     .background(Color.gray.opacity(0.4))
                     .textInputAutocapitalization(.never)
                     .foregroundColor(.black)
+                    .onChange(of: password) {loginError = nil }
+                
+                if let error = loginError {
+                    Text(error)
+                        .foregroundColor(.red)
+                        .font(.footnote)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal)
+                }
                 
                 BigButtonView(
                     text: "Log In",
