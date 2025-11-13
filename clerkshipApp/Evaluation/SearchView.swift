@@ -53,7 +53,13 @@ struct SearchView: View {
         }
     }
     
+    init(){
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).attributedPlaceholder = NSAttributedString(string: "Search", attributes: [NSAttributedString.Key.foregroundColor: UIColor(.white)])
+
+    }
+    
     var body: some View {
+        
         NavigationStack {
             ZStack {
                 backgroundColor.ignoresSafeArea()
@@ -72,6 +78,7 @@ struct SearchView: View {
                                     placement: .navigationBarDrawer(displayMode: .always),
                                     prompt: "Search"
                                 )
+                                .foregroundColor(.white)
                                 .tint(buttonColor)
                             
                             

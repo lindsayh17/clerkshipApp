@@ -5,6 +5,7 @@
 /*
  TODO: daily question styling
  TODO: home page for preceptors
+ TODO: nav bar doesn't work with orientation or quick fact pages
  */
 
 import SwiftUI
@@ -26,12 +27,11 @@ struct HomeView: View {
     // @Binding var destination: HomeDestination
     
     @State private var currentView = NavOption.home
-    // @State var loginManager
-    
     // State for showing daily question answer
     @State private var showDailyQuestionAnswer = false
-    
     @State private var showLocationInfo = false
+    
+    @StateObject var navControl = NavControl()
     
     @EnvironmentObject var currUser: CurrentUser
     @EnvironmentObject var auth: AuthService
@@ -60,7 +60,7 @@ struct HomeView: View {
                                         HStack{
                                             VStack(alignment: .leading, spacing: 4){
                                                 Text("Welcome, \(currUser.user?.firstName ?? "Student")")
-                                                    .font(.title2)
+                                                    .font(.title3)
                                                     .fontWeight(.bold)
                                                     .foregroundColor(.white)
                                             }
@@ -99,20 +99,23 @@ struct HomeView: View {
                                         }
                                         VStack(spacing: 20) {
                                             HomeNavCard(title: "Quick Facts", icon: "book.fill", color: .purple) {
-                                                //currentTab = .resources
+                                                navControl.showQuickFacts = true
                                             }
                                             HomeNavCard(title: "Orientation", icon: "figure.wave", color: .teal) {
-                                                //currentTab = .resources
+                                                navControl.showOrientation = true
                                             }
                                             HomeNavCard(title: "Clerkship Requirements", icon: "checkmark.seal.fill", color: .pink) {
-                                                //currentTab = .resources
+                                                navControl.showRequirements = true
                                             }
                                             HomeNavCard(title: "Evaluation Form", icon: "doc.text.fill", color: .orange) {
-                                                //currentTab = .eval
+                                                //navControl.showOrientation = true
                                             }
                                         }
                                         .padding(.horizontal)
                                         .padding(.bottom, 50)
+                                        .navigationDestination(isPresented: $navControl.showOrientation){OrientationView()}
+                                        .navigationDestination(isPresented: $navControl.showQuickFacts){QuickFactsView()}
+                                        .navigationDestination(isPresented: $navControl.showRequirements){ClerkshipRequirementsView()}
                                     case .resources:
                                         ResourcesView()
                                     case .search:

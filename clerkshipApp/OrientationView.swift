@@ -49,7 +49,7 @@ struct OrientationView: View {
                                 }
                                 .padding(.horizontal, 20)
                                 .padding(.bottom, 30)
-                                
+                                .navigationBarBackButtonHidden(false)
                             case .resources:
                                 ResourcesView()
                             case .search:
