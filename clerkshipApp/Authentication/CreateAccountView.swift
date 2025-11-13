@@ -1,10 +1,6 @@
 //  LoginView.swift
 //  clerkshipApp
 
-/*
- TODO: make text fields and error messages look better
- */
-
 import SwiftUI
 
 struct CreateAccountView: View {
@@ -116,7 +112,6 @@ struct CreateAccountView: View {
                     .cornerRadius(10)
                     .background(Color.gray.opacity(0.4))
                     .textInputAutocapitalization(.never)
-                // TODO: remove password
                 SecureField("Password...", text: $password)
                     .padding()
                     .cornerRadius(10)

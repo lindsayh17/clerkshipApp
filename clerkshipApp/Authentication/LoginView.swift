@@ -4,9 +4,6 @@
 // username: lhall11@uvm.edu
 // password: 123456
 
-/*
- TODO: make errors look better
- */
 
 import SwiftUI
 import FirebaseAuth
