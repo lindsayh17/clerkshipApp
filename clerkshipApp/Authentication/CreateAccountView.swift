@@ -82,76 +82,76 @@ struct CreateAccountView: View {
     }
     
     var body: some View {
-        if !auth.isLoggedIn {
-            ZStack {
-                // Color fills the entire screen
-                backgroundColor.ignoresSafeArea()
-                VStack {
-                    Image("GreenUVMLogo")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                    Text("Create Account")
-                        .font(.system(size: 36))
-                        .foregroundColor(.white)
-                        .bold()
-                        .frame(width: 350, height: 100, alignment: .leading)
-                }
-            }
-            VStack {
-                TextField("First name...", text: $firstname)
-                    .padding()
-                    .cornerRadius(10)
-                    .background(Color.gray.opacity(0.4))
-                TextField("Last name...", text: $lastname)
-                    .padding()
-                    .cornerRadius(10)
-                    .background(Color.gray.opacity(0.4))
-                
-                TextField("Email...", text: $email)
-                    .padding()
-                    .cornerRadius(10)
-                    .background(Color.gray.opacity(0.4))
-                    .textInputAutocapitalization(.never)
-                SecureField("Password...", text: $password)
-                    .padding()
-                    .cornerRadius(10)
-                    .background(Color.gray.opacity(0.4))
-                    .textInputAutocapitalization(.never)
-                
-                if auth.errorMessage != nil{
-                    switch auth.errorMessage {
-                    case "The email address is badly formatted.":
-                        Text("Please enter a valid email address")
-                            .foregroundColor(.red)
-                            .font(.footnote)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal)
-                    case "The password must be 6 characters long or more.":
-                        Text("Password must be at least 6 characters long")
-                            .foregroundColor(.red)
-                            .font(.footnote)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal)
-                    default:
-                        Text("Error creating your account. Please try again later.")
-                            .foregroundColor(.red)
-                            .font(.footnote)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal)
+        NavigationStack {
+            VStack{
+                ZStack {
+                    // Color fills the entire screen
+                    backgroundColor.ignoresSafeArea()
+                    VStack {
+                        Image("GreenUVMLogo")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                        Text("Create Account")
+                            .font(.system(size: 36))
+                            .foregroundColor(.white)
+                            .bold()
+                            .frame(width: 350, height: 100, alignment: .leading)
                     }
                 }
-                
-                BigButtonView(
-                    text: "Create Account",
-                    action: createAccount,
-                    foregroundColor: .white,
-                    backgroundColor: backgroundColor,
-                    disabled: !checkComplete()
-                )
-            }
-            .padding()
-        } else {
-            HomeView()
+                VStack {
+                    TextField("First name...", text: $firstname)
+                        .padding()
+                        .cornerRadius(10)
+                        .background(Color.gray.opacity(0.4))
+                    TextField("Last name...", text: $lastname)
+                        .padding()
+                        .cornerRadius(10)
+                        .background(Color.gray.opacity(0.4))
+                    
+                    TextField("Email...", text: $email)
+                        .padding()
+                        .cornerRadius(10)
+                        .background(Color.gray.opacity(0.4))
+                        .textInputAutocapitalization(.never)
+                    SecureField("Password...", text: $password)
+                        .padding()
+                        .cornerRadius(10)
+                        .background(Color.gray.opacity(0.4))
+                        .textInputAutocapitalization(.never)
+                    
+                    if auth.errorMessage != nil{
+                        switch auth.errorMessage {
+                        case "The email address is badly formatted.":
+                            Text("Please enter a valid email address")
+                                .foregroundColor(.red)
+                                .font(.footnote)
+                                .multilineTextAlignment(.center)
+                                .padding(.horizontal)
+                        case "The password must be 6 characters long or more.":
+                            Text("Password must be at least 6 characters long")
+                                .foregroundColor(.red)
+                                .font(.footnote)
+                                .multilineTextAlignment(.center)
+                                .padding(.horizontal)
+                        default:
+                            Text("Error creating your account. Please try again later.")
+                                .foregroundColor(.red)
+                                .font(.footnote)
+                                .multilineTextAlignment(.center)
+                                .padding(.horizontal)
+                        }
+                    }
+                    
+                    BigButtonView(
+                        text: "Create Account",
+                        action: createAccount,
+                        foregroundColor: .white,
+                        backgroundColor: backgroundColor,
+                        disabled: !checkComplete()
+                    )
+                }
+                .padding()
+            }.navigationDestination(isPresented: $auth.isLoggedIn){ HomeView()}
         }
         BackButton()
     }

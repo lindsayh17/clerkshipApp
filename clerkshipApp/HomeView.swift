@@ -3,8 +3,11 @@
 //
 
 /*
- TODO: change display options for students vs. preceptors
- TODO: send each link to a dummy page
+ TODO: daily question styling
+ TODO: get rid of back button
+ TODO: less repetitive button labels
+ TODO: nav bar eval
+ TODO: home page for preceptors
  */
 
 import SwiftUI
@@ -49,7 +52,6 @@ struct HomeView: View {
                         // Fill the screen with background color
                         backgroundColor.ignoresSafeArea()
                         
-                        // if currUser.user?.getPrivilege() == .student{
                         VStack(spacing: 0) {
                             // Scrollable content
                             ScrollView {

@@ -80,57 +80,57 @@ struct LoginView: View {
     }
     
     var body: some View {
-        if !auth.isLoggedIn {
-            ZStack {
-                // Color fills the entire screen
-                backgroundColor.ignoresSafeArea()
+        NavigationStack{
+            VStack{
+                ZStack {
+                    // Color fills the entire screen
+                    backgroundColor.ignoresSafeArea()
+                    VStack {
+                        Image("GreenUVMLogo")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                        Text("Welcome Back")
+                            .font(.system(size: 36))
+                            .foregroundColor(.white)
+                            .bold()
+                            .frame(width: 350, height: 100, alignment: .leading)
+                    }
+                }
                 VStack {
-                    Image("GreenUVMLogo")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                    Text("Welcome Back")
-                        .font(.system(size: 36))
-                        .foregroundColor(.white)
-                        .bold()
-                        .frame(width: 350, height: 100, alignment: .leading)
+                    TextField("Email...", text: $email)
+                        .padding()
+                        .cornerRadius(10)
+                        .background(Color.gray.opacity(0.4))
+                        .textInputAutocapitalization(.never)
+                        .foregroundColor(.black)
+                        .onChange(of: email) {loginError = nil }
+                    
+                    SecureField("Password...", text: $password)
+                        .padding()
+                        .cornerRadius(10)
+                        .background(Color.gray.opacity(0.4))
+                        .textInputAutocapitalization(.never)
+                        .foregroundColor(.black)
+                        .onChange(of: password) {loginError = nil }
+                    
+                    if let error = loginError {
+                        Text(error)
+                            .foregroundColor(.red)
+                            .font(.footnote)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal)
+                    }
+                    
+                    BigButtonView(
+                        text: "Log In",
+                        action: signin,
+                        foregroundColor: .white,
+                        backgroundColor: backgroundColor
+                    ).padding()
+                    
                 }
-            }
-            VStack {
-                TextField("Email...", text: $email)
-                    .padding()
-                    .cornerRadius(10)
-                    .background(Color.gray.opacity(0.4))
-                    .textInputAutocapitalization(.never)
-                    .foregroundColor(.black)
-                    .onChange(of: email) {loginError = nil }
-                
-                SecureField("Password...", text: $password)
-                    .padding()
-                    .cornerRadius(10)
-                    .background(Color.gray.opacity(0.4))
-                    .textInputAutocapitalization(.never)
-                    .foregroundColor(.black)
-                    .onChange(of: password) {loginError = nil }
-                
-                if let error = loginError {
-                    Text(error)
-                        .foregroundColor(.red)
-                        .font(.footnote)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal)
-                }
-                
-                BigButtonView(
-                    text: "Log In",
-                    action: signin,
-                    foregroundColor: .white,
-                    backgroundColor: backgroundColor
-                ).padding()
-                
-            }
-            .padding()
-        } else {
-            HomeView()
+                .padding()
+            }.navigationDestination(isPresented: $auth.isLoggedIn){ HomeView()}
         }
         BackButton()
         
