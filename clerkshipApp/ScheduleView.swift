@@ -13,6 +13,8 @@ struct ScheduleView: View {
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     
+    @State private var navigateOrientation: Bool = false
+    
     // State for nav tab
     @State private var currentView: NavOption = .resources
     @EnvironmentObject var currUser: CurrentUser
@@ -48,7 +50,7 @@ struct ScheduleView: View {
     
     var body: some View {
         NavigationStack {
-            ZStack {
+            ZStack (alignment: .topLeading){
                 backgroundColor.ignoresSafeArea()
                 
                 VStack(spacing: 0) {
@@ -88,8 +90,17 @@ struct ScheduleView: View {
                     // Bottom Navigation
                     NavTab(currentTab: $currentView)
                 }
+                BackButtonToOrientation(navigateOrientation: $navigateOrientation)
+                    .padding(.top, 10)
+                    .padding(.leading, 10)
+                    .ignoresSafeArea(.all, edges: .top)
+            }
+            .navigationDestination(isPresented: $navigateOrientation) {
+                OrientationView()
+                    .transition(.move(edge: .leading))
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 

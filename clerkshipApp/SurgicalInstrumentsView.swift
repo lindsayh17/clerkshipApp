@@ -14,6 +14,8 @@ struct SurgicalInstrumentsView: View {
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     
+    @State private var navigateOrientation: Bool = false
+    
     // State for nav tab
     @State private var currentView: NavOption = .resources
     @EnvironmentObject var currUser: CurrentUser
@@ -36,23 +38,23 @@ struct SurgicalInstrumentsView: View {
     
     var body: some View {
         NavigationStack {
-            ZStack {
+            ZStack (alignment: .topLeading){
                 backgroundColor.ignoresSafeArea()
                 
                 VStack(spacing: 0) {
                     ScrollView {
-                        VStack(spacing: 20) {
+                        VStack(spacing: 15) {
                             // Title - centered
-                            Text("Surgical Instruments")
+                            Text("Surgical\nInstruments")
                                 .font(.largeTitle)
                                 .fontWeight(.bold)
                                 .foregroundColor(.white)
-                                .padding(.top, 30)
+                                .padding(.top, 20)
                                 .multilineTextAlignment(.center)
                                 .frame(maxWidth: .infinity)
                             
                             // Quick Facts list - left aligned
-                            VStack(alignment: .leading, spacing: 20) {
+                            VStack(alignment: .leading, spacing: 0) {
                                 ForEach(data) { item in
                                     VStack(alignment: .leading, spacing: 8) {
                                         Text(item.title)
@@ -75,8 +77,17 @@ struct SurgicalInstrumentsView: View {
                     // Bottom Navigation
                     NavTab(currentTab: $currentView)
                 }
+                BackButtonToOrientation(navigateOrientation: $navigateOrientation)
+                    .padding(.top, 10)
+                    .padding(.leading, 10)
+                    .ignoresSafeArea(.all, edges: .top)
+            }
+            .navigationDestination(isPresented: $navigateOrientation) {
+                OrientationView()
+                    .transition(.move(edge: .leading))
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 

@@ -9,6 +9,8 @@ struct TraumaView: View {
     private let buttonColor = Color("ButtonColor")
     // @Binding var destination: HomeDestination
     
+    @State private var navigateOrientation: Bool = false
+    
     @State private var currentView = NavOption.home
     // @State var loginManager
     @EnvironmentObject var currUser: CurrentUser
@@ -16,7 +18,7 @@ struct TraumaView: View {
     
     var body: some View {
         NavigationStack {
-            ZStack {
+            ZStack (alignment: .topLeading) {
                 // Fill the screen with background color
                 backgroundColor.ignoresSafeArea()
                 
@@ -26,7 +28,7 @@ struct TraumaView: View {
                     ScrollView {
                         VStack(alignment: .center, spacing: 20) {
                             // Page title
-                            Text("Trauma Informed Care and Labor Support")
+                            Text("Trauma\nInformed Care and Labor Support")
                                 .font(.largeTitle)
                                 .fontWeight(.bold)
                                 .foregroundColor(.white)
@@ -130,9 +132,17 @@ struct TraumaView: View {
 
                     NavTab(currentTab: $currentView)
                 }
+                BackButtonToOrientation(navigateOrientation: $navigateOrientation)
+                    .padding(.top, 10)
+                    .padding(.leading, 10)
+                    .ignoresSafeArea(.all, edges: .top)
+            }
+            .navigationDestination(isPresented: $navigateOrientation) {
+                OrientationView()
+                    .transition(.move(edge: .leading))
             }
         }
-        .navigationBarBackButtonHidden()
+        .navigationBarBackButtonHidden(true)
     }
 }
 

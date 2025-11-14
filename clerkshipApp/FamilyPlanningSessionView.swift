@@ -9,6 +9,8 @@ struct FamilyPlanningSessionView: View {
     private let buttonColor = Color("ButtonColor")
     // @Binding var destination: HomeDestination
     
+    @State private var navigateOrientation: Bool = false
+    
     @State private var currentView = NavOption.home
     // @State var loginManager
     @EnvironmentObject var currUser: CurrentUser
@@ -16,7 +18,7 @@ struct FamilyPlanningSessionView: View {
     
     var body: some View {
         NavigationStack {
-            ZStack {
+            ZStack (alignment: .topLeading) {
                 // Fill the screen with background color
                 backgroundColor.ignoresSafeArea()
                 
@@ -26,7 +28,7 @@ struct FamilyPlanningSessionView: View {
                     ScrollView {
                         VStack(alignment: .center, spacing: 20) {
                             // Page title
-                            Text("Family Planning Sessions")
+                            Text("Family\n Planning Sessions")
                                 .font(.largeTitle)
                                 .fontWeight(.bold)
                                 .foregroundColor(.white)
@@ -86,9 +88,17 @@ struct FamilyPlanningSessionView: View {
 
                     NavTab(currentTab: $currentView)
                 }
+                BackButtonToOrientation(navigateOrientation: $navigateOrientation)
+                    .padding(.top, 10)
+                    .padding(.leading, 10)
+                    .ignoresSafeArea(.all, edges: .top)
+            }
+            .navigationDestination(isPresented: $navigateOrientation) {
+                OrientationView()
+                    .transition(.move(edge: .leading))
             }
         }
-        .navigationBarBackButtonHidden()
+        .navigationBarBackButtonHidden(true)
     }
 }
 
