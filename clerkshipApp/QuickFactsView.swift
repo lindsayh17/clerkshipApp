@@ -12,6 +12,7 @@ struct QuickFactItem: Identifiable {
 struct QuickFactsView: View {
     // Colors
     private let backgroundColor = Color("BackgroundColor")
+    @State private var navigateHome: Bool = false
     
     // State for nav tab
     @State private var currentView: NavOption = .resources
@@ -51,23 +52,24 @@ struct QuickFactsView: View {
     
     var body: some View {
         NavigationStack {
-            ZStack {
+            ZStack (alignment: .topLeading) {
                 backgroundColor.ignoresSafeArea()
                 
+                // Main content
                 VStack(spacing: 0) {
                     ScrollView {
                         VStack(spacing: 20) {
-                            // Title - centered
+                            // Title
                             Text("Quick Facts")
                                 .font(.largeTitle)
                                 .fontWeight(.bold)
                                 .foregroundColor(.white)
-                                .padding(.top, 30)
+                                .padding(.top, 20)
                                 .padding(.bottom, 15)
                                 .multilineTextAlignment(.center)
                                 .frame(maxWidth: .infinity)
                             
-                            // Quick Facts list - left aligned
+                            // Quick Facts list
                             VStack(alignment: .leading, spacing: 25) {
                                 ForEach(quickFacts) { item in
                                     VStack(alignment: .leading, spacing: 8) {
@@ -90,12 +92,25 @@ struct QuickFactsView: View {
                     // Bottom Navigation
                     NavTab(currentTab: $currentView)
                 }
+                
+                // Floating back button above safe area (next to front camera)
+                BackToHomeButton(navigateHome: $navigateHome)
+                    .padding(.top, 10)   // flush to top
+                    .padding(.leading, 10)
+                    .ignoresSafeArea(.all, edges: .top) // ensures it goes above notch/status bar
+            }
+            .navigationDestination(isPresented: $navigateHome) {
+                HomeView()
+                    .transition(.move(edge: .leading))
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 
 // Preview
 #Preview {
-    QuickFactsView().environmentObject(FirebaseService()).environmentObject(CurrentUser())
+    QuickFactsView()
+        .environmentObject(FirebaseService())
+        .environmentObject(CurrentUser())
 }

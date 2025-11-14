@@ -134,6 +134,9 @@ struct CreateAccountView: View {
                 
                 // Floating back button
                 BackButton()
+                    .padding(.top, 10)
+                    .padding(.leading, 10)
+                    .ignoresSafeArea(.all, edges: .top)
             }
             .navigationDestination(isPresented: $auth.isLoggedIn) { HomeView() }
         }

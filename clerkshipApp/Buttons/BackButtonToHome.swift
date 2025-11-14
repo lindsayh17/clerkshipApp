@@ -1,15 +1,18 @@
-// BackButton.swift
+//  BackButtonToHome.swift
+//  clerkshipApp
 
 import SwiftUI
 
-struct BackButton: View {
-    @Environment(\.dismiss) var dismiss
+struct BackToHomeButton: View {
+    @Binding var navigateHome: Bool  
     private let color = Color("ButtonColor")
-    let title = "\u{2190}"
+    private let title = "\u{2190}"
 
     var body: some View {
         Button(action: {
-            dismiss()
+            withAnimation(.easeInOut) {
+                navigateHome = true
+            }
         }) {
             Text(title)
                 .fontWeight(.semibold)
@@ -19,8 +22,8 @@ struct BackButton: View {
                 .cornerRadius(20)
         }
         .padding(.leading, 15)
-        .padding(.top,45)
+        .padding(.top, 45)
         .zIndex(1)
+        .buttonStyle(.plain)
     }
 }
-
