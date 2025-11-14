@@ -8,6 +8,10 @@ struct OrientationView: View {
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
     
+    @State private var goToSurgical: Bool = false
+    @State private var goToTrauma: Bool = false
+    @State private var goToFamilyPlanning: Bool = false
+    @State private var goToSchedule = false
     @State private var navigateHome: Bool = false
     @State private var currentView: NavOption = .home
     @EnvironmentObject var currUser: CurrentUser
@@ -41,12 +45,26 @@ struct OrientationView: View {
                                 
                                 // Buttons
                                 VStack(spacing: 15) {
-                                    MainButtonView(title: "Schedule", color: buttonColor)
+                                    // Hidden navigation links
+                                    NavigationLink("", destination: ScheduleView(), isActive: $goToSchedule).hidden()
+                                    NavigationLink("", destination: FamilyPlanningSessionView(), isActive: $goToFamilyPlanning).hidden()
+                                    NavigationLink("", destination: TraumaView(), isActive: $goToTrauma).hidden()
+                                    NavigationLink("", destination: SurgicalInstrumentsView(), isActive: $goToSurgical).hidden()
+                                    
+                                    MainButtonView(title: "Schedule", color: buttonColor) {
+                                        goToSchedule = true
+                                    }
                                     MainButtonView(title: "Intrapartum FHR Interpretation", color: buttonColor)
-                                    MainButtonView(title: "Family Planning Session", color: buttonColor)
-                                    MainButtonView(title: "Trauma Informed Care and Labor Support", color: buttonColor)
+                                    MainButtonView(title: "Family Planning Session", color: buttonColor) {
+                                        goToFamilyPlanning = true
+                                    }
+                                    MainButtonView(title: "Trauma Informed Care and Labor Support", color: buttonColor) {
+                                        goToTrauma = true
+                                    }
                                     MainButtonView(title: "EPIC Orientation", color: buttonColor)
-                                    MainButtonView(title: "Surgical Instruments", color: buttonColor)
+                                    MainButtonView(title: "Surgical Instruments", color: buttonColor) {
+                                        goToSurgical = true
+                                    }
                                 }
                                 .padding(.horizontal, 20)
                                 .padding(.bottom, 30)
@@ -78,6 +96,24 @@ struct OrientationView: View {
                 HomeView()
                     .transition(.move(edge: .leading))
             }
+            .navigationDestination(isPresented: $goToSchedule) {
+                ScheduleView()
+                    .transition(.move(edge: .leading))
+            }
+            .navigationDestination(isPresented: $goToFamilyPlanning) {
+                FamilyPlanningSessionView()
+                    .transition(.move(edge: .trailing))
+            }
+            .navigationDestination(isPresented: $goToTrauma) {
+                TraumaView()
+                    .transition(.move(edge: .trailing))
+            }
+            .navigationDestination(isPresented: $goToSurgical) {
+                SurgicalInstrumentsView()
+                    .transition(.move(edge: .trailing))
+            }
+
+
         }
         .navigationBarBackButtonHidden(true)
     }
