@@ -96,40 +96,6 @@ struct FillOutFormView: View {
     @State var currForm: EvalForm
     @State var showLabels = false
     
-    private func questionRow(q: Question) -> some View {
-        VStack {
-            Text(q.question)
-                .foregroundColor(.white)
-                .font(.subheadline)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding()
-            
-            HStack {
-                ForEach(ResponseLabel.allCases, id: \.self) { opt in
-                    Button {
-//                        q.response = .text(infoTitle(for: opt))
-                        
-                    } label: {
-                        Image(systemName: "circle.inset.filled")
-                            .foregroundColor(.white)
-                            .baselineOffset(1)
-                            .font(.system(size: 12))
-                        if showLabels {
-                            Text(infoTitle(for: opt))
-                                .foregroundColor(.white)
-                                .baselineOffset(1)
-                                .font(.system(size: 12))
-                        }
-                    }
-                    .buttonStyle(BorderlessButtonStyle())
-                    .frame(maxWidth: .infinity)
-                }.padding(.vertical, 8)
-            }
-            Divider().background(Color.gray)
-        }
-    }
-    
-
     private func infoTitle(for opt: ResponseLabel) -> String {
         switch opt {
         case .novice: return "Novice"
@@ -138,39 +104,67 @@ struct FillOutFormView: View {
         case .none: return "N/A"
         }
     }
-        
+    
+    private func questionRow(q: Question) -> some View {
+        VStack {
+            Text(q.question)
+                .foregroundColor(.white)
+                .font(.subheadline)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.vertical, 4)
+                .padding(.horizontal, 4)
+                .multilineTextAlignment(.center)
+            
+            HStack {
+                ForEach(ResponseLabel.allCases, id: \.self) { opt in
+                    Button {
+//                        q.response = .text(infoTitle(for: opt))
+                        
+                    } label: {
+                        Image(systemName: "circle")
+                            .foregroundColor(.white)
+                            .baselineOffset(1)
+                            .font(.system(size: 12))
+                    }
+                    .buttonStyle(BorderlessButtonStyle())
+                    .frame(maxWidth: .infinity)
+                }
+            }.padding(.vertical, 4)
+            Divider().background(Color.gray)
+        }
+    }
     
     var body: some View {
         ZStack {
             backgroundColor.ignoresSafeArea()
             VStack {
                 // Title
+                Text("\(currForm.type) Evaluation")
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                    .padding(.bottom, 4)
+                
                 HStack {
-                    Text("\(currForm.type) Evaluation")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                    Button {
-                        showLabels = !showLabels
-                    } label: {
-                        Image(systemName: "info.circle")
+                    ForEach(ResponseLabel.allCases, id: \.self) { opt in
+                        Text(infoTitle(for: opt))
                             .foregroundColor(.white)
                             .baselineOffset(1)
                             .font(.system(size: 12))
-                    }
-                    .buttonStyle(BorderlessButtonStyle())
+                    }.frame(maxWidth: .infinity)
                 }
+                Divider().background(Color.gray)
                 ScrollView {
                     ForEach (currForm.categories) { cat in
                         Text(cat.category)
                             .foregroundColor(.white)
                             .font(.headline)
                             .fixedSize(horizontal: false, vertical: true)
+                            .padding(.top, 6)
                         
                         ForEach (cat.questions) { question in
                             questionRow(q: question)
                         }
-                        
                     }
                 }
             }

@@ -61,7 +61,7 @@ class FirebaseService: ObservableObject {
                     
                     // add each question to the list
                     for (qNum, qQuestion) in qmap {
-                        if qNum != "Category", let qQuestion = qQuestion as? String {
+                        if qNum != "Category", var qQuestion = qQuestion as? String {
                             questions.append(Question(question: qQuestion))
                             print("question: \(qQuestion)")
                         }
