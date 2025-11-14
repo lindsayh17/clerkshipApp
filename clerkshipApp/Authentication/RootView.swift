@@ -8,40 +8,37 @@ struct RootView: View {
     @StateObject var navControl = NavControl()
     
     var body: some View {
-        NavigationStack{
-            ZStack {
-                backgroundColor.ignoresSafeArea()
-                VStack {
-                    Image("GreenUVMLogo")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                    
+        ZStack {
+            backgroundColor.ignoresSafeArea()
+            VStack {
+                Image("GreenUVMLogo")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                
 //                    Text("OBGYN Clerkship")
 //                        .font(.system(size: 36))
 //                        .foregroundColor(.white)
 //                        .bold()
 //                        .frame(width: 350, height: 100, alignment: .bottomLeading)
-                    
-                    // log in button
-                    BigButtonView(
-                        text: "Log In",
-                        action: {navControl.showSignIn = true},
-                        foregroundColor: .white,
-                        backgroundColor: backgroundColor
-                    ).padding()
-                    
-                    // create account button
-                    BigButtonView(
-                        text: "Create Account",
-                        action: {navControl.showCreateAccount = true},
-                        foregroundColor: backgroundColor,
-                        backgroundColor: .white
-                    ).padding()
-                }
-            }.navigationDestination(isPresented: $navControl.showSignIn){ LoginView()}
-                .navigationDestination(isPresented: $navControl.showCreateAccount){ CreateAccountView()}
-        }
-        
+                
+                // log in button
+                BigButtonView(
+                    text: "Log In",
+                    action: {navControl.showSignIn = true},
+                    foregroundColor: .white,
+                    backgroundColor: backgroundColor
+                ).padding()
+                
+                // create account button
+                BigButtonView(
+                    text: "Create Account",
+                    action: {navControl.showCreateAccount = true},
+                    foregroundColor: backgroundColor,
+                    backgroundColor: .white
+                ).padding()
+            }
+        }.navigationDestination(isPresented: $navControl.showSignIn){ LoginView()}
+            .navigationDestination(isPresented: $navControl.showCreateAccount){ CreateAccountView()}
     }
 }
 

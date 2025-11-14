@@ -73,74 +73,72 @@ struct CreateAccountView: View {
     }
     
     var body: some View {
-        NavigationStack {
-            ZStack(alignment: .topLeading) {
-                VStack {
-                    ZStack {
-                        backgroundColor.ignoresSafeArea()
-                        VStack {
-                            Image("GreenUVMLogo")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                            Text("Create Account")
-                                .font(.system(size: 36))
-                                .foregroundColor(.white)
-                                .bold()
-                                .frame(width: 350, height: 100, alignment: .leading)
-                        }
-                    }
-
+        ZStack(alignment: .topLeading) {
+            VStack {
+                ZStack {
+                    backgroundColor.ignoresSafeArea()
                     VStack {
-                        TextField("First name...", text: $firstname)
-                            .padding()
-                            .cornerRadius(10)
-                            .background(Color.gray.opacity(0.4))
-                        
-                        TextField("Last name...", text: $lastname)
-                            .padding()
-                            .cornerRadius(10)
-                            .background(Color.gray.opacity(0.4))
-                        
-                        TextField("Email...", text: $email)
-                            .padding()
-                            .cornerRadius(10)
-                            .background(Color.gray.opacity(0.4))
-                            .textInputAutocapitalization(.never)
-                        
-                        SecureField("Password...", text: $password)
-                            .padding()
-                            .cornerRadius(10)
-                            .background(Color.gray.opacity(0.4))
-                            .textInputAutocapitalization(.never)
-                        
-                        if let errorMessage = auth.errorMessage {
-                            Text(errorMessage)
-                                .foregroundColor(.red)
-                                .font(.footnote)
-                                .multilineTextAlignment(.center)
-                                .padding(.horizontal)
-                        }
-                        
-                        BigButtonView(
-                            text: "Create Account",
-                            action: createAccount,
-                            foregroundColor: .white,
-                            backgroundColor: backgroundColor,
-                            disabled: !checkComplete()
-                        )
+                        Image("GreenUVMLogo")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                        Text("Create Account")
+                            .font(.system(size: 36))
+                            .foregroundColor(.white)
+                            .bold()
+                            .frame(width: 350, height: 100, alignment: .leading)
                     }
-                    .padding()
                 }
-                
-                // Floating back button
-                BackButton()
-                    .padding(.top, 10)
-                    .padding(.leading, 10)
-                    .ignoresSafeArea(.all, edges: .top)
+
+                VStack {
+                    TextField("First name...", text: $firstname)
+                        .padding()
+                        .cornerRadius(10)
+                        .background(Color.gray.opacity(0.4))
+                    
+                    TextField("Last name...", text: $lastname)
+                        .padding()
+                        .cornerRadius(10)
+                        .background(Color.gray.opacity(0.4))
+                    
+                    TextField("Email...", text: $email)
+                        .padding()
+                        .cornerRadius(10)
+                        .background(Color.gray.opacity(0.4))
+                        .textInputAutocapitalization(.never)
+                    
+                    SecureField("Password...", text: $password)
+                        .padding()
+                        .cornerRadius(10)
+                        .background(Color.gray.opacity(0.4))
+                        .textInputAutocapitalization(.never)
+                    
+                    if let errorMessage = auth.errorMessage {
+                        Text(errorMessage)
+                            .foregroundColor(.red)
+                            .font(.footnote)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal)
+                    }
+                    
+                    BigButtonView(
+                        text: "Create Account",
+                        action: createAccount,
+                        foregroundColor: .white,
+                        backgroundColor: backgroundColor,
+                        disabled: !checkComplete()
+                    )
+                }
+                .padding()
             }
-            .navigationDestination(isPresented: $auth.isLoggedIn) { HomeView() }
+            
+            // Floating back button
+            BackButton()
+                .padding(.top, 10)
+                .padding(.leading, 10)
+                .ignoresSafeArea(.all, edges: .top)
         }
-        .navigationBarBackButtonHidden(true)
+        .navigationDestination(isPresented: $auth.isLoggedIn) { HomeView() }
+    .navigationBarBackButtonHidden(true)
     }
 }
 

@@ -66,68 +66,66 @@ struct LoginView: View {
     }
     
     var body: some View {
-        NavigationStack {
-            ZStack(alignment: .topLeading) { // top-level ZStack to overlay back button
-                VStack {
-                    ZStack {
-                        backgroundColor.ignoresSafeArea()
-                        VStack {
-                            Image("GreenUVMLogo")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                            Text("Welcome Back")
-                                .font(.system(size: 36))
-                                .foregroundColor(.white)
-                                .bold()
-                                .frame(width: 350, height: 100, alignment: .leading)
-                        }
-                    }
-
+        ZStack(alignment: .topLeading) {
+            VStack {
+                ZStack {
+                    backgroundColor.ignoresSafeArea()
                     VStack {
-                        TextField("Email...", text: $email)
-                            .padding()
-                            .cornerRadius(10)
-                            .background(Color.gray.opacity(0.4))
-                            .textInputAutocapitalization(.never)
-                            .foregroundColor(.black)
-                            .onChange(of: email) { loginError = nil }
-
-                        SecureField("Password...", text: $password)
-                            .padding()
-                            .cornerRadius(10)
-                            .background(Color.gray.opacity(0.4))
-                            .textInputAutocapitalization(.never)
-                            .foregroundColor(.black)
-                            .onChange(of: password) { loginError = nil }
-
-                        if let error = loginError {
-                            Text(error)
-                                .foregroundColor(.red)
-                                .font(.footnote)
-                                .multilineTextAlignment(.center)
-                                .padding(.horizontal)
-                        }
-
-                        BigButtonView(
-                            text: "Log In",
-                            action: signin,
-                            foregroundColor: .white,
-                            backgroundColor: backgroundColor
-                        )
-                        .padding()
+                        Image("GreenUVMLogo")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                        Text("Welcome Back")
+                            .font(.system(size: 36))
+                            .foregroundColor(.white)
+                            .bold()
+                            .frame(width: 350, height: 100, alignment: .leading)
                     }
-                    .padding()
                 }
 
-                // Overlay the floating back button
-                BackButton()
-                    .padding(.top, 10)
-                    .padding(.leading, 10)
-                    .ignoresSafeArea(.all, edges: .top)
+                VStack {
+                    TextField("Email...", text: $email)
+                        .padding()
+                        .cornerRadius(10)
+                        .background(Color.gray.opacity(0.4))
+                        .textInputAutocapitalization(.never)
+                        .foregroundColor(.black)
+                        .onChange(of: email) { loginError = nil }
+
+                    SecureField("Password...", text: $password)
+                        .padding()
+                        .cornerRadius(10)
+                        .background(Color.gray.opacity(0.4))
+                        .textInputAutocapitalization(.never)
+                        .foregroundColor(.black)
+                        .onChange(of: password) { loginError = nil }
+
+                    if let error = loginError {
+                        Text(error)
+                            .foregroundColor(.red)
+                            .font(.footnote)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal)
+                    }
+
+                    BigButtonView(
+                        text: "Log In",
+                        action: signin,
+                        foregroundColor: .white,
+                        backgroundColor: backgroundColor
+                    )
+                    .padding()
+                }
+                .padding()
             }
-            .navigationDestination(isPresented: $auth.isLoggedIn) { HomeView() }
+
+            // Overlay the floating back button
+            BackButton()
+                .padding(.top, 10)
+                .padding(.leading, 10)
+                .ignoresSafeArea(.all, edges: .top)
         }
-        .navigationBarBackButtonHidden(true)
+        .navigationDestination(isPresented: $auth.isLoggedIn) { HomeView() }
+    .navigationBarBackButtonHidden(true)
     }
 }
 
