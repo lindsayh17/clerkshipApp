@@ -13,6 +13,8 @@ struct ScheduleView: View {
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     
+    @State private var navigateOrientation: Bool = false
+    
     // State for nav tab
     @State private var currentView: NavOption = .resources
     @EnvironmentObject var currUser: CurrentUser
@@ -47,53 +49,62 @@ struct ScheduleView: View {
     ]
     
     var body: some View {
-        NavigationStack {
-            ZStack {
-                backgroundColor.ignoresSafeArea()
-                
-                VStack(spacing: 0) {
-                    ScrollView {
-                        VStack(spacing: 20) {
-                            // Title - centered
-                            Text("Schedule")
-                                .font(.largeTitle)
-                                .fontWeight(.bold)
-                                .foregroundColor(.white)
-                                .padding(.top, 30)
-                                .padding(.bottom, 15)
-                                .multilineTextAlignment(.center)
-                                .frame(maxWidth: .infinity)
-                            
-                            // Quick Facts list - left aligned
-                            VStack(alignment: .leading, spacing: 25) {
-                                ForEach(schedule) { item in
-                                    VStack(alignment: .leading, spacing: 8) {
-                                        Text(item.title)
-                                            .font(.title)
-                                            .foregroundColor(.white)
-                                        
-                                        ForEach(item.descriptions, id: \.self) { desc in
-                                            Text(LocalizedStringKey(desc))
-                                                 .font(.subheadline)
-                                                 .foregroundColor(.white.opacity(0.8))
-                                                 .padding(.leading, 8)
-                                         }
-                                    }
+        ZStack (alignment: .topLeading){
+            backgroundColor.ignoresSafeArea()
+            
+            VStack(spacing: 0) {
+                ScrollView {
+                    VStack(spacing: 20) {
+                        // Title - centered
+                        Text("Schedule")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                            .padding(.top, 30)
+                            .padding(.bottom, 15)
+                            .multilineTextAlignment(.center)
+                            .frame(maxWidth: .infinity)
+                        
+                        // Quick Facts list - left aligned
+                        VStack(alignment: .leading, spacing: 25) {
+                            ForEach(schedule) { item in
+                                VStack(alignment: .leading, spacing: 8) {
+                                    Text(item.title)
+                                        .font(.title)
+                                        .foregroundColor(.white)
+                                    
+                                    ForEach(item.descriptions, id: \.self) { desc in
+                                        Text(LocalizedStringKey(desc))
+                                             .font(.subheadline)
+                                             .foregroundColor(.white.opacity(0.8))
+                                             .padding(.leading, 8)
+                                     }
                                 }
                             }
-                            .padding(.horizontal, 30)
-                            .padding(.bottom, 30)
                         }
+                        .padding(.horizontal, 30)
+                        .padding(.bottom, 30)
                     }
-                    // Bottom Navigation
-                    NavTab(currentTab: $currentView)
                 }
+                // Bottom Navigation
+                NavTab(currentTab: $currentView)
             }
+            BackButtonToOrientation(navigateOrientation: $navigateOrientation)
+                .padding(.top, 10)
+                .padding(.leading, 10)
+                .ignoresSafeArea(.all, edges: .top)
         }
+        .navigationDestination(isPresented: $navigateOrientation) {
+            OrientationView()
+                .transition(.move(edge: .leading))
+        }
+    .navigationBarBackButtonHidden(true)
     }
 }
 
 // Preview
 #Preview {
-    ScheduleView().environmentObject(FirebaseService()).environmentObject(CurrentUser())
+    NavigationStack {
+        ScheduleView().environmentObject(FirebaseService()).environmentObject(CurrentUser())
+    }
 }

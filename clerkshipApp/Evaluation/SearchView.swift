@@ -14,6 +14,8 @@ struct SearchView: View {
     @State private var searchText = ""
     @State private var selectedUser: User? = nil
     
+    @State private var navigateFormChoice: Bool = false
+    
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
@@ -55,66 +57,74 @@ struct SearchView: View {
     
     init(){
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).attributedPlaceholder = NSAttributedString(string: "Search", attributes: [NSAttributedString.Key.foregroundColor: UIColor(.white)])
-
+        
     }
     
     var body: some View {
-        
-        NavigationStack {
-            ZStack {
-                backgroundColor.ignoresSafeArea()
-                
-                VStack(spacing: 0) {
-                    ScrollViewReader { proxy in
-                        ZStack(alignment: .trailing) {
-                            NamesView(filteredNames: filteredNames, selectedUser: $selectedUser, showEvalForm: $navControl.showEvalForm)
-                                .environment(\.defaultMinListRowHeight, 28)
-                                .listSectionSpacing(.compact)
-                                .scrollContentBackground(.hidden)
-                                .background(backgroundColor)
-                                .listStyle(.insetGrouped)
-                                .searchable(
-                                    text: $searchText,
-                                    placement: .navigationBarDrawer(displayMode: .always),
-                                    prompt: "Search"
-                                )
-                                .foregroundColor(.white)
-                                .tint(buttonColor)
-                            
-                            
-                            // Alphabet index
-                            VStack(spacing: 6) {
-                                ForEach(alphabet, id: \.self) { letter in
-                                    Button(action: {
-                                        scrollTo(letter)
-                                    }) {
-                                        Text(String(letter))
-                                            .font(.caption2)
-                                            .fontWeight(.medium)
-                                            .foregroundColor(buttonColor)
-                                            .padding(.horizontal, 2)
-                                    }
-                                    .buttonStyle(.plain)
+        ZStack (alignment: .topLeading) {
+            backgroundColor.ignoresSafeArea()
+            
+            VStack(spacing: 0) {
+                ScrollViewReader { proxy in
+                    ZStack(alignment: .trailing) {
+                        NamesView(filteredNames: filteredNames, selectedUser: $selectedUser, showEvalForm: $navControl.showEvalForm)
+                            .environment(\.defaultMinListRowHeight, 28)
+                            .listSectionSpacing(.compact)
+                            .scrollContentBackground(.hidden)
+                            .background(backgroundColor)
+                            .listStyle(.insetGrouped)
+                            .searchable(
+                                text: $searchText,
+                                placement: .navigationBarDrawer(displayMode: .always),
+                                prompt: "Search"
+                            )
+                            .foregroundColor(.white)
+                            .tint(buttonColor)
+                        
+                        
+                        // Alphabet index
+                        VStack(spacing: 6) {
+                            ForEach(alphabet, id: \.self) { letter in
+                                Button(action: {
+                                    scrollTo(letter)
+                                }) {
+                                    Text(String(letter))
+                                        .font(.caption2)
+                                        .fontWeight(.medium)
+                                        .foregroundColor(buttonColor)
+                                        .padding(.horizontal, 2)
                                 }
+                                .buttonStyle(.plain)
                             }
-                            .padding(.trailing, 6)
                         }
+                        .padding(.trailing, 6)
                     }
                 }
-            }.task { // like onAppear but for async?
-                namesList()
             }
-            .navigationDestination(isPresented: $navControl.showEvalForm){
-                if let selected = selectedUser{
-                    EvaluationView(currStudent: selected)
-                }
+            FormChoiceBackButtonView(navigateFormChoice: $navigateFormChoice)
+                .padding(.top, 10)
+                .padding(.leading, 10)
+                .ignoresSafeArea(.all, edges: .top)
+            
+        }
+        .navigationDestination(isPresented: $navigateFormChoice) {
+            FormChoiceView()
+                .transition(.move(edge: .leading))
+        }
+        .task { // like onAppear but for async?
+            namesList()
+        }
+        .navigationDestination(isPresented: $navControl.showEvalForm){
+            if let selected = selectedUser{
+                EvaluationView(currStudent: selected)
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
-    
-    private func scrollTo(_ letter: Character) {
-        print("Scroll to \(letter)")
-    }
+}
+
+private func scrollTo(_ letter: Character) {
+    print("Scroll to \(letter)")
 }
 
 // Components
@@ -170,6 +180,8 @@ struct NamesView: View{
 
 // Preview
 #Preview {
-    SearchView().environmentObject(FirebaseService()).environmentObject(UserStore()).environmentObject(EvalStore())
+    NavigationStack {
+        SearchView().environmentObject(FirebaseService()).environmentObject(UserStore()).environmentObject(EvalStore())
+    }
 }
 

@@ -44,101 +44,99 @@ struct HomeView: View {
             if currUser.user?.access == .admin {
                 AdminDashboardView()
             } else {
-                // Otherwise show normal app content
-                NavigationStack {
-                    ZStack {
-                        // Fill the screen with background color
-                        backgroundColor.ignoresSafeArea()
-                        
-                        VStack(spacing: 0) {
-                            // Scrollable content
-                            ScrollView {
-                                VStack(alignment: .leading, spacing: 40) {
-                                    switch currentView {
-                                    case .home:
-                                        
-                                        HStack{
-                                            VStack(alignment: .leading, spacing: 4){
-                                                Text("Welcome, \(currUser.user?.firstName ?? "Student")")
-                                                    .font(.title3)
-                                                    .fontWeight(.bold)
-                                                    .foregroundColor(.white)
-                                            }
-                                            Spacer()
+            // Otherwise show normal app content
+                ZStack {
+                    // Fill the screen with background color
+                    backgroundColor.ignoresSafeArea()
+                    
+                    VStack(spacing: 0) {
+                        // Scrollable content
+                        ScrollView {
+                            VStack(alignment: .leading, spacing: 40) {
+                                switch currentView {
+                                case .home:
+                                    
+                                    HStack{
+                                        VStack(alignment: .leading, spacing: 4){
+                                            Text("Welcome, \(currUser.user?.firstName ?? "Student")")
+                                                .font(.title3)
+                                                .fontWeight(.bold)
+                                                .foregroundColor(.white)
                                         }
-                                        // Daily Question
-                                        SectionView(title: "Daily Question") {
-                                            VStack(alignment: .leading, spacing: 12) {
-                                                if let dailyQuestion = qod.qod{
-                                                    Text(dailyQuestion.questionText)
-                                                        .foregroundColor(.white)
-                                                        .font(.title3)
-                                                        .fontWeight(.semibold)
-                                                        .bold()
-                                                Button(action: {
-                                                        withAnimation {
-                                                            // Show answer
-                                                            showDailyQuestionAnswer.toggle()
-                                                        }
-                                                    }) {
-                                                        Text(showDailyQuestionAnswer ? "Hide Answer" : "Show Answer")
-                                                            .underline()
-                                                    }
-                                                    // Answer
-                                                    if showDailyQuestionAnswer {
-                                                        if let dailyAnswer = qod.qod{
-                                                            Text(dailyAnswer.answer)
-                                                                .foregroundColor(.white)
-                                                        }
-                                                    }
-                                                }else {
-                                                    Text("No daily question available.")
-                                                        .foregroundColor(.white.opacity(0.7))
-                                                }
-                                            }
-                                        }
-                                        VStack(spacing: 20) {
-                                            HomeNavCard(title: "Quick Facts", icon: "book.fill", color: .purple) {
-                                                navControl.showQuickFacts = true
-                                            }
-                                            HomeNavCard(title: "Orientation", icon: "figure.wave", color: .teal) {
-                                                navControl.showOrientation = true
-                                            }
-                                            HomeNavCard(title: "Clerkship Requirements", icon: "checkmark.seal.fill", color: .pink) {
-                                                navControl.showRequirements = true
-                                            }
-                                            HomeNavCard(title: "Evaluation Form", icon: "doc.text.fill", color: .orange) {
-                                                //navControl.showOrientation = true
-                                            }
-                                        }
-                                        .padding(.horizontal)
-                                        .padding(.bottom, 50)
-                                        .navigationDestination(isPresented: $navControl.showOrientation){OrientationView()}
-                                        .navigationDestination(isPresented: $navControl.showQuickFacts){QuickFactsView()}
-                                        .navigationDestination(isPresented: $navControl.showRequirements){ClerkshipRequirementsView()}
-                                    case .resources:
-                                        ResourcesView()
-                                    case .search:
-                                        SearchView()
-                                    case .profile:
-                                        ProfileView()
-                                    case .users:
-                                        SearchView()
-                                    case .eval:
-//                                        SearchView()
-                                        FormChoiceView()
+                                        Spacer()
                                     }
+                                    // Daily Question
+                                    SectionView(title: "Daily Question") {
+                                        VStack(alignment: .leading, spacing: 12) {
+                                            if let dailyQuestion = qod.qod{
+                                                Text(dailyQuestion.questionText)
+                                                    .foregroundColor(.white)
+                                                    .font(.title3)
+                                                    .fontWeight(.semibold)
+                                                    .bold()
+                                            Button(action: {
+                                                    withAnimation {
+                                                        // Show answer
+                                                        showDailyQuestionAnswer.toggle()
+                                                    }
+                                                }) {
+                                                    Text(showDailyQuestionAnswer ? "Hide Answer" : "Show Answer")
+                                                        .underline()
+                                                }
+                                                // Answer
+                                                if showDailyQuestionAnswer {
+                                                    if let dailyAnswer = qod.qod{
+                                                        Text(dailyAnswer.answer)
+                                                            .foregroundColor(.white)
+                                                    }
+                                                }
+                                            }else {
+                                                Text("No daily question available.")
+                                                    .foregroundColor(.white.opacity(0.7))
+                                            }
+                                        }
+                                    }
+                                    VStack(spacing: 20) {
+                                        HomeNavCard(title: "Quick Facts", icon: "book.fill", color: .purple) {
+                                            navControl.showQuickFacts = true
+                                        }
+                                        HomeNavCard(title: "Orientation", icon: "figure.wave", color: .teal) {
+                                            navControl.showOrientation = true
+                                        }
+                                        HomeNavCard(title: "Clerkship Requirements", icon: "checkmark.seal.fill", color: .pink) {
+                                            navControl.showRequirements = true
+                                        }
+                                        HomeNavCard(title: "Evaluation Form", icon: "doc.text.fill", color: .orange) {
+                                            //navControl.showOrientation = true
+                                        }
+                                    }
+                                    .padding(.horizontal)
+                                    .padding(.bottom, 50)
+                                    .navigationDestination(isPresented: $navControl.showOrientation){OrientationView()}
+                                    .navigationDestination(isPresented: $navControl.showQuickFacts){QuickFactsView()}
+                                    .navigationDestination(isPresented: $navControl.showRequirements){ClerkshipRequirementsView()}
+                                case .resources:
+                                    ResourcesView()
+                                case .search:
+                                    SearchView()
+                                case .profile:
+                                    ProfileView()
+                                case .users:
+                                    SearchView()
+                                case .eval:
+//                                        SearchView()
+                                    FormChoiceView()
                                 }
-                                .padding()
                             }
-                            .padding(.horizontal)
-                            // Bottom Navigation
-                            NavTab(currentTab: $currentView)
+                            .padding()
                         }
-                        // }
+                        .padding(.horizontal)
+                        // Bottom Navigation
+                        NavTab(currentTab: $currentView)
                     }
+                    // }
                 }
-                .navigationBarBackButtonHidden()
+            .navigationBarBackButtonHidden()
             }
         } // End Group
     }
@@ -180,10 +178,12 @@ struct HomeNavCard: View {
 
 // Preview
 #Preview {
-    HomeView()
-        .environmentObject(FirebaseService())
-        .environmentObject(CurrentUser())
-        .environmentObject(AuthService())
-        .environmentObject(QODStore())
+    NavigationStack {
+        HomeView()
+            .environmentObject(FirebaseService())
+            .environmentObject(CurrentUser())
+            .environmentObject(AuthService())
+            .environmentObject(QODStore())
+    }
 }
 

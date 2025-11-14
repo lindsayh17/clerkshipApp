@@ -1,3 +1,6 @@
+//  LoginView.swift
+//  clerkshipApp
+
 import SwiftUI
 import FirebaseAuth
 
@@ -10,17 +13,17 @@ struct LoginView: View {
     
     @State private var email = ""
     @State private var password = ""
-    @State private var loading = false
     @State private var loginError: String? = nil
     
     private let backgroundColor = Color("BackgroundColor")
     
-    func getNames() async{
+    // MARK: - Firebase fetch functions
+    func getNames() async {
         do {
             try await firebase.fetchUsers()
-            if firebase.downloadSuccessful{
+            if firebase.downloadSuccessful {
                 userStore.allUsers.removeAll()
-                for user in firebase.users{
+                for user in firebase.users {
                     userStore.addUser(user)
                 }
             }
@@ -29,10 +32,10 @@ struct LoginView: View {
         }
     }
     
-    func getCurrUser() async{
+    func getCurrUser() async {
         do {
             try await firebase.fetchUser(currEmail: auth.currentUser)
-            if firebase.downloadSuccessful{
+            if firebase.downloadSuccessful {
                 currentUser.user = firebase.currUser
             }
         } catch {
@@ -40,10 +43,10 @@ struct LoginView: View {
         }
     }
     
-    func getQOD() async{
-        do{
+    func getQOD() async {
+        do {
             try await firebase.fetchRandomQuestion()
-            if firebase.downloadSuccessful{
+            if firebase.downloadSuccessful {
                 qod.qod = firebase.question
             }
         } catch {
@@ -59,85 +62,93 @@ struct LoginView: View {
                 await getCurrUser()
                 await getQOD()
                 auth.isLoggedIn = true
-            }catch {
+            } catch {
                 loginError = "Wrong email or password"
             }
         }
     }
     
+    // MARK: - Body
     var body: some View {
-        NavigationStack {
-            ZStack(alignment: .topLeading) { // top-level ZStack to overlay back button
-                VStack {
-                    ZStack {
-                        backgroundColor.ignoresSafeArea()
-                        VStack {
-                            Image("GreenUVMLogo")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                            Text("Welcome Back")
-                                .font(.system(size: 36))
-                                .foregroundColor(.white)
-                                .bold()
-                                .frame(width: 350, height: 100, alignment: .leading)
-                        }
-                    }
-
+        ZStack(alignment: .topLeading) {
+            VStack(spacing: 20) {
+                ZStack {
+                    backgroundColor.ignoresSafeArea()
                     VStack {
-                        TextField("Email...", text: $email)
-                            .padding()
-                            .cornerRadius(10)
-                            .background(Color.gray.opacity(0.4))
-                            .textInputAutocapitalization(.never)
-                            .foregroundColor(.black)
-                            .onChange(of: email) { loginError = nil }
-
-                        SecureField("Password...", text: $password)
-                            .padding()
-                            .cornerRadius(10)
-                            .background(Color.gray.opacity(0.4))
-                            .textInputAutocapitalization(.never)
-                            .foregroundColor(.black)
-                            .onChange(of: password) { loginError = nil }
-
-                        if let error = loginError {
-                            Text(error)
-                                .foregroundColor(.red)
-                                .font(.footnote)
-                                .multilineTextAlignment(.center)
-                                .padding(.horizontal)
-                        }
-
-                        BigButtonView(
-                            text: "Log In",
-                            action: signin,
-                            foregroundColor: .white,
-                            backgroundColor: backgroundColor
-                        )
-                        .padding()
+                        Image("GreenUVMLogo")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                        Text("Welcome Back")
+                            .font(.system(size: 36))
+                            .foregroundColor(.white)
+                            .bold()
+                            .frame(width: 350, height: 100, alignment: .leading)
                     }
-                    .padding()
                 }
-
-                // Overlay the floating back button
-                BackButton()
+                
+                VStack(spacing: 15) {
+                    // Email
+                    TextField("Email...", text: $email)
+                        .padding()
+                        .background(Color.gray.opacity(0.4))
+                        .cornerRadius(10)
+                        .textInputAutocapitalization(.never)
+                        .foregroundColor(.black)
+                        .onChange(of: email) { _ in loginError = nil }
+                    
+                    // Password
+                    SecureField("Password...", text: $password)
+                        .padding()
+                        .background(Color.gray.opacity(0.4))
+                        .cornerRadius(10)
+                        .textInputAutocapitalization(.never)
+                        .foregroundColor(.black)
+                        .onChange(of: password) { _ in loginError = nil }
+                    
+                    // Error message
+                    if let error = loginError {
+                        Text(error)
+                            .foregroundColor(.red)
+                            .font(.footnote)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal)
+                    }
+                    
+                    // Login Button
+                    BigButtonView(
+                        text: "Log In",
+                        action: signin,
+                        foregroundColor: .white,
+                        backgroundColor: backgroundColor
+                    )
                     .padding(.top, 10)
-                    .padding(.leading, 10)
-                    .ignoresSafeArea(.all, edges: .top)
+                }
+                .padding(.horizontal, 30)
             }
-            .navigationDestination(isPresented: $auth.isLoggedIn) { HomeView() }
+            
+            // Floating back button
+            BackButton()
+                .padding(.top, 10)
+                .padding(.leading, 10)
+                .ignoresSafeArea(.all, edges: .top)
+        }
+        // Navigate to HomeView on login
+        .navigationDestination(isPresented: $auth.isLoggedIn) {
+            HomeView()
         }
         .navigationBarBackButtonHidden(true)
     }
 }
 
-// Preview
+// MARK: - Preview
 #Preview {
-    LoginView()
-        .environmentObject(FirebaseService())
-        .environmentObject(UserStore())
-        .environmentObject(CurrentUser())
-        .environmentObject(AuthService())
-        .environmentObject(QODStore())
+    NavigationStack {
+        LoginView()
+            .environmentObject(FirebaseService())
+            .environmentObject(UserStore())
+            .environmentObject(CurrentUser())
+            .environmentObject(AuthService())
+            .environmentObject(QODStore())
+    }
 }
 

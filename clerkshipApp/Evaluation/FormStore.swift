@@ -1,9 +1,5 @@
-//
 //  FormStore.swift
 //  clerkshipApp
-//
-//  Created by Hannah Deyst on 11/11/25.
-//
 
 import SwiftUI
 

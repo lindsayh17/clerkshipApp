@@ -15,13 +15,16 @@ struct clerkshipAppApp: App {
     }
     var body: some Scene {
         WindowGroup {
-            RootView()
-                .environmentObject(FirebaseService())
-                .environmentObject(AuthService())
-                .environmentObject(UserStore())
-                .environmentObject(CurrentUser())
-                .environmentObject(EvalStore())
-                .environmentObject(QODStore())
+            NavigationStack {
+                RootView()
+                    .environmentObject(FirebaseService())
+                    .environmentObject(AuthService())
+                    .environmentObject(UserStore())
+                    .environmentObject(CurrentUser())
+                    .environmentObject(EvalStore())
+                    .environmentObject(QODStore())
+            }
+          
         }
     }
 }

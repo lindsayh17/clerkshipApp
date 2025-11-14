@@ -15,14 +15,12 @@ struct FormChoiceView: View {
     
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
-
     
     // download forms from firebase
     func downloadForms() {
         Task {
             do {
                 try await firebase.fetchForms()
-                
                 if firebase.formDownloadSuccessful {
                     for form in firebase.forms {
                         formStore.addForm(form)
@@ -34,33 +32,31 @@ struct FormChoiceView: View {
         }
     }
     
-    
     var body: some View {
-        NavigationStack {
-            ZStack {
-                backgroundColor.ignoresSafeArea()
-                VStack {
-                    ScrollView {
-                        // Screen Label
-                        Text("Evaluation Type")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                            .padding(.top, 30)
-                            .padding(.bottom, 30)
-                            .multilineTextAlignment(.center)
-                            .frame(maxWidth: .infinity)
-                        
-                        ForEach (firebase.forms) { form in
-                            MainButtonView(title: form.type, color: buttonColor, action: {
-                                selectedForm = form
-                                choiceMade = true
-                            })
-                        }
+        ZStack {
+            backgroundColor.ignoresSafeArea()
+            VStack {
+                ScrollView {
+                    // Screen Label
+                    Text("Evaluation Type")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .padding(.top, 30)
+                        .padding(.bottom, 30)
+                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: .infinity)
+                    
+                    ForEach(firebase.forms) { form in
+                        MainButtonView(title: form.type, color: buttonColor, action: {
+                            selectedForm = form
+                            choiceMade = true
+                        })
                     }
                 }
             }
-        }.task {
+        }
+        .task {
             do {
                 try await firebase.fetchForms()
             } catch {
@@ -75,8 +71,12 @@ struct FormChoiceView: View {
     }
 }
 
+// Preview
 #Preview {
-    FormChoiceView()
-        .environmentObject(FirebaseService())
-        .environmentObject(FormStore())
+    NavigationStack {
+        FormChoiceView()
+            .environmentObject(FirebaseService())
+            .environmentObject(FormStore())
+    }
 }
+
