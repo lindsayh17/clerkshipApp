@@ -14,6 +14,8 @@ struct SearchView: View {
     @State private var searchText = ""
     @State private var selectedUser: User? = nil
     
+    @State private var navigateFormChoice: Bool = false
+    
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
@@ -61,7 +63,7 @@ struct SearchView: View {
     var body: some View {
         
         NavigationStack {
-            ZStack {
+            ZStack (alignment: .topLeading) {
                 backgroundColor.ignoresSafeArea()
                 
                 VStack(spacing: 0) {
@@ -101,7 +103,17 @@ struct SearchView: View {
                         }
                     }
                 }
-            }.task { // like onAppear but for async?
+                FormChoiceBackButtonView(navigateFormChoice: $navigateFormChoice)
+                    .padding(.top, 10)
+                    .padding(.leading, 10)
+                    .ignoresSafeArea(.all, edges: .top)
+                
+            }
+            .navigationDestination(isPresented: $navigateFormChoice) {
+                FormChoiceView()
+                    .transition(.move(edge: .leading))
+            }
+            .task { // like onAppear but for async?
                 namesList()
             }
             .navigationDestination(isPresented: $navControl.showEvalForm){
@@ -109,6 +121,7 @@ struct SearchView: View {
                     EvaluationView(currStudent: selected)
                 }
             }
+            .navigationBarBackButtonHidden(true)
         }
     }
     

@@ -23,7 +23,7 @@ struct EvaluationView: View {
     @EnvironmentObject var currUser: CurrentUser
     @EnvironmentObject var formStore: FormStore
     
-    @State private var navigateHome: Bool = false
+    @State private var navigateSearch: Bool = false
     
     @State private var form = Form()
     @State private var submitted = false
@@ -225,14 +225,14 @@ struct EvaluationView: View {
                         SubmittedView()
                     }
             }
-                BackToHomeButton(navigateHome: $navigateHome)
+                SearchViewBackButton(navigateSearch: $navigateSearch)
                     .padding(.top, 10)
                     .padding(.leading, 10)
                     .ignoresSafeArea(.all, edges: .top)
                 }
         }
-        .navigationDestination(isPresented: $navigateHome) {
-            HomeView()
+        .navigationDestination(isPresented: $navigateSearch) {
+            SearchView()
                 .transition(.move(edge: .leading))
         }
         .navigationBarBackButtonHidden(true)
