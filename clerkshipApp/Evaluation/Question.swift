@@ -30,7 +30,7 @@ struct QuestionCategory: Identifiable, Codable {
 }
 
 
-struct Question: Identifiable, Codable {
+class Question: Identifiable, Codable {
     
     // Question Types
     enum QuestionType: Codable {
@@ -118,7 +118,7 @@ struct FillOutFormView: View {
             HStack {
                 ForEach(ResponseLabel.allCases, id: \.self) { opt in
                     Button {
-//                        q.response = .text(infoTitle(for: opt))
+                        q.response = .text(infoTitle(for: opt))
                         
                     } label: {
                         Image(systemName: "circle")
