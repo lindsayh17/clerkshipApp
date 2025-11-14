@@ -70,9 +70,11 @@ struct LocationsView: View {
 
 // Preview
 #Preview {
-    LocationsView()
-        .environmentObject(FirebaseService())
-        .environmentObject(CurrentUser())
-        .environmentObject(AuthService())
+    NavigationStack {
+        LocationsView()
+            .environmentObject(FirebaseService())
+            .environmentObject(CurrentUser())
+            .environmentObject(AuthService())
+    }
 }
 

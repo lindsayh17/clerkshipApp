@@ -104,5 +104,7 @@ struct ScheduleView: View {
 
 // Preview
 #Preview {
-    ScheduleView().environmentObject(FirebaseService()).environmentObject(CurrentUser())
+    NavigationStack {
+        ScheduleView().environmentObject(FirebaseService()).environmentObject(CurrentUser())
+    }
 }

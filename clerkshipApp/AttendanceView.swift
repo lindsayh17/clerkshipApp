@@ -83,9 +83,11 @@ struct AttendanceView: View {
 
 // Preview
 #Preview {
-    AttendanceView()
-        .environmentObject(FirebaseService())
-        .environmentObject(CurrentUser())
-        .environmentObject(AuthService())
+    NavigationStack {
+        AttendanceView()
+            .environmentObject(FirebaseService())
+            .environmentObject(CurrentUser())
+            .environmentObject(AuthService())
+    }
 }
 

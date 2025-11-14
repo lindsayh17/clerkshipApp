@@ -91,5 +91,7 @@ struct SurgicalInstrumentsView: View {
 
 // Preview
 #Preview {
-    SurgicalInstrumentsView().environmentObject(FirebaseService()).environmentObject(CurrentUser())
+    NavigationStack {
+        SurgicalInstrumentsView().environmentObject(FirebaseService()).environmentObject(CurrentUser())
+    }
 }

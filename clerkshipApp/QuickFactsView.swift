@@ -108,7 +108,9 @@ struct QuickFactsView: View {
 
 // Preview
 #Preview {
-    QuickFactsView()
-        .environmentObject(FirebaseService())
-        .environmentObject(CurrentUser())
+    NavigationStack {
+        QuickFactsView()
+            .environmentObject(FirebaseService())
+            .environmentObject(CurrentUser())
+    }
 }

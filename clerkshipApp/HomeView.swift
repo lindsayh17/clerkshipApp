@@ -178,10 +178,12 @@ struct HomeNavCard: View {
 
 // Preview
 #Preview {
-    HomeView()
-        .environmentObject(FirebaseService())
-        .environmentObject(CurrentUser())
-        .environmentObject(AuthService())
-        .environmentObject(QODStore())
+    NavigationStack {
+        HomeView()
+            .environmentObject(FirebaseService())
+            .environmentObject(CurrentUser())
+            .environmentObject(AuthService())
+            .environmentObject(QODStore())
+    }
 }
 

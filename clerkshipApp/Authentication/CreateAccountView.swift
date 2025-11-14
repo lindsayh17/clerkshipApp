@@ -144,11 +144,13 @@ struct CreateAccountView: View {
 
 // Preview
 #Preview {
-    CreateAccountView()
-        .environmentObject(FirebaseService())
-        .environmentObject(AuthService())
-        .environmentObject(UserStore())
-        .environmentObject(CurrentUser())
-        .environmentObject(QODStore())
+    NavigationStack{
+        CreateAccountView()
+            .environmentObject(FirebaseService())
+            .environmentObject(AuthService())
+            .environmentObject(UserStore())
+            .environmentObject(CurrentUser())
+            .environmentObject(QODStore())
+    }
 }
 

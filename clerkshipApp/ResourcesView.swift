@@ -58,7 +58,8 @@ struct ResourcesView: View {
 
 // Preview
 #Preview {
-    ResourcesView()
-    
+    NavigationStack {
+        ResourcesView()
+    }
 }
 

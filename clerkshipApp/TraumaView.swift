@@ -146,10 +146,12 @@ struct TraumaView: View {
 
 // Preview
 #Preview {
-    TraumaView()
-        .environmentObject(FirebaseService())
-        .environmentObject(CurrentUser())
-        .environmentObject(AuthService())
+    NavigationStack {
+        TraumaView()
+            .environmentObject(FirebaseService())
+            .environmentObject(CurrentUser())
+            .environmentObject(AuthService())
+    }
 }
 
 

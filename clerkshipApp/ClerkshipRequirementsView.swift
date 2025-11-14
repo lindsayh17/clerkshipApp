@@ -39,7 +39,6 @@ struct ClerkshipRequirementsView: View {
     var body: some View {
             ZStack (alignment: .topLeading) {
                 backgroundColor.ignoresSafeArea()
-                
                 VStack(spacing: 0) {
                     ScrollView {
                         VStack(alignment: .leading, spacing: 20) {
@@ -107,9 +106,11 @@ struct ClerkshipRequirementsView: View {
 
 // Preview
 #Preview {
-    ClerkshipRequirementsView()
-        .environmentObject(FirebaseService())
-        .environmentObject(CurrentUser())
-        .environmentObject(AuthService())
+    NavigationStack {
+        ClerkshipRequirementsView()
+            .environmentObject(FirebaseService())
+            .environmentObject(CurrentUser())
+            .environmentObject(AuthService())
+    }
 }
 

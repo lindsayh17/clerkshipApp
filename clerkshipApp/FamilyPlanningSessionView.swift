@@ -102,10 +102,12 @@ struct FamilyPlanningSessionView: View {
 
 // Preview
 #Preview {
-    FamilyPlanningSessionView()
-        .environmentObject(FirebaseService())
-        .environmentObject(CurrentUser())
-        .environmentObject(AuthService())
+    NavigationStack {
+        FamilyPlanningSessionView()
+            .environmentObject(FirebaseService())
+            .environmentObject(CurrentUser())
+            .environmentObject(AuthService())
+    }
 }
 
 

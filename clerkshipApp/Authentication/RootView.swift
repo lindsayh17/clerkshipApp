@@ -10,43 +10,49 @@ struct RootView: View {
     var body: some View {
         ZStack {
             backgroundColor.ignoresSafeArea()
-            VStack {
+            
+            VStack(spacing: 30) {
                 Image("GreenUVMLogo")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                 
-//                    Text("OBGYN Clerkship")
-//                        .font(.system(size: 36))
-//                        .foregroundColor(.white)
-//                        .bold()
-//                        .frame(width: 350, height: 100, alignment: .bottomLeading)
-                
-                // log in button
+                // Log In button
                 BigButtonView(
                     text: "Log In",
-                    action: {navControl.showSignIn = true},
+                    action: { navControl.showSignIn = true },
                     foregroundColor: .white,
                     backgroundColor: backgroundColor
-                ).padding()
+                )
+                .padding(.horizontal, 40)
                 
-                // create account button
+                // Create Account button
                 BigButtonView(
                     text: "Create Account",
-                    action: {navControl.showCreateAccount = true},
+                    action: { navControl.showCreateAccount = true },
                     foregroundColor: backgroundColor,
                     backgroundColor: .white
-                ).padding()
+                )
+                .padding(.horizontal, 40)
             }
-        }.navigationDestination(isPresented: $navControl.showSignIn){ LoginView()}
-            .navigationDestination(isPresented: $navControl.showCreateAccount){ CreateAccountView()}
+        }
+        // Navigation destinations for buttons
+        .navigationDestination(isPresented: $navControl.showSignIn) {
+            LoginView()
+        }
+        .navigationDestination(isPresented: $navControl.showCreateAccount) {
+            CreateAccountView()
+        }
     }
 }
 
 #Preview {
-    RootView().environmentObject(FirebaseService())
-        .environmentObject(UserStore())
-        .environmentObject(CurrentUser())
-        .environmentObject(AuthService())
-        .environmentObject(QODStore())
-
+    NavigationStack {  
+        RootView()
+            .environmentObject(FirebaseService())
+            .environmentObject(UserStore())
+            .environmentObject(CurrentUser())
+            .environmentObject(AuthService())
+            .environmentObject(QODStore())
+    }
 }
+

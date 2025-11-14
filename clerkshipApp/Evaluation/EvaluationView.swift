@@ -116,124 +116,122 @@ struct EvaluationView: View {
     }
     
     var body: some View {
-        NavigationStack {
-            ZStack (alignment: .topLeading) {
-                backgroundColor.ignoresSafeArea()
-                
-                VStack {
-                    ScrollView {
-                        VStack(alignment: .leading, spacing: 10) {
-                            
-                            // Title
-                            Text("History Gathering Evaluation")
-                                .font(.headline)
-                                .fontWeight(.bold)
-                                .foregroundColor(.white)
-                                .padding(.bottom, 6)
-                                .padding(.top, 50)
-                            
-                            // Radio button headers
-                            labelledRow()
-                            Divider().background(Color.gray)
-                            
-                            // Question Rows
-                            ForEach($form.questions) { $q in
-                                if q.type == .radio {
-                                    VStack {
-                                        Text(q.question)
-                                            .foregroundColor(.white)
-                                            .font(.headline)
-                                            .fixedSize(horizontal: false, vertical: true)
-                                        
-                                        HStack(alignment: .center, spacing: 12) {
-                                            ForEach(["N/A", "Novice", "Apprentice", "Expert"], id: \.self) { option in
-                                                Button(action: {
-                                                    q.response = .text(option)
-                                                }) {
-                                                    Image(systemName: q.responseString == option ? "circle.inset.filled" : "circle")
-                                                        .foregroundColor(q.responseString == option ? .purple : .white)
-                                                }
-                                                .frame(maxWidth: .infinity)
-                                            }.padding(.vertical, 8)
-                                        }
-                                        Divider().background(Color.gray)
-                                    }
-                                }
-                                
-                                // Notes Field
-                                if q.type == .open {
-                                    VStack(alignment: .leading, spacing: 5) {
-                                        Text(q.question)
-                                            .foregroundColor(.white)
-                                        TextEditor(
-                                            text: Binding(
-                                                get: {
-                                                    if case .text(let notes) = q.response { return notes }
-                                                    return ""
-                                                },
-                                                set: { q.response = .text($0) }
-                                            )
-                                        )
-                                        .frame(height: 80)
-                                        .padding(8)
-                                        .background(Color.white)
-                                        .cornerRadius(10)
-                                    }
-                                    .padding(.top, 10)
-                                }
-                            }
-                            
-                            // Student-only preceptor email field (once at the bottom)
-                            if currUser.user?.access == .student {
-                                VStack(alignment: .leading, spacing: 5) {
-                                    Text("Preceptor Email")
+        ZStack (alignment: .topLeading) {
+            backgroundColor.ignoresSafeArea()
+            
+            VStack {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 10) {
+                        
+                        // Title
+                        Text("History Gathering Evaluation")
+                            .font(.headline)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                            .padding(.bottom, 6)
+                            .padding(.top, 50)
+                        
+                        // Radio button headers
+                        labelledRow()
+                        Divider().background(Color.gray)
+                        
+                        // Question Rows
+                        ForEach($form.questions) { $q in
+                            if q.type == .radio {
+                                VStack {
+                                    Text(q.question)
                                         .foregroundColor(.white)
                                         .font(.headline)
+                                        .fixedSize(horizontal: false, vertical: true)
                                     
-                                    TextField("Enter preceptor email", text: $preceptorEmail)
-                                        .keyboardType(.emailAddress)
-                                        .autocapitalization(.none)
-                                        .padding(10)
-                                        .background(Color.white)
-                                        .cornerRadius(10)
+                                    HStack(alignment: .center, spacing: 12) {
+                                        ForEach(["N/A", "Novice", "Apprentice", "Expert"], id: \.self) { option in
+                                            Button(action: {
+                                                q.response = .text(option)
+                                            }) {
+                                                Image(systemName: q.responseString == option ? "circle.inset.filled" : "circle")
+                                                    .foregroundColor(q.responseString == option ? .purple : .white)
+                                            }
+                                            .frame(maxWidth: .infinity)
+                                        }.padding(.vertical, 8)
+                                    }
+                                    Divider().background(Color.gray)
                                 }
-                                .padding(.top, 15)
                             }
                             
-                            // Submit Button
-                            Button(action: {
-                                submitted = true
-                                submitForm()
-                            }) {
-                                Text("Submit Form")
-                                    .foregroundColor(.white)
-                                    .padding()
-                                    .frame(maxWidth: .infinity)
-                                    .background(form.validForm() ? buttonColor : Color.gray)
-                                    .cornerRadius(30)
+                            // Notes Field
+                            if q.type == .open {
+                                VStack(alignment: .leading, spacing: 5) {
+                                    Text(q.question)
+                                        .foregroundColor(.white)
+                                    TextEditor(
+                                        text: Binding(
+                                            get: {
+                                                if case .text(let notes) = q.response { return notes }
+                                                return ""
+                                            },
+                                            set: { q.response = .text($0) }
+                                        )
+                                    )
+                                    .frame(height: 80)
+                                    .padding(8)
+                                    .background(Color.white)
+                                    .cornerRadius(10)
+                                }
+                                .padding(.top, 10)
                             }
-                            .disabled(!form.validForm() || (currUser.user?.access == .student && preceptorEmail.trimmingCharacters(in: .whitespaces).isEmpty))
-                            .padding(.top, 20)
                         }
-                        .padding()
+                        
+                        // Student-only preceptor email field (once at the bottom)
+                        if currUser.user?.access == .student {
+                            VStack(alignment: .leading, spacing: 5) {
+                                Text("Preceptor Email")
+                                    .foregroundColor(.white)
+                                    .font(.headline)
+                                
+                                TextField("Enter preceptor email", text: $preceptorEmail)
+                                    .keyboardType(.emailAddress)
+                                    .autocapitalization(.none)
+                                    .padding(10)
+                                    .background(Color.white)
+                                    .cornerRadius(10)
+                            }
+                            .padding(.top, 15)
+                        }
+                        
+                        // Submit Button
+                        Button(action: {
+                            submitted = true
+                            submitForm()
+                        }) {
+                            Text("Submit Form")
+                                .foregroundColor(.white)
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(form.validForm() ? buttonColor : Color.gray)
+                                .cornerRadius(30)
+                        }
+                        .disabled(!form.validForm() || (currUser.user?.access == .student && preceptorEmail.trimmingCharacters(in: .whitespaces).isEmpty))
+                        .padding(.top, 20)
                     }
-                    .navigationDestination(isPresented: $submitted) {
-                        SubmittedView()
-                    }
+                    .padding()
                 }
-                
-                // Back button to search
-                SearchViewBackButton(navigateSearch: $navigateSearch)
-                    .padding(.top, 10)
-                    .padding(.leading, 10)
-                    .ignoresSafeArea(.all, edges: .top)
+                .navigationDestination(isPresented: $submitted) {
+                    SubmittedView()
+                }
             }
+            
+            // Back button to search
+            SearchViewBackButton(navigateSearch: $navigateSearch)
+                .padding(.top, 10)
+                .padding(.leading, 10)
+                .ignoresSafeArea(.all, edges: .top)
         }
-        .navigationDestination(isPresented: $navigateSearch) {
-            SearchView()
-                .transition(.move(edge: .leading))
-        }
-        .navigationBarBackButtonHidden(true)
+    .navigationDestination(isPresented: $navigateSearch) {
+        SearchView()
+            .transition(.move(edge: .leading))
+    }
+    .navigationBarBackButtonHidden(true)
     }
 }
 
@@ -271,10 +269,12 @@ struct SubmittedView: View {
 
 // Preview
 #Preview {
-    EvaluationView(currStudent: User(firstName: "Place", lastName: "Holder", email: "email"))
-        .environmentObject(FirebaseService())
-        .environmentObject(EvalStore())
-        .environmentObject(CurrentUser())
-        .environmentObject(FormStore())
+    NavigationStack {
+        EvaluationView(currStudent: User(firstName: "Place", lastName: "Holder", email: "email"))
+            .environmentObject(FirebaseService())
+            .environmentObject(EvalStore())
+            .environmentObject(CurrentUser())
+            .environmentObject(FormStore())
+    }
 }
 
