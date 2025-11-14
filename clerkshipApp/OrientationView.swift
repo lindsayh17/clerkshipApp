@@ -8,12 +8,13 @@ struct OrientationView: View {
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
     
+    @State private var navigateHome: Bool = false
     @State private var currentView: NavOption = .home
     @EnvironmentObject var currUser: CurrentUser
     
     var body: some View {
         NavigationStack {
-            ZStack {
+            ZStack(alignment: .topLeading) {
                 backgroundColor.ignoresSafeArea()
                 
                 VStack(spacing: 0) {
@@ -68,9 +69,17 @@ struct OrientationView: View {
                     // Bottom navigation
                     NavTab(currentTab: $currentView)
                 }
+                BackToHomeButton(navigateHome: $navigateHome)
+                    .padding(.top, 10)
+                    .padding(.leading, 10)
+                    .ignoresSafeArea(.all, edges: .top)
+            }
+            .navigationDestination(isPresented: $navigateHome) {
+                HomeView()
+                    .transition(.move(edge: .leading))
             }
         }
-        .navigationBarBackButtonHidden()
+        .navigationBarBackButtonHidden(true)
     }
 }
 

@@ -14,6 +14,7 @@ struct ClerkshipRequirementsView: View {
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
     
+    @State private var navigateHome: Bool = false
     @State private var currentView: NavOption = .home
     @EnvironmentObject var currUser: CurrentUser
     
@@ -37,7 +38,7 @@ struct ClerkshipRequirementsView: View {
     
     var body: some View {
         NavigationStack {
-            ZStack {
+            ZStack (alignment: .topLeading) {
                 backgroundColor.ignoresSafeArea()
                 
                 VStack(spacing: 0) {
@@ -50,10 +51,12 @@ struct ClerkshipRequirementsView: View {
                                     .font(.largeTitle)
                                     .fontWeight(.bold)
                                     .foregroundColor(.white)
-                                    .padding(.top, 30)
+                                    .padding(.top, 20)
                                     .padding(.bottom, 20)
+                                    .padding(.horizontal, 40)
                                     .frame(maxWidth: .infinity, alignment: .center)
-                                
+                                    .multilineTextAlignment(.center)
+
                                 // Buttons
                                 VStack(spacing: 25) {
                                     ForEach(requirements, id: \.self) { title in
@@ -90,6 +93,14 @@ struct ClerkshipRequirementsView: View {
                     // Bottom NavTab
                     NavTab(currentTab: $currentView)
                 }
+                BackToHomeButton(navigateHome: $navigateHome)
+                    .padding(.top, 10)
+                    .padding(.leading, 10)
+                    .ignoresSafeArea(.all, edges: .top)
+            }
+            .navigationDestination(isPresented: $navigateHome) {
+                HomeView()
+                    .transition(.move(edge: .leading))
             }
         }
         .navigationBarBackButtonHidden()
