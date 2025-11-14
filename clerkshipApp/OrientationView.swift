@@ -21,9 +21,9 @@ struct OrientationView: View {
             ZStack(alignment: .topLeading) {
                 backgroundColor.ignoresSafeArea()
                 
-                VStack(spacing: 0) {
+                VStack() {
                     ScrollView {
-                        VStack(spacing: 20) {
+                        VStack() {
                             switch currentView {
                             case .home:
                                 // Title
@@ -40,8 +40,7 @@ struct OrientationView: View {
                                     .foregroundColor(.white.opacity(0.85))
                                     .multilineTextAlignment(.center)
                                     .padding(.horizontal, 30)
-                                    .padding(.vertical, 10)
-                                    .padding(.bottom, 10)
+                                    .padding(.top, 10)
                                 
                                 // Buttons
                                 VStack(spacing: 15) {
@@ -67,7 +66,6 @@ struct OrientationView: View {
                                     }
                                 }
                                 .padding(.horizontal, 20)
-                                .padding(.bottom, 30)
                                 .navigationBarBackButtonHidden(false)
                             case .resources:
                                 ResourcesView()
