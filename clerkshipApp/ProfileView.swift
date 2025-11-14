@@ -26,64 +26,62 @@ struct ProfileView: View {
     }
     
     var body: some View {
-        NavigationStack {
-            ZStack {
-                backgroundColor.ignoresSafeArea()
-                
-                VStack(spacing: 0) {
-                    ScrollView {
-                        VStack(alignment: .leading, spacing: 30) {
-                            // Profile picture
-                            Image(systemName: "person.crop.circle.fill")
-                                .font(.system(size: 170))
-                                .padding()
-                                .foregroundColor(buttonColor)
-                                .frame(maxWidth: .infinity, alignment: .center)
-                            
-                            // Profile info
-                            if let current = currUser.user{
-                                Group {
-                                    Text("First Name : \(current.firstName)")
-                                    Text("Last Name : \(current.lastName)")
-                                    switch current.access {
-                                    case .student:
-                                        Text("Role : Student")
-                                    case .preceptor:
-                                        Text("Role : Preceptor")
-                                    case .admin:
-                                        Text("Role : Administrator")
-                                    }
-                                    Text("Email : \(current.email)")
+        ZStack {
+            backgroundColor.ignoresSafeArea()
+            
+            VStack(spacing: 0) {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 30) {
+                        // Profile picture
+                        Image(systemName: "person.crop.circle.fill")
+                            .font(.system(size: 170))
+                            .padding()
+                            .foregroundColor(buttonColor)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                        
+                        // Profile info
+                        if let current = currUser.user{
+                            Group {
+                                Text("First Name : \(current.firstName)")
+                                Text("Last Name : \(current.lastName)")
+                                switch current.access {
+                                case .student:
+                                    Text("Role : Student")
+                                case .preceptor:
+                                    Text("Role : Preceptor")
+                                case .admin:
+                                    Text("Role : Administrator")
                                 }
-                                .foregroundColor(.white)
-                                .font(.title2)
-                                .padding(.leading, 50)
-                                .bold()
+                                Text("Email : \(current.email)")
                             }
-                            
-                            // Logout button
-                            Button(action: {
-                                navControl.showRoot = true
-                                signOut()
-                            }) {
-                                Text("Log Out")
-                                    .foregroundColor(.white)
-                                    .padding()
-                                    .frame(maxWidth: .infinity)
-                                    .background(buttonColor)
-                                    .cornerRadius(30)
-                            }
-                            .padding(.top, 10)
-                            .padding(.horizontal, 20)
-                            .padding(.bottom, 50)
+                            .foregroundColor(.white)
+                            .font(.title2)
+                            .padding(.leading, 50)
+                            .bold()
                         }
+                        
+                        // Logout button
+                        Button(action: {
+                            navControl.showRoot = true
+                            signOut()
+                        }) {
+                            Text("Log Out")
+                                .foregroundColor(.white)
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(buttonColor)
+                                .cornerRadius(30)
+                        }
+                        .padding(.top, 10)
+                        .padding(.horizontal, 20)
+                        .padding(.bottom, 50)
                     }
-                    
                 }
+                
             }
         }
-        .navigationDestination(isPresented: $navControl.showRoot) { RootView() }
-        .navigationBarBackButtonHidden(true)
+    .navigationDestination(isPresented: $navControl.showRoot) { RootView() }
+    .navigationBarBackButtonHidden(true)
     }
 }
 

@@ -37,7 +37,6 @@ struct ClerkshipRequirementsView: View {
     ]
     
     var body: some View {
-        NavigationStack {
             ZStack (alignment: .topLeading) {
                 backgroundColor.ignoresSafeArea()
                 
@@ -102,7 +101,6 @@ struct ClerkshipRequirementsView: View {
                 HomeView()
                     .transition(.move(edge: .leading))
             }
-        }
         .navigationBarBackButtonHidden()
     }
 }

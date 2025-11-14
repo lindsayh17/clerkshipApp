@@ -51,60 +51,58 @@ struct QuickFactsView: View {
     ]
     
     var body: some View {
-        NavigationStack {
-            ZStack (alignment: .topLeading) {
-                backgroundColor.ignoresSafeArea()
-                
-                // Main content
-                VStack(spacing: 0) {
-                    ScrollView {
-                        VStack(spacing: 20) {
-                            // Title
-                            Text("Quick Facts")
-                                .font(.largeTitle)
-                                .fontWeight(.bold)
-                                .foregroundColor(.white)
-                                .padding(.top, 20)
-                                .padding(.bottom, 15)
-                                .multilineTextAlignment(.center)
-                                .frame(maxWidth: .infinity)
-                            
-                            // Quick Facts list
-                            VStack(alignment: .leading, spacing: 25) {
-                                ForEach(quickFacts) { item in
-                                    VStack(alignment: .leading, spacing: 8) {
-                                        Text(item.title)
-                                            .font(.title)
-                                            .foregroundColor(.white)
-                                        
-                                        Text(item.description)
-                                            .font(.body)
-                                            .foregroundColor(.white.opacity(0.85))
-                                            .multilineTextAlignment(.leading)
-                                    }
+        ZStack (alignment: .topLeading) {
+            backgroundColor.ignoresSafeArea()
+            
+            // Main content
+            VStack(spacing: 0) {
+                ScrollView {
+                    VStack(spacing: 20) {
+                        // Title
+                        Text("Quick Facts")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                            .padding(.top, 20)
+                            .padding(.bottom, 15)
+                            .multilineTextAlignment(.center)
+                            .frame(maxWidth: .infinity)
+                        
+                        // Quick Facts list
+                        VStack(alignment: .leading, spacing: 25) {
+                            ForEach(quickFacts) { item in
+                                VStack(alignment: .leading, spacing: 8) {
+                                    Text(item.title)
+                                        .font(.title)
+                                        .foregroundColor(.white)
+                                    
+                                    Text(item.description)
+                                        .font(.body)
+                                        .foregroundColor(.white.opacity(0.85))
+                                        .multilineTextAlignment(.leading)
                                 }
                             }
-                            .padding(.horizontal, 30)
-                            .padding(.bottom, 30)
                         }
+                        .padding(.horizontal, 30)
+                        .padding(.bottom, 30)
                     }
-                    
-                    // Bottom Navigation
-                    NavTab(currentTab: $currentView)
                 }
                 
-                // Floating back button above safe area (next to front camera)
-                BackToHomeButton(navigateHome: $navigateHome)
-                    .padding(.top, 10)   // flush to top
-                    .padding(.leading, 10)
-                    .ignoresSafeArea(.all, edges: .top) // ensures it goes above notch/status bar
+                // Bottom Navigation
+                NavTab(currentTab: $currentView)
             }
-            .navigationDestination(isPresented: $navigateHome) {
-                HomeView()
-                    .transition(.move(edge: .leading))
-            }
+            
+            // Floating back button above safe area (next to front camera)
+            BackToHomeButton(navigateHome: $navigateHome)
+                .padding(.top, 10)   // flush to top
+                .padding(.leading, 10)
+                .ignoresSafeArea(.all, edges: .top) // ensures it goes above notch/status bar
         }
-        .navigationBarBackButtonHidden(true)
+        .navigationDestination(isPresented: $navigateHome) {
+            HomeView()
+                .transition(.move(edge: .leading))
+        }
+    .navigationBarBackButtonHidden(true)
     }
 }
 
