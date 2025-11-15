@@ -5,9 +5,9 @@ import SwiftUI
 
 struct Evaluation: Identifiable, Codable {
     var id = UUID()
-    var formId: String                // Link to form type
-    var preceptorId: String           // ID of preceptor filling out the form
-    var studentId: String             // ID of student being evaluated
+    var formId: String             // Link to form type
+    var preceptorId: String        // ID of preceptor filling out form
+    var studentId: String          // ID of student being evaluated
     var responses: [[Response]]
     var submittedAt: Date
     

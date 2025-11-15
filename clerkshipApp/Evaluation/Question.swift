@@ -30,6 +30,13 @@ struct QuestionCategory: Identifiable, Codable {
     }
 }
 
+// required for conformance to Codable
+enum CodingKeys: CodingKey {
+  case question
+  case response
+  case answered
+}
+
 
 class Question: Identifiable, Codable, ObservableObject {
     
@@ -72,6 +79,24 @@ class Question: Identifiable, Codable, ObservableObject {
 //        }
 //        return nil
 //    }
+    
+    // required for conformance to Codable
+      required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        response = try container.decode(ResponseLabel.self, forKey: .response)
+        isAnswered = try container.decode(Bool.self, forKey: .answered)
+        question = try container.decode(String?.self, forKey: .question)
+      }
+      
+      // required for conformance to Codable
+      func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(response, forKey: .response)
+        try container.encode(answered, forKey: .answered)
+        try container.encode(questionText, forKey: .questionText)
+        try container.encode(correctResponse, forKey: .correctResponse)
+      }
+
 }
 
 enum ResponseLabel: CaseIterable, Codable {
@@ -199,7 +224,7 @@ struct QuestionRowView: View {
             
             HStack {
                 ForEach(ResponseLabel.allCases, id: \.self) { opt in
-                    RadioButton2(question: question, response: opt)
+                    RadioButton(question: question, response: opt)
                 }
             }.padding(.vertical, 4)
             
@@ -211,7 +236,7 @@ struct QuestionRowView: View {
 //
 // Radio Button
 //
-struct RadioButton2: View {
+struct RadioButton: View {
     @ObservedObject var question: Question
     var response: ResponseLabel
     

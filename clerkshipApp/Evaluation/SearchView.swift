@@ -107,16 +107,16 @@ struct SearchView: View {
                 .ignoresSafeArea(.all, edges: .top)
             
         }
-        .navigationDestination(isPresented: $navigateFormChoice) {
-            FormChoiceView()
-                .transition(.move(edge: .leading))
-        }
+//        .navigationDestination(isPresented: $navigateFormChoice) {
+//            FormChoiceView()
+//                .transition(.move(edge: .leading))
+//        }
         .task { // like onAppear but for async?
             namesList()
         }
         .navigationDestination(isPresented: $navControl.showEvalForm){
             if let selected = selectedUser{
-                EvaluationView(currStudent: selected)
+                FormChoiceView(currStudent: selected)
             }
         }
         .navigationBarBackButtonHidden(true)
