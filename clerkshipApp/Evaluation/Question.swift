@@ -31,7 +31,7 @@ struct QuestionCategory: Identifiable, Codable {
 }
 
 
-class Question: Identifiable, Codable {
+class Question: Identifiable, Codable, ObservableObject {
     
     // Question Types
     enum QuestionType: Codable {
@@ -40,18 +40,13 @@ class Question: Identifiable, Codable {
         case slider
     }
     
-    // Response Types
-    enum ResponseType: Codable {
-        case text(String)
-        case number(Int)
-    }
-    
     // Properties
     var id = UUID()
     var question: String = ""
     var type: QuestionType
     var required: Bool = true
-    var response: ResponseType?
+    var response: ResponseLabel?
+    var isAnswered: Bool = false
     
     // Initializer
     init(question: String, type: QuestionType, required: Bool) {
@@ -70,21 +65,27 @@ class Question: Identifiable, Codable {
     }
     
     // Text type
-    var responseString: String? {
-        // Returns the text value if response is a text type
-        if case let .text(value)? = response {
-            return value
-        }
-        return nil
-    }
+//    var responseString: String? {
+//        // Returns the text value if response is a text type
+//        if case let .text(value)? = response {
+//            return value
+//        }
+//        return nil
+//    }
 }
 
-enum ResponseLabel: CaseIterable {
+enum ResponseLabel: CaseIterable, Codable {
     case novice
     case apprentice
     case expert
     case none
 }
+
+// Response Types
+//enum ResponseType: Codable {
+//    case text(String)
+//    case number(Int)
+//}
 
 struct FillOutFormView: View {
     @State private var submitted = false
@@ -103,35 +104,6 @@ struct FillOutFormView: View {
         case .apprentice: return "Apprentice"
         case .expert: return "Expert"
         case .none: return "N/A"
-        }
-    }
-    
-    private func questionRow(q: Question) -> some View {
-        VStack {
-            Text(q.question)
-                .foregroundColor(.white)
-                .font(.subheadline)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.vertical, 4)
-                .padding(.horizontal, 4)
-                .multilineTextAlignment(.center)
-            
-            HStack {
-                ForEach(ResponseLabel.allCases, id: \.self) { opt in
-                    Button {
-                        q.response = .text(infoTitle(for: opt))
-                        
-                    } label: {
-                        Image(systemName: "circle")
-                            .foregroundColor(.white)
-                            .baselineOffset(1)
-                            .font(.system(size: 12))
-                    }
-                    .buttonStyle(BorderlessButtonStyle())
-                    .frame(maxWidth: .infinity)
-                }
-            }.padding(.vertical, 4)
-            Divider().background(Color.gray)
         }
     }
     
@@ -157,18 +129,73 @@ struct FillOutFormView: View {
                 Divider().background(Color.gray)
                 ScrollView {
                     ForEach (currForm.categories) { cat in
+                        
                         Text(cat.category)
                             .foregroundColor(.white)
                             .font(.headline)
                             .fixedSize(horizontal: false, vertical: true)
                             .padding(.top, 6)
                         
-                        ForEach (cat.questions) { question in
-                            questionRow(q: question)
+                        ForEach (cat.questions) { q in
+                            
+                            // call the rowview
                         }
                     }
                 }
             }
         }
+    }
+}
+
+struct QuestionRowView: View {
+    @ObservedObject var question: Question
+    
+    private func infoTitle(for opt: ResponseLabel) -> String {
+        switch opt {
+        case .novice: return "Novice"
+        case .apprentice: return "Apprentice"
+        case .expert: return "Expert"
+        case .none: return "N/A"
+        }
+    }
+    
+    var body: some View {
+        VStack {
+            // show the question
+            Text(question.question)
+                .foregroundColor(.white)
+                .font(.subheadline)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.vertical, 4)
+                .padding(.horizontal, 4)
+                .multilineTextAlignment(.center)
+            
+            HStack {
+                ForEach(ResponseLabel.allCases, id: \.self) { opt in
+                    RadioButton2(question: question, response: opt)
+                }
+            }.padding(.vertical, 4)
+            
+            Divider().background(Color.gray)
+        }
+    }
+}
+
+//
+// Radio Button
+//
+struct RadioButton2: View {
+    @ObservedObject var question: Question
+    var response: ResponseLabel
+    
+    var body: some View {
+        var image = question.isAnswered ? "circle.inset.filled" : "circle"
+        var color: Color = question.isAnswered ? .purple : .white
+        
+        Image(systemName: image)
+            .foregroundColor(color)
+        
+        .buttonStyle(BorderlessButtonStyle())
+        .frame(maxWidth: .infinity)
     }
 }
