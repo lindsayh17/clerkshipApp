@@ -7,6 +7,7 @@
  TODO: display a list of completed evaluations somewhere for the preceptors
 */
 
+/*
 import SwiftUI
 
 enum OptionDefinition {
@@ -278,3 +279,4 @@ struct SubmittedView: View {
     }
 }
 
+*/

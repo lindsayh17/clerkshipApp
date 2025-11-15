@@ -88,15 +88,19 @@ enum ResponseLabel: CaseIterable, Codable {
 //}
 
 struct FillOutFormView: View {
+    @EnvironmentObject var evalStore: EvalStore
+    @EnvironmentObject var currUser: CurrentUser
+    
+    
     @State private var submitted = false
-//    @State var form: EvalForm
+    @State var currForm: EvalForm
+    @State var showLabels = false
     
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
-    
-    @State var currForm: EvalForm
-    @State var showLabels = false
+
+    let currStudent: User
     
     private func infoTitle(for opt: ResponseLabel) -> String {
         switch opt {
@@ -105,6 +109,29 @@ struct FillOutFormView: View {
         case .expert: return "Expert"
         case .none: return "N/A"
         }
+    }
+    
+    // Submit form data to Firestore
+    func submitForm() {
+        let responses = currForm.categories.compactMap { cat -> [Response]? in
+            let questions = cat.questions
+            var questionResponses: [Response] = []
+            
+            for q in questions {
+                questionResponses.append(Response(questionId: q.id.uuidString, answer: infoTitle(for: q.response ?? .none), responseCat: cat.category))
+            }
+            return questionResponses
+        }
+        
+        let evaluation = Evaluation(
+            formId: "historyGathering",
+            preceptorId: currUser.user?.firebaseID ?? "0",
+            studentId: currStudent.firebaseID,
+            responses: responses,
+            submittedAt: Date()
+        )
+        
+        evalStore.add(evaluation: evaluation)
     }
     
     var body: some View {
