@@ -4,7 +4,8 @@
 import Foundation
 
 
-struct Form: Identifiable, Codable {
+// defines the form objects
+struct EvalForm: Identifiable, Codable {
     var id = UUID()
     var type: String
     var categories: [QuestionCategory]

@@ -72,13 +72,3 @@ struct FormChoiceView: View {
         }
     }
 }
-
-// Preview
-//#Preview {
-//    NavigationStack {
-//        FormChoiceView()
-//            .environmentObject(FirebaseService())
-//            .environmentObject(FormStore())
-//    }
-//}
-

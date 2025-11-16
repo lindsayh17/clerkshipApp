@@ -3,6 +3,7 @@
 
 import SwiftUI
 
+// a completed form
 struct Evaluation: Identifiable, Codable {
     var id = UUID()
     var formId: String             // Link to form type
