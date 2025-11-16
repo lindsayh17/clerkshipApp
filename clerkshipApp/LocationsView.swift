@@ -72,9 +72,9 @@ struct LocationsView: View {
 #Preview {
     NavigationStack {
         LocationsView()
-            .environmentObject(FirebaseService())
-            .environmentObject(CurrentUser())
-            .environmentObject(AuthService())
     }
+    .environmentObject(FirebaseService())
+    .environmentObject(CurrentUser())
+    .environmentObject(AuthService())
 }
 

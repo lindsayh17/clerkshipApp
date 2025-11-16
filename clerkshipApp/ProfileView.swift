@@ -88,7 +88,8 @@ struct ProfileView: View {
 // Preview
 #Preview {
     NavigationStack {
-        ProfileView().environmentObject(AuthService())
-            .environmentObject(CurrentUser())
+        ProfileView()
     }
+    .environmentObject(AuthService())
+    .environmentObject(CurrentUser())
 }

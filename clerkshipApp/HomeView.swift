@@ -191,10 +191,10 @@ struct QODView: View {
 #Preview {
     NavigationStack {
         HomeView()
-            .environmentObject(FirebaseService())
-            .environmentObject(CurrentUser())
-            .environmentObject(AuthService())
-            .environmentObject(QODStore())
     }
+    .environmentObject(FirebaseService())
+    .environmentObject(CurrentUser())
+    .environmentObject(AuthService())
+    .environmentObject(QODStore())
 }
 

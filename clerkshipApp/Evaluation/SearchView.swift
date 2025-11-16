@@ -191,9 +191,9 @@ struct NamesView: View{
 #Preview {
     NavigationStack {
         SearchView()
-            .environmentObject(FirebaseService())
-            .environmentObject(UserStore())
-            .environmentObject(EvalStore())
     }
+    .environmentObject(FirebaseService())
+    .environmentObject(UserStore())
+    .environmentObject(EvalStore())
 }
 

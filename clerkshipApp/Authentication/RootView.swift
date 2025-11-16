@@ -50,11 +50,11 @@ struct RootView: View {
 #Preview {
     NavigationStack {  
         RootView()
-            .environmentObject(FirebaseService())
-            .environmentObject(UserStore())
-            .environmentObject(CurrentUser())
-            .environmentObject(AuthService())
-            .environmentObject(QODStore())
     }
+    .environmentObject(FirebaseService())
+    .environmentObject(UserStore())
+    .environmentObject(CurrentUser())
+    .environmentObject(AuthService())
+    .environmentObject(QODStore())
 }
 

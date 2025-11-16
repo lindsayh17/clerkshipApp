@@ -117,8 +117,8 @@ struct OrientationView: View {
 #Preview {
     NavigationStack {
         OrientationView()
-            .environmentObject(FirebaseService())
-            .environmentObject(CurrentUser())
     }
+    .environmentObject(FirebaseService())
+    .environmentObject(CurrentUser())
 }
 
