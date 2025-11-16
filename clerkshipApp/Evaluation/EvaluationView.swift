@@ -271,10 +271,10 @@ struct SubmittedView: View {
 #Preview {
     NavigationStack {
         EvaluationView(currStudent: User(firstName: "Place", lastName: "Holder", email: "email"))
-            .environmentObject(FirebaseService())
-            .environmentObject(EvalStore())
-            .environmentObject(CurrentUser())
-            .environmentObject(FormStore())
     }
+    .environmentObject(FirebaseService())
+    .environmentObject(EvalStore())
+    .environmentObject(CurrentUser())
+    .environmentObject(FormStore())
 }
 

@@ -144,11 +144,11 @@ struct LoginView: View {
 #Preview {
     NavigationStack {
         LoginView()
-            .environmentObject(FirebaseService())
-            .environmentObject(UserStore())
-            .environmentObject(CurrentUser())
-            .environmentObject(AuthService())
-            .environmentObject(QODStore())
     }
+    .environmentObject(FirebaseService())
+    .environmentObject(UserStore())
+    .environmentObject(CurrentUser())
+    .environmentObject(AuthService())
+    .environmentObject(QODStore())
 }
 

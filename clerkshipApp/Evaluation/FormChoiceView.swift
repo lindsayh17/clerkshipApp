@@ -75,8 +75,8 @@ struct FormChoiceView: View {
 #Preview {
     NavigationStack {
         FormChoiceView()
-            .environmentObject(FirebaseService())
-            .environmentObject(FormStore())
     }
+    .environmentObject(FirebaseService())
+    .environmentObject(FormStore())
 }
 

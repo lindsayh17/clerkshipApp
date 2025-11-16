@@ -110,7 +110,7 @@ struct QuickFactsView: View {
 #Preview {
     NavigationStack {
         QuickFactsView()
-            .environmentObject(FirebaseService())
-            .environmentObject(CurrentUser())
     }
+    .environmentObject(FirebaseService())
+    .environmentObject(CurrentUser())
 }
