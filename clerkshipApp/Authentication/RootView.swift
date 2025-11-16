@@ -4,6 +4,8 @@
 import SwiftUI
 
 struct RootView: View {
+    @EnvironmentObject var auth: AuthService
+    
     private let backgroundColor = Color("BackgroundColor")
     @StateObject var navControl = NavControl()
     
