@@ -1,88 +1,177 @@
+/* General Styles */
 body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: #1F1F1F; /* BackgroundColor */
-    color: white;
-  }
-  
-  header {
-    display: flex;
-    align-items: center;
-    padding: 20px;
-  }
-  
-  header .logo {
-    height: 50px;
-    margin-right: 20px;
-  }
-  
-  header h1 {
-    font-size: 28px;
-    font-weight: bold;
-  }
-  
-  nav {
-    display: flex;
-    justify-content: space-around;
-    background-color: #333;
-    padding: 10px 0;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-  
-  .nav-btn {
-    background: none;
-    border: none;
-    color: #1DB954; /* ButtonColor */
-    font-weight: bold;
-    cursor: pointer;
-  }
-  
-  .nav-btn.active {
-    text-decoration: underline;
-  }
-  
-  main {
-    padding: 20px;
-  }
-  
-  .section {
-    margin-bottom: 40px;
-  }
-  
-  .section h2 {
-    font-size: 22px;
-    margin-bottom: 10px;
-  }
-  
-  .section h3 {
-    font-size: 18px;
-    margin-bottom: 5px;
-  }
-  
-  button {
-    background-color: #1DB954;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 10px;
-    cursor: pointer;
-  }
-  
-  .hidden {
-    display: none;
-  }
-  
-  ul {
-    list-style: none;
-    padding-left: 0;
-  }
-  
-  ul li {
-    background: #2C2C2C;
-    margin: 5px 0;
-    padding: 8px;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Header & Navbar */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #064225;
+  color: white;
+  padding: 10px 20px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Space between logo and title */
+}
+
+.logo {
+  height: 50px;
+}
+
+nav {
+  display: flex;
+  gap: 15px;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 8px 12px;
+  transition: background 0.3s;
+}
+
+.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+}
+
+.nav-link.active {
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 5px;
+}
+
+.nav-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 8px 12px;
+  transition: background 0.3s;
+}
+
+.nav-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+}
+
+/* Main content */
+main {
+  padding: 20px;
+}
+
+.tab-content {
+  display: none; /* hides all tab sections */
+}
+
+.tab-content.active {
+  display: block; /* shows the active tab section */
+}
+
+
+.section {
+  margin-top: 20px;
+}
+
+textarea {
+  width: 100%;
+  max-width: 500px;
+}
+
+/* Style the button that is used to open and close the collapsible content */
+.collapsible {
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active, .collapsible:hover {
+  background-color: #ccc;
+}
+
+/* user permissions table */
+table{
+    padding: 1em;
+    margin: 3em auto;
+    width: 90%;
+    border-collapse: collapse;
     border-radius: 8px;
-  }
-  
+}
+
+table th{
+    border: none;
+    background-color: #064225;
+    margin: 1em;
+    padding: 1em;
+    text-align: center;
+    font-size: 1.1em;
+    letter-spacing: 0.03em;
+    color: #f9f9f9;
+}
+
+table td{
+    border: solid #064225 0.1em;
+    text-align: center;
+    font-size: 1em; 
+    color: #333;
+    background-color: #f9f9f9;
+    padding: 0.5em;
+}
+
+table tr:nth-child(even) td{
+    background-color: #a1cdb8; 
+}
+
+/* Cancel confirmatio styling */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); 
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  margin: 15% auto; /* Center the modal */
+  border-radius: 5px;
+  width: 300px;
+  text-align: center;
+}
+
+.modal-button {
+  padding: 10px 20px;
+  margin: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+}
+
+.cancel-btn {
+  background-color: #f44336; /* Red */
+  color: white;
+}
+
+.confirm-btn {
+  background-color: #4CAF50; /* Green */
+  color: white;
+}

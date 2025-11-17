@@ -20,7 +20,6 @@ struct ClerkshipRequirementsView: View {
     
     private let requirements = [
         "Attendance",
-        "Rotation Checklist",
         "Obstetrics Service",
         "Clinic Service",
         "Gyn/Inpatient Service",
