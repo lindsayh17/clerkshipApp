@@ -33,8 +33,6 @@ struct BigButtonView: View {
     }
 }
 
-// I got help from stack overflow w/ this
-// https://stackoverflow.com/questions/58928774/button-border-with-corner-radius-in-swift-ui
 struct BigButtonStyle: ButtonStyle {
     
     let backgroundColor: Color
@@ -47,7 +45,6 @@ struct BigButtonStyle: ButtonStyle {
             .padding()
             .foregroundColor(currentForegroundColor)
             .background(isDisabled || configuration.isPressed ? backgroundColor.opacity(0.3) : backgroundColor)
-            // This is the key part, we are using both an overlay as well as cornerRadius
             .cornerRadius(6)
             .overlay(
                 RoundedRectangle(cornerRadius: 6)

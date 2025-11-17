@@ -11,6 +11,7 @@ struct Evaluation: Identifiable, Codable {
     var studentId: String          // ID of student being evaluated
     var responses: [[Response]]
     var submittedAt: Date
+    var notes = ""
     
     init(formId: String, preceptorId: String, studentId: String, responses: [[Response]], submittedAt: Date) {
         self.formId = formId
@@ -18,6 +19,15 @@ struct Evaluation: Identifiable, Codable {
         self.studentId = studentId
         self.responses = responses
         self.submittedAt = submittedAt
+    }
+    
+    init(formId: String, preceptorId: String, studentId: String, responses: [[Response]], submittedAt: Date, notes: String) {
+        self.formId = formId
+        self.preceptorId = preceptorId
+        self.studentId = studentId
+        self.responses = responses
+        self.submittedAt = submittedAt
+        self.notes = notes
     }
 }
 

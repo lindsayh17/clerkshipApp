@@ -11,6 +11,7 @@ struct FillOutFormView: View {
     @EnvironmentObject var evalStore: EvalStore
     @EnvironmentObject var currUser: CurrentUser
     
+    @State var addedNotes = ""
     @State var showLabels = false
     @State private var submitted = false
     
@@ -53,10 +54,12 @@ struct FillOutFormView: View {
             preceptorId: currUser.user?.firebaseID ?? "0",
             studentId: currStudent.firebaseID,
             responses: responses,
-            submittedAt: Date()
+            submittedAt: Date(),
+            notes: addedNotes
         )
         
         evalStore.add(evaluation: evaluation)
+        submitted = true
     }
     
     var body: some View {
@@ -95,6 +98,31 @@ struct FillOutFormView: View {
                             QuestionRowView(question: q)
                         }
                     }
+                    
+                    // TODO: add notes field
+                    VStack(alignment: .leading, spacing: 5) {
+                        Text("Notes: ")
+                            .foregroundColor(.white)
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .padding(.top, 6)
+                        
+                        TextEditor(
+                            text: $addedNotes
+                        )
+                        .frame(height: 80)
+                        .padding(8)
+                        .background(Color.white)
+                        .cornerRadius(10)
+                    }.padding()
+                    
+                    // TODO: Student-only preceptor email field
+                    
+                    // TODO: Submit button
+                    MainButtonView(title: "Submit", color: buttonColor) {
+                        submitForm()
+                    }.padding()
                 }
             }
         }
@@ -103,15 +131,6 @@ struct FillOutFormView: View {
 
 struct QuestionRowView: View {
     @ObservedObject var question: Question
-    
-    private func infoTitle(for opt: ResponseLabel) -> String {
-        switch opt {
-        case .novice: return "Novice"
-        case .apprentice: return "Apprentice"
-        case .expert: return "Expert"
-        case .none: return "N/A"
-        }
-    }
     
     var body: some View {
         VStack {
@@ -141,6 +160,18 @@ struct QuestionRowView: View {
             
             Divider().background(Color.gray)
         }
+    }
+}
+
+
+// SubmittedView
+struct SubmittedView: View {
+    var body: some View {
+        VStack(spacing: 30) {
+            Text("Submitted!")
+            Spacer()
+        }
+        .padding()
     }
 }
 
