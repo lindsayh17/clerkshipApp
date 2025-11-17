@@ -13,7 +13,9 @@ struct QuickFactsView: View {
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     @State private var navigateHome: Bool = false
-    
+    // Dropdown state
+    @State private var openItem: UUID? = nil
+
     // State for nav tab
     @State private var currentView: NavOption = .resources
     @EnvironmentObject var currUser: CurrentUser
