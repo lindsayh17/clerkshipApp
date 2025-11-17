@@ -71,22 +71,46 @@ struct QuickFactsView: View {
                             .frame(maxWidth: .infinity)
                         
                         // Quick Facts list
-                        VStack(alignment: .leading, spacing: 25) {
+                        VStack(alignment: .leading, spacing: 20) {
                             ForEach(quickFacts) { item in
                                 VStack(alignment: .leading, spacing: 8) {
-                                    Text(item.title)
-                                        .font(.title)
-                                        .foregroundColor(.white)
-                                    
-                                    Text(item.description)
-                                        .font(.body)
-                                        .foregroundColor(.white.opacity(0.85))
-                                        .multilineTextAlignment(.leading)
+
+                                    // Header Row
+                                    HStack {
+                                        Text(item.title)
+                                            .font(.headline)
+                                            .foregroundColor(.white)
+
+                                        Spacer()
+
+                                        Image(systemName: "chevron.right")
+                                            .foregroundColor(.white.opacity(0.7))
+                                            .rotationEffect(.degrees(openItem == item.id ? 90 : 0))
+                                            .animation(.easeInOut, value: openItem == item.id)
+                                    }
+                                    .padding()
+                                    .background(Color.white.opacity(0.1))
+                                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                                    .onTapGesture {
+                                        withAnimation(.spring()) {
+                                            openItem = (openItem == item.id ? nil : item.id)
+                                        }
+                                    }
+
+                                    // Expanded description
+                                    if openItem == item.id {
+                                        Text(item.description)
+                                            .foregroundColor(.white.opacity(0.9))
+                                            .padding(.horizontal, 10)
+                                            .padding(.bottom, 12)
+                                            .transition(.opacity.combined(with: .move(edge: .top)))
+                                    }
                                 }
                             }
                         }
                         .padding(.horizontal, 30)
                         .padding(.bottom, 30)
+
                     }
                 }
                 
@@ -98,7 +122,7 @@ struct QuickFactsView: View {
             BackToHomeButton(navigateHome: $navigateHome)
                 .padding(.top, 10)   // flush to top
                 .padding(.leading, 10)
-                .ignoresSafeArea(.all, edges: .top) // ensures it goes above notch/status bar
+                .ignoresSafeArea(.all, edges: .top) 
         }
         .navigationDestination(isPresented: $navigateHome) {
             HomeView()
