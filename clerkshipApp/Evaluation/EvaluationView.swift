@@ -11,16 +11,16 @@ struct FillOutFormView: View {
     @EnvironmentObject var evalStore: EvalStore
     @EnvironmentObject var currUser: CurrentUser
     
-    
-    @State private var submitted = false
-    @State var currForm: EvalForm
     @State var showLabels = false
+    @State private var submitted = false
+    
+    @State var currForm: EvalForm
+    let currStudent: User
     
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
 
-    let currStudent: User
     
     private func infoTitle(for opt: ResponseLabel) -> String {
         switch opt {
@@ -38,13 +38,18 @@ struct FillOutFormView: View {
             var questionResponses: [Response] = []
             
             for q in questions {
-                questionResponses.append(Response(questionId: q.id.uuidString, answer: infoTitle(for: q.response ?? .none), responseCat: cat.category))
+                questionResponses.append(
+                    Response(
+                        questionId: q.id.uuidString,
+                        answer: infoTitle(for: q.response ?? .none),
+                        responseCat: cat.category)
+                )
             }
             return questionResponses
         }
         
         let evaluation = Evaluation(
-            formId: "historyGathering",
+            formId: currForm.type,
             preceptorId: currUser.user?.firebaseID ?? "0",
             studentId: currStudent.firebaseID,
             responses: responses,
@@ -65,6 +70,7 @@ struct FillOutFormView: View {
                     .foregroundColor(.white)
                     .padding(.bottom, 4)
                 
+                // button labels at the top
                 HStack {
                     ForEach(ResponseLabel.allCases, id: \.self) { opt in
                         Text(infoTitle(for: opt))
@@ -74,18 +80,19 @@ struct FillOutFormView: View {
                     }.frame(maxWidth: .infinity)
                 }
                 Divider().background(Color.gray)
+                
                 ScrollView {
                     ForEach (currForm.categories) { cat in
                         
                         Text(cat.category)
                             .foregroundColor(.white)
-                            .font(.headline)
+                            .font(.title2)
+                            .fontWeight(.bold)
                             .fixedSize(horizontal: false, vertical: true)
                             .padding(.top, 6)
                         
                         ForEach (cat.questions) { q in
-                            
-                            // call the rowview
+                            QuestionRowView(question: q)
                         }
                     }
                 }
@@ -119,7 +126,16 @@ struct QuestionRowView: View {
             
             HStack {
                 ForEach(ResponseLabel.allCases, id: \.self) { opt in
-                    RadioButton(question: question, response: opt)
+                    
+                    Button(action: {
+                        question.response = opt
+                    }) {
+                        Image(systemName: question.response == opt ? "circle.inset.filled" : "circle")
+                            .foregroundColor(question.response == opt ? .purple : .white)
+                            .buttonStyle(BorderlessButtonStyle())
+                            .frame(maxWidth: .infinity)
+                    }
+                    
                 }
             }.padding(.vertical, 4)
             
@@ -128,21 +144,24 @@ struct QuestionRowView: View {
     }
 }
 
-//
-// Radio Button
-//
-struct RadioButton: View {
-    @ObservedObject var question: Question
-    var response: ResponseLabel
-    
-    var body: some View {
-        var image = question.isAnswered ? "circle.inset.filled" : "circle"
-        var color: Color = question.isAnswered ? .purple : .white
-        
-        Image(systemName: image)
-            .foregroundColor(color)
-        
-        .buttonStyle(BorderlessButtonStyle())
-        .frame(maxWidth: .infinity)
-    }
+
+#Preview {
+    FillOutFormView(
+        currForm: EvalForm(
+            categories: [
+                QuestionCategory(
+                    category: "Type of Question",
+                    questions: [
+                        Question(question: "Skill coding in Swift"),
+                        Question(question: "Experience with debugging")
+                    ]
+                )
+            ],
+            type: "Clinic",
+            formChoice: .clinic
+        ),
+        currStudent: User(firstName: "Place", lastName: "Holder", email: "email")
+    )
+        .environmentObject(EvalStore())
+        .environmentObject(CurrentUser())
 }

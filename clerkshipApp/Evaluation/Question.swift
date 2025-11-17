@@ -21,6 +21,19 @@ enum ResponseLabel: CaseIterable, Codable {
     case none
 }
 
+// This is going to hold a bunch of questions
+struct QuestionCategory: Identifiable, Codable {
+    // Properties
+    var id = UUID()
+    var category: String // Physical exam, collecting info, etc
+    var questions: [Question] // sub aspects of the overall category
+    
+    init(category: String, questions: [Question]) {
+        self.category = category
+        self.questions = questions
+    }
+}
+
 class Question: Identifiable, Codable, ObservableObject {
 
     enum QuestionType: Codable {
@@ -34,7 +47,7 @@ class Question: Identifiable, Codable, ObservableObject {
     var question: String = ""
     var type: QuestionType
     var required: Bool = true
-    var response: ResponseLabel?
+    @Published var response: ResponseLabel?
     var isAnswered: Bool = false
     
     // Initializer
@@ -75,18 +88,5 @@ class Question: Identifiable, Codable, ObservableObject {
         try container.encode(required, forKey: .required)
         try container.encode(response, forKey: .response)
         try container.encode(isAnswered, forKey: .answered)
-    }
-}
-
-// This is going to hold a bunch of questions
-struct QuestionCategory: Identifiable, Codable {
-    // Properties
-    var id = UUID()
-    var category: String // Physical exam, collecting info, etc
-    var questions: [Question] // sub aspects of the overall category
-    
-    init(category: String, questions: [Question]) {
-        self.category = category
-        self.questions = questions
     }
 }
