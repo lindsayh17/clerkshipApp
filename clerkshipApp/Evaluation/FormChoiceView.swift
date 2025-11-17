@@ -13,6 +13,9 @@ struct FormChoiceView: View {
     @State private var selectedForm: EvalForm? = nil
     @State private var choiceMade = false
     
+    // Back button
+    @State private var navigateHome: Bool = false
+    
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
     
@@ -35,7 +38,7 @@ struct FormChoiceView: View {
     }
     
     var body: some View {
-        ZStack {
+        ZStack (alignment: .topLeading){
             backgroundColor.ignoresSafeArea()
             VStack {
                 ScrollView {
@@ -57,6 +60,10 @@ struct FormChoiceView: View {
                     }
                 }
             }
+            BackToHomeButton(navigateHome: $navigateHome)
+                .padding(.top, 10)
+                .padding(.leading, 10)
+                .ignoresSafeArea(.all, edges: .top)
         }
         .task {
             do {
@@ -70,5 +77,20 @@ struct FormChoiceView: View {
                 FillOutFormView(currForm: selected, currStudent: currStudent)
             }
         }
+        .navigationDestination(isPresented: $navigateHome) {
+            HomeView()
+                .transition(.move(edge: .leading))
+        }
+        .navigationBarBackButtonHidden(true)
     }
 }
+
+// Preview
+#Preview {
+    NavigationStack {
+        FormChoiceView()
+    }
+    .environmentObject(FirebaseService())
+    .environmentObject(FormStore())
+}
+

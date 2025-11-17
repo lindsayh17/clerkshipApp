@@ -29,7 +29,7 @@ struct NavTab: View {
                 ("house", .home, "Home"),
                 ("text.document", .resources, "Docs"),
                 ("person.crop.circle.fill", .profile, "Profile"),
-                ("", .eval, "Eval") 
+                ("pencil", .eval, "Eval")
             ]
         case .preceptor:
             return [
@@ -48,7 +48,7 @@ struct NavTab: View {
                 ("house", .home, "Home"),
                 ("text.document", .resources, "Docs"),
                 ("person.crop.circle.fill", .profile, "Profile"),
-                ("", .eval, "Eval")
+                ("pencil", .eval, "Eval")
             ]
         }
     }
