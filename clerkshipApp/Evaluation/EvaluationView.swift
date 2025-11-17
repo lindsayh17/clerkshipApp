@@ -18,6 +18,9 @@ struct FillOutFormView: View {
     @State var currForm: EvalForm
     let currStudent: User
     
+    // For if a student pulls the form up
+    @State private var preceptorEmail: String = ""
+    
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
@@ -33,6 +36,8 @@ struct FillOutFormView: View {
     }
     
     // Submit form data to Firestore
+    // TODO: fix issue with nested lists
+    // already using a compact map, so having a list w/in it makes it mad
     func submitForm() {
         let responses = currForm.categories.compactMap { cat -> [Response]? in
             let questions = cat.questions
@@ -117,12 +122,44 @@ struct FillOutFormView: View {
                         .cornerRadius(10)
                     }.padding()
                     
-                    // TODO: Student-only preceptor email field
+                    // TODO: Student-only preceptor email field (BROKEN)
+                    // Student-only preceptor email field (once at the bottom)
+                    if currUser.user?.access == .student {
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text("Preceptor Email")
+                                .foregroundColor(.white)
+                                .font(.headline)
+                            
+                            TextField("Enter preceptor email", text: $preceptorEmail)
+                                .keyboardType(.emailAddress)
+                                .autocapitalization(.none)
+                                .padding(10)
+                                .background(Color.white)
+                                .cornerRadius(10)
+                        }
+                        .padding(.top, 15)
+                    }
                     
-                    // TODO: Submit button
-                    MainButtonView(title: "Submit", color: buttonColor) {
+                    // TODO: Submit button (BROKEN)
+                    Button(action: {
+                        submitted = true
                         submitForm()
-                    }.padding()
+                    }) {
+                        Text("Submit Form")
+                            .font(.title3)
+                            .fontWeight(.semibold)
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(.white)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(currForm.validForm() ? buttonColor : Color.gray)
+                            .cornerRadius(10)
+                            .lineLimit(nil)
+                            .frame(maxWidth: .infinity, minHeight: 20)
+                            .padding()
+                    }
+                    .disabled(!currForm.validForm() || (currUser.user?.access == .student && preceptorEmail.trimmingCharacters(in: .whitespaces).isEmpty))
+                    .padding(.top, 20)
                 }
             }
         }
@@ -131,6 +168,7 @@ struct FillOutFormView: View {
 
 struct QuestionRowView: View {
     @ObservedObject var question: Question
+    private let buttonColor = Color("ButtonColor")
     
     var body: some View {
         VStack {
@@ -150,11 +188,10 @@ struct QuestionRowView: View {
                         question.response = opt
                     }) {
                         Image(systemName: question.response == opt ? "circle.inset.filled" : "circle")
-                            .foregroundColor(question.response == opt ? .purple : .white)
+                            .foregroundColor(question.response == opt ? buttonColor : .white)
                             .buttonStyle(BorderlessButtonStyle())
                             .frame(maxWidth: .infinity)
                     }
-                    
                 }
             }.padding(.vertical, 4)
             
