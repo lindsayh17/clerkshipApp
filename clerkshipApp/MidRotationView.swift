@@ -1,9 +1,9 @@
-//  ClinicServiceView.swift
+//  MidRotationView.swift
 //  clerkshipApp
 
 import SwiftUI
 
-struct ClinicServiceView: View {
+struct MidRotationView: View {
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
@@ -27,7 +27,7 @@ struct ClinicServiceView: View {
                 ScrollView {
                     VStack(alignment: .center, spacing: 20) {
                         // Page title
-                        Text("Clinic Service")
+                        Text("Mid-Rotation")
                             .font(.largeTitle)
                             .fontWeight(.bold)
                             .foregroundColor(.white)
@@ -38,7 +38,7 @@ struct ClinicServiceView: View {
                         }
                         // Description area
                         VStack(alignment: .leading, spacing: 10) {
-                            Text("The clinic experience varies slightly from site to site. But all sites during clinic, students should do the folowing.\n\n• Dress in business casual attire and wear your white coat and your badge. No open toed shoes.\n• Go to a variety of clinics (if applicable) and see low risk ob patients, high risk ob patients, ob us, gyn us, oncology patients, infertility patients, urogyn patients, general gyn patients, colposcopy, etc.\n• Try to  avoid being in the same clinic as another medical student, NP student or PA student.\n• In clinic you should practice taking histories, doing general exams, presenting patients, doing breast and pelvic exams with speculums and pap smears.\n• You Should observe bedside manner, patient education, informed consent.")
+                            Text("Mid-rotation feedback is a mandatory requirement of the LCME for all students during all clerkships. All clerkships at all sites are required to give formal, face-to-face mid-rotation feedback to all students using a standardized form.\n\nYou will complete the student section of the required form prior to your scheduled meeting. The Coordinator Team will send you a link to the form for you to complete and save before your meeting - plase be sure to only complete the student sections (marked in green).\n\nNote: you and the faculty member will share the 'strengths and areas for improvement' boxes. The same form will be opened and finalized during your mid-rotation meeting. You and the faculty member should submit the completed form together prior to ending your metting.\n\n• Your mid-rotation feedback sessions are generally scheduled around week 3.\n• For UVMMC - These are scheduled with Dr. Morris or Dr. Ruhotina. Scheduled meeting times can be found on the schedule above or individual schedules.\n• For other VT Campus Sites (CVPH, CVMC, Porter & RRMC) - Please reach out to Sara Tourville if you do not know when your meeting is scheduled for at your site.\n• Please remember to have your RCEs Tracker up-to-date, complete the self-assessment portion of the required form, and have your clinical reasoning case selected. Please also email the faculty member in advance to inform them of your case choice.")
                                 .font(.body)
                                 .foregroundColor(.white.opacity(0.85))
                                 .multilineTextAlignment(.leading)
@@ -68,10 +68,12 @@ struct ClinicServiceView: View {
 // Preview
 #Preview {
     NavigationStack {
-        ClinicServiceView()
+        MidRotationView()
     }
     .environmentObject(FirebaseService())
     .environmentObject(CurrentUser())
     .environmentObject(AuthService())
 }
+
+
 

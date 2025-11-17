@@ -1,9 +1,9 @@
-//  ClinicServiceView.swift
+//  SummativeClerkshipView.swift
 //  clerkshipApp
 
 import SwiftUI
 
-struct ClinicServiceView: View {
+struct SummativeClerkshipView: View {
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
@@ -27,7 +27,7 @@ struct ClinicServiceView: View {
                 ScrollView {
                     VStack(alignment: .center, spacing: 20) {
                         // Page title
-                        Text("Clinic Service")
+                        Text("Summative\n Clerkship Evaluations")
                             .font(.largeTitle)
                             .fontWeight(.bold)
                             .foregroundColor(.white)
@@ -38,7 +38,20 @@ struct ClinicServiceView: View {
                         }
                         // Description area
                         VStack(alignment: .leading, spacing: 10) {
-                            Text("The clinic experience varies slightly from site to site. But all sites during clinic, students should do the folowing.\n\n• Dress in business casual attire and wear your white coat and your badge. No open toed shoes.\n• Go to a variety of clinics (if applicable) and see low risk ob patients, high risk ob patients, ob us, gyn us, oncology patients, infertility patients, urogyn patients, general gyn patients, colposcopy, etc.\n• Try to  avoid being in the same clinic as another medical student, NP student or PA student.\n• In clinic you should practice taking histories, doing general exams, presenting patients, doing breast and pelvic exams with speculums and pap smears.\n• You Should observe bedside manner, patient education, informed consent.")
+                            // Buttons Section
+                            Button(action: {
+                            // do something for Pregnancy Counseling
+                            }) {
+                                Text("Send Evaluation Request")
+                                    .font(.headline)
+                                    .foregroundColor(.white)
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(buttonColor)
+                                    .cornerRadius(12)
+                                    .shadow(radius: 4)
+                            }
+                            Text("Summative Clerkship evaluations can be requested from faculty physicians, residents, NPs, PAs and CNMs - atleast one must be from an attending. Students should submit the names of those they select to complete these evaluations using the request button above.\n\nStudents are required to pick a minimum of 4 (max 6) providers over the course of the rotation. At UVMMC each student is assigned a Continuity Provider during their clinical weeks - this provider will automatically complete a service evaluation.")
                                 .font(.body)
                                 .foregroundColor(.white.opacity(0.85))
                                 .multilineTextAlignment(.leading)
@@ -48,6 +61,9 @@ struct ClinicServiceView: View {
                         .padding(.horizontal, 24)
                         .padding(.top, 10)
                         .padding(.bottom, 20)
+                        Spacer()
+                    .padding(.horizontal, 24)
+                    .padding(.bottom, 40)
                 }
 
                 NavTab(currentTab: $currentView)
@@ -68,10 +84,11 @@ struct ClinicServiceView: View {
 // Preview
 #Preview {
     NavigationStack {
-        ClinicServiceView()
+        SummativeClerkshipView()
     }
     .environmentObject(FirebaseService())
     .environmentObject(CurrentUser())
     .environmentObject(AuthService())
 }
+
 

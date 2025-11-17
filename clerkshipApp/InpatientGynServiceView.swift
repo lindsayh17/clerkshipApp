@@ -27,7 +27,7 @@ struct InpatientGynServiceView: View {
                 ScrollView {
                     VStack(alignment: .center, spacing: 20) {
                         // Page title
-                        Text("Inpatient Gyn Service")
+                        Text("Inpatient\n Gyn Service")
                             .font(.largeTitle)
                             .fontWeight(.bold)
                             .foregroundColor(.white)
