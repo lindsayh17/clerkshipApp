@@ -115,6 +115,7 @@ struct HomeView: View {
                                     .navigationDestination(isPresented: $navControl.showOrientation){OrientationView()}
                                     .navigationDestination(isPresented: $navControl.showQuickFacts){QuickFactsView()}
                                     .navigationDestination(isPresented: $navControl.showRequirements){ClerkshipRequirementsView()}
+                                    .navigationDestination(isPresented: $navControl.showEvalChoice){FormChoiceView()}
                                 case .resources:
                                     ResourcesView()
                                 case .search:
