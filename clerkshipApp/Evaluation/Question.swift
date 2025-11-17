@@ -3,18 +3,22 @@
 
 import SwiftUI
 
-// defines the form objects
-struct EvalForm: Identifiable, Codable {
-    var id = UUID()
-    var type: String
-    var categories: [QuestionCategory]
-    var formChoice: FormChoice
-    
-    init(categories: [QuestionCategory], type: String, formChoice: FormChoice) {
-        self.categories = categories
-        self.type = type
-        self.formChoice = formChoice
-    }
+// required for question's conformance to Codable
+enum CodingKeys: CodingKey {
+    case id
+    case question
+    case type
+    case required
+    case response
+    case answered
+}
+
+// four selection options for radio questions
+enum ResponseLabel: CaseIterable, Codable {
+    case novice
+    case apprentice
+    case expert
+    case none
 }
 
 // This is going to hold a bunch of questions
@@ -30,20 +34,12 @@ struct QuestionCategory: Identifiable, Codable {
     }
 }
 
+class Question: Identifiable, Codable, ObservableObject {
 
-class Question: Identifiable, Codable {
-    
-    // Question Types
     enum QuestionType: Codable {
         case radio
         case open
         case slider
-    }
-    
-    // Response Types
-    enum ResponseType: Codable {
-        case text(String)
-        case number(Int)
     }
     
     // Properties
@@ -51,7 +47,8 @@ class Question: Identifiable, Codable {
     var question: String = ""
     var type: QuestionType
     var required: Bool = true
-    var response: ResponseType?
+    @Published var response: ResponseLabel?
+    var isAnswered: Bool = false
     
     // Initializer
     init(question: String, type: QuestionType, required: Bool) {
@@ -69,106 +66,27 @@ class Question: Identifiable, Codable {
         self.response = nil
     }
     
-    // Text type
-    var responseString: String? {
-        // Returns the text value if response is a text type
-        if case let .text(value)? = response {
-            return value
-        }
-        return nil
+    // required for conformance to Codable
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        id = try container.decode(UUID.self, forKey: .id)
+        question = try container.decode(String.self, forKey: .question)
+        type = try container.decode(QuestionType.self, forKey: .type)
+        required = try container.decode(Bool.self, forKey: .required)
+        response = try container.decode(ResponseLabel.self, forKey: .response)
+        isAnswered = try container.decode(Bool.self, forKey: .answered)
     }
-}
 
-enum ResponseLabel: CaseIterable {
-    case novice
-    case apprentice
-    case expert
-    case none
-}
-
-struct FillOutFormView: View {
-    @State private var submitted = false
-//    @State var form: EvalForm
-    
-    // Colors
-    private let backgroundColor = Color("BackgroundColor")
-    private let buttonColor = Color("ButtonColor")
-    
-    @State var currForm: EvalForm
-    @State var showLabels = false
-    
-    private func infoTitle(for opt: ResponseLabel) -> String {
-        switch opt {
-        case .novice: return "Novice"
-        case .apprentice: return "Apprentice"
-        case .expert: return "Expert"
-        case .none: return "N/A"
-        }
-    }
-    
-    private func questionRow(q: Question) -> some View {
-        VStack {
-            Text(q.question)
-                .foregroundColor(.white)
-                .font(.subheadline)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.vertical, 4)
-                .padding(.horizontal, 4)
-                .multilineTextAlignment(.center)
-            
-            HStack {
-                ForEach(ResponseLabel.allCases, id: \.self) { opt in
-                    Button {
-                        q.response = .text(infoTitle(for: opt))
-                        
-                    } label: {
-                        Image(systemName: "circle")
-                            .foregroundColor(.white)
-                            .baselineOffset(1)
-                            .font(.system(size: 12))
-                    }
-                    .buttonStyle(BorderlessButtonStyle())
-                    .frame(maxWidth: .infinity)
-                }
-            }.padding(.vertical, 4)
-            Divider().background(Color.gray)
-        }
-    }
-    
-    var body: some View {
-        ZStack {
-            backgroundColor.ignoresSafeArea()
-            VStack {
-                // Title
-                Text("\(currForm.type) Evaluation")
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
-                    .padding(.bottom, 4)
-                
-                HStack {
-                    ForEach(ResponseLabel.allCases, id: \.self) { opt in
-                        Text(infoTitle(for: opt))
-                            .foregroundColor(.white)
-                            .baselineOffset(1)
-                            .font(.system(size: 12))
-                    }.frame(maxWidth: .infinity)
-                }
-                Divider().background(Color.gray)
-                ScrollView {
-                    ForEach (currForm.categories) { cat in
-                        Text(cat.category)
-                            .foregroundColor(.white)
-                            .font(.headline)
-                            .fixedSize(horizontal: false, vertical: true)
-                            .padding(.top, 6)
-                        
-                        ForEach (cat.questions) { question in
-                            questionRow(q: question)
-                        }
-                    }
-                }
-            }
-        }
+    // required for conformance to Codable
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encode(id, forKey: .id)
+        try container.encode(question, forKey: .question)
+        try container.encode(type, forKey: .type)
+        try container.encode(required, forKey: .required)
+        try container.encode(response, forKey: .response)
+        try container.encode(isAnswered, forKey: .answered)
     }
 }

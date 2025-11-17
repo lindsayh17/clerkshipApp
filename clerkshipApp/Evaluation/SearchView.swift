@@ -56,7 +56,12 @@ struct SearchView: View {
     }
     
     init(){
-        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).attributedPlaceholder = NSAttributedString(string: "Search", attributes: [NSAttributedString.Key.foregroundColor: UIColor(.white)])
+        UITextField
+            .appearance(whenContainedInInstancesOf: [UISearchBar.self])
+            .attributedPlaceholder = NSAttributedString(
+                string: "Search",
+                attributes: [NSAttributedString.Key.foregroundColor: UIColor(.white)]
+            )
         
     }
     
@@ -67,7 +72,11 @@ struct SearchView: View {
             VStack(spacing: 0) {
                 ScrollViewReader { proxy in
                     ZStack(alignment: .trailing) {
-                        NamesView(filteredNames: filteredNames, selectedUser: $selectedUser, showEvalForm: $navControl.showEvalForm)
+                        NamesView(
+                            filteredNames: filteredNames,
+                            selectedUser: $selectedUser,
+                            showEvalForm: $navControl.showEvalForm
+                        )
                             .environment(\.defaultMinListRowHeight, 28)
                             .listSectionSpacing(.compact)
                             .scrollContentBackground(.hidden)
@@ -107,16 +116,16 @@ struct SearchView: View {
                 .ignoresSafeArea(.all, edges: .top)
             
         }
-        .navigationDestination(isPresented: $navigateFormChoice) {
-            FormChoiceView()
-                .transition(.move(edge: .leading))
-        }
+//        .navigationDestination(isPresented: $navigateFormChoice) {
+//            FormChoiceView()
+//                .transition(.move(edge: .leading))
+//        }
         .task { // like onAppear but for async?
             namesList()
         }
         .navigationDestination(isPresented: $navControl.showEvalForm){
             if let selected = selectedUser{
-                EvaluationView(currStudent: selected)
+                FormChoiceView(currStudent: selected)
             }
         }
         .navigationBarBackButtonHidden(true)

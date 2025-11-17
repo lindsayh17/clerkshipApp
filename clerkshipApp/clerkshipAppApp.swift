@@ -23,8 +23,7 @@ struct clerkshipAppApp: App {
             .environmentObject(UserStore())
             .environmentObject(CurrentUser())
             .environmentObject(EvalStore())
-            .environmentObject(QODStore())
-          
+            .environmentObject(QODStore())          
         }
     }
 }

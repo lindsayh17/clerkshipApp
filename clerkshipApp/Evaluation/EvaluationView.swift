@@ -2,255 +2,200 @@
 //  clerkshipApp
 
 /*
- TODO: pull questions from firebase
  TODO: link student, preceptor, form type ids to firebase write
  TODO: display a list of completed evaluations somewhere for the preceptors
 */
-
 import SwiftUI
 
-enum OptionDefinition {
-    case novice
-    case apprentice
-    case expert
-    case none
-}
-
-struct EvaluationView: View {
-    @EnvironmentObject var firebase: FirebaseService
+struct FillOutFormView: View {
     @EnvironmentObject var evalStore: EvalStore
     @EnvironmentObject var currUser: CurrentUser
-    @EnvironmentObject var formStore: FormStore
     
-    @State private var navigateSearch: Bool = false
-    @State private var form = Form()
+    @State var addedNotes = ""
+    @State var showLabels = false
     @State private var submitted = false
     
-    @State private var showInfo = false
-    @State private var selection: OptionDefinition = .none
-    
-    // Colors
-    private let backgroundColor = Color("BackgroundColor")
-    private let buttonColor = Color("ButtonColor")
+    @State var currForm: EvalForm
+    let currStudent: User
     
     // For if a student pulls the form up
     @State private var preceptorEmail: String = ""
     
-    // TODO: display this somewhere
-    let currStudent: User
+    // Colors
+    private let backgroundColor = Color("BackgroundColor")
+    private let buttonColor = Color("ButtonColor")
+
     
-    // Firebase download (if needed)
-    func download() {
-        Task {
-            do {
-                try await firebase.fetchForms()
-                if firebase.formDownloadSuccessful{
-                    for form in firebase.forms{
-                        formStore.addForm(form)
-                    }
-                }
-            } catch {
-                print("Error fetching forms: \(error)")
-            }
-        }
-    }
-    
-    private func infoTitle(for opt: OptionDefinition) -> String {
+    private func infoTitle(for opt: ResponseLabel) -> String {
         switch opt {
         case .novice: return "Novice"
         case .apprentice: return "Apprentice"
         case .expert: return "Expert"
-        case .none: return "None"
-        }
-    }
-    
-    private func headerItem(title: String, option: OptionDefinition) -> some View {
-        HStack {
-            Text(title)
-                .foregroundColor(.white)
-            Button {
-                selection = option
-                showInfo = true
-            } label: {
-                Image(systemName: "info.circle")
-                    .foregroundColor(.white)
-                    .baselineOffset(1)
-                    .font(.system(size: 12))
-            }
-            .buttonStyle(BorderlessButtonStyle())
-        }
-    }
-    
-    private func labelledRow() -> some View {
-        // labelled row
-        HStack {
-            Group {
-                headerItem(title: "N/A", option: .none)
-                headerItem(title: "Novice", option: .novice)
-                headerItem(title: "Apprentice", option: .apprentice)
-                headerItem(title: "Expert", option: .expert)
-            }.alert(infoTitle(for: selection), isPresented: $showInfo) {
-                Button("OK", role: .cancel) { }
-            } message: {
-                Text("help")
-            }
+        case .none: return "N/A"
         }
     }
     
     // Submit form data to Firestore
+    // TODO: fix issue with nested lists
+    // already using a compact map, so having a list w/in it makes it mad
     func submitForm() {
-        let responses = form.questions.compactMap { question -> Response? in
-            guard let responseText = question.responseString else { return nil }
-            return Response(questionId: question.id.uuidString, answer: responseText)
+        let responses = currForm.categories.compactMap { cat -> [Response]? in
+            let questions = cat.questions
+            var questionResponses: [Response] = []
+            
+            for q in questions {
+                questionResponses.append(
+                    Response(
+                        questionId: q.id.uuidString,
+                        answer: infoTitle(for: q.response ?? .none),
+                        responseCat: cat.category)
+                )
+            }
+            return questionResponses
         }
         
         let evaluation = Evaluation(
-            formId: "historyGathering",
+            formId: currForm.type,
             preceptorId: currUser.user?.firebaseID ?? "0",
             studentId: currStudent.firebaseID,
             responses: responses,
-            submittedAt: Date()
+            submittedAt: Date(),
+            notes: addedNotes
         )
         
         evalStore.add(evaluation: evaluation)
+        submitted = true
     }
     
     var body: some View {
-        ZStack (alignment: .topLeading) {
+        ZStack {
             backgroundColor.ignoresSafeArea()
-            
             VStack {
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 10) {
-                        
-                        // Title
-                        Text("History Gathering Evaluation")
-                            .font(.headline)
-                            .fontWeight(.bold)
+                // Title
+                Text("\(currForm.type) Evaluation")
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                    .padding(.bottom, 4)
+                
+                // button labels at the top
+                HStack {
+                    ForEach(ResponseLabel.allCases, id: \.self) { opt in
+                        Text(infoTitle(for: opt))
                             .foregroundColor(.white)
-                            .padding(.bottom, 6)
-                            .padding(.top, 50)
-                        
-                        // Radio button headers
-                        labelledRow()
-                        Divider().background(Color.gray)
-                        
-                        // Question Rows
-                        ForEach($form.questions) { $q in
-                            if q.type == .radio {
-                                VStack {
-                                    Text(q.question)
-                                        .foregroundColor(.white)
-                                        .font(.headline)
-                                        .fixedSize(horizontal: false, vertical: true)
-                                    
-                                    HStack(alignment: .center, spacing: 12) {
-                                        ForEach(["N/A", "Novice", "Apprentice", "Expert"], id: \.self) { option in
-                                            Button(action: {
-                                                q.response = .text(option)
-                                            }) {
-                                                Image(systemName: q.responseString == option ? "circle.inset.filled" : "circle")
-                                                    .foregroundColor(q.responseString == option ? .purple : .white)
-                                            }
-                                            .frame(maxWidth: .infinity)
-                                        }.padding(.vertical, 8)
-                                    }
-                                    Divider().background(Color.gray)
-                                }
-                            }
-                            
-                            // Notes Field
-                            if q.type == .open {
-                                VStack(alignment: .leading, spacing: 5) {
-                                    Text(q.question)
-                                        .foregroundColor(.white)
-                                    TextEditor(
-                                        text: Binding(
-                                            get: {
-                                                if case .text(let notes) = q.response { return notes }
-                                                return ""
-                                            },
-                                            set: { q.response = .text($0) }
-                                        )
-                                    )
-                                    .frame(height: 80)
-                                    .padding(8)
-                                    .background(Color.white)
-                                    .cornerRadius(10)
-                                }
-                                .padding(.top, 10)
-                            }
-                        }
-                        
-                        // Student-only preceptor email field (once at the bottom)
-                        if currUser.user?.access == .student {
-                            VStack(alignment: .leading, spacing: 5) {
-                                Text("Preceptor Email")
-                                    .foregroundColor(.white)
-                                    .font(.headline)
-                                
-                                TextField("Enter preceptor email", text: $preceptorEmail)
-                                    .keyboardType(.emailAddress)
-                                    .autocapitalization(.none)
-                                    .padding(10)
-                                    .background(Color.white)
-                                    .cornerRadius(10)
-                            }
-                            .padding(.top, 15)
-                        }
-                        
-                        // Submit Button
-                        Button(action: {
-                            submitted = true
-                            submitForm()
-                        }) {
-                            Text("Submit Form")
-                                .foregroundColor(.white)
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(form.validForm() ? buttonColor : Color.gray)
-                                .cornerRadius(30)
-                        }
-                        .disabled(!form.validForm() || (currUser.user?.access == .student && preceptorEmail.trimmingCharacters(in: .whitespaces).isEmpty))
-                        .padding(.top, 20)
-                    }
-                    .padding()
+                            .baselineOffset(1)
+                            .font(.system(size: 12))
+                    }.frame(maxWidth: .infinity)
                 }
-                .navigationDestination(isPresented: $submitted) {
-                    SubmittedView()
+                Divider().background(Color.gray)
+                
+                ScrollView {
+                    ForEach (currForm.categories) { cat in
+                        
+                        Text(cat.category)
+                            .foregroundColor(.white)
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .padding(.top, 6)
+                        
+                        ForEach (cat.questions) { q in
+                            QuestionRowView(question: q)
+                        }
+                    }
+                    
+                    // TODO: add notes field
+                    VStack(alignment: .leading, spacing: 5) {
+                        Text("Notes: ")
+                            .foregroundColor(.white)
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .padding(.top, 6)
+                        
+                        TextEditor(
+                            text: $addedNotes
+                        )
+                        .frame(height: 80)
+                        .padding(8)
+                        .background(Color.white)
+                        .cornerRadius(10)
+                    }.padding()
+                    
+                    // TODO: Student-only preceptor email field (BROKEN)
+                    // Student-only preceptor email field (once at the bottom)
+                    if currUser.user?.access == .student {
+                        VStack(alignment: .leading, spacing: 5) {
+                            Text("Preceptor Email")
+                                .foregroundColor(.white)
+                                .font(.headline)
+                            
+                            TextField("Enter preceptor email", text: $preceptorEmail)
+                                .keyboardType(.emailAddress)
+                                .autocapitalization(.none)
+                                .padding(10)
+                                .background(Color.white)
+                                .cornerRadius(10)
+                        }
+                        .padding(.top, 15)
+                    }
+                    
+                    // TODO: Submit button (BROKEN)
+                    Button(action: {
+                        submitted = true
+                        submitForm()
+                    }) {
+                        Text("Submit Form")
+                            .font(.title3)
+                            .fontWeight(.semibold)
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(.white)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(currForm.validForm() ? buttonColor : Color.gray)
+                            .cornerRadius(10)
+                            .lineLimit(nil)
+                            .frame(maxWidth: .infinity, minHeight: 20)
+                            .padding()
+                    }
+                    .disabled(!currForm.validForm() || (currUser.user?.access == .student && preceptorEmail.trimmingCharacters(in: .whitespaces).isEmpty))
+                    .padding(.top, 20)
                 }
             }
-            
-            // Back button to search
-            SearchViewBackButton(navigateSearch: $navigateSearch)
-                .padding(.top, 10)
-                .padding(.leading, 10)
-                .ignoresSafeArea(.all, edges: .top)
         }
-    .navigationDestination(isPresented: $navigateSearch) {
-        SearchView()
-            .transition(.move(edge: .leading))
-    }
-    .navigationBarBackButtonHidden(true)
     }
 }
 
-//
-// Radio Button
-//
-struct RadioButton: View {
-    let label: String
-    let isSelected: Bool
-    let action: () -> Void
+struct QuestionRowView: View {
+    @ObservedObject var question: Question
+    private let buttonColor = Color("ButtonColor")
     
     var body: some View {
-        Button(action: action) {
+        VStack {
+            // show the question
+            Text(question.question)
+                .foregroundColor(.white)
+                .font(.subheadline)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.vertical, 4)
+                .padding(.horizontal, 4)
+                .multilineTextAlignment(.center)
+            
             HStack {
-                Image(systemName: isSelected ? "circle.inset.filled" : "circle")
-                    .foregroundColor(isSelected ? .purple : .white)
-                Text(label)
-                    .foregroundColor(.white)
-            }
+                ForEach(ResponseLabel.allCases, id: \.self) { opt in
+                    
+                    Button(action: {
+                        question.response = opt
+                    }) {
+                        Image(systemName: question.response == opt ? "circle.inset.filled" : "circle")
+                            .foregroundColor(question.response == opt ? buttonColor : .white)
+                            .buttonStyle(BorderlessButtonStyle())
+                            .frame(maxWidth: .infinity)
+                    }
+                }
+            }.padding(.vertical, 4)
+            
+            Divider().background(Color.gray)
         }
     }
 }
@@ -267,14 +212,24 @@ struct SubmittedView: View {
     }
 }
 
-// Preview
-#Preview {
-    NavigationStack {
-        EvaluationView(currStudent: User(firstName: "Place", lastName: "Holder", email: "email"))
-    }
-    .environmentObject(FirebaseService())
-    .environmentObject(EvalStore())
-    .environmentObject(CurrentUser())
-    .environmentObject(FormStore())
-}
 
+#Preview {
+    FillOutFormView(
+        currForm: EvalForm(
+            categories: [
+                QuestionCategory(
+                    category: "Type of Question",
+                    questions: [
+                        Question(question: "Skill coding in Swift"),
+                        Question(question: "Experience with debugging")
+                    ]
+                )
+            ],
+            type: "Clinic",
+            formChoice: .clinic
+        ),
+        currStudent: User(firstName: "Place", lastName: "Holder", email: "email")
+    )
+        .environmentObject(EvalStore())
+        .environmentObject(CurrentUser())
+}

@@ -19,6 +19,8 @@ struct FormChoiceView: View {
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
     
+    let currStudent: User
+        
     // download forms from firebase
     func downloadForms() {
         Task {
@@ -72,7 +74,7 @@ struct FormChoiceView: View {
         }
         .navigationDestination(isPresented: $choiceMade) {
             if let selected = selectedForm {
-                FillOutFormView(currForm: selected)
+                FillOutFormView(currForm: selected, currStudent: currStudent)
             }
         }
         .navigationDestination(isPresented: $navigateHome) {
