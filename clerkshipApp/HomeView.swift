@@ -107,7 +107,7 @@ struct HomeView: View {
                                             navControl.showRequirements = true
                                         }
                                         HomeNavCard(title: "Evaluation Form", icon: "doc.text.fill", color: .orange) {
-                                            //navControl.showOrientation = true
+                                            navControl.showEvalChoice = true
                                         }
                                     }
                                     .padding(.horizontal)
