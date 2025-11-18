@@ -10,6 +10,7 @@ struct ProfileView: View {
     @EnvironmentObject var currUser: CurrentUser
     @State private var currentView: NavOption = .profile
     @StateObject var navControl = NavControl()
+    @Binding var navPath: NavigationPath
     
     func signOut() {
         Task {
@@ -58,8 +59,15 @@ struct ProfileView: View {
                         
                         // Logout button
                         Button(action: {
-                            //navControl.showRoot = true
-                            signOut()
+                            Task {
+                                do {
+                                    try await auth.signOut()
+                                    navPath.removeLast(navPath.count)
+                                    // clear stack so RootView shows properly
+                                } catch {
+                                    print("Sign out failed")
+                                }
+                            }
                         }) {
                             Text("Log Out")
                                 .foregroundColor(.white)
@@ -83,9 +91,11 @@ struct ProfileView: View {
 
 // Preview
 #Preview {
-    NavigationStack {
-        ProfileView()
+    @State var navPath = NavigationPath()
+    
+    NavigationStack(path: $navPath) {
+        ProfileView(navPath: $navPath)
+            .environmentObject(AuthService())
+            .environmentObject(CurrentUser())
     }
-    .environmentObject(AuthService())
-    .environmentObject(CurrentUser())
 }

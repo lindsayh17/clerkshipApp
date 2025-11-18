@@ -13,6 +13,7 @@ struct clerkshipAppApp: App {
     @StateObject var currentUser = CurrentUser()
     @StateObject var evalStore = EvalStore()
     @StateObject var qodStore = QODStore()
+    @State private var navPath = NavigationPath()
 
     init() {
         FirebaseApp.configure()
@@ -20,15 +21,16 @@ struct clerkshipAppApp: App {
 
     var body: some Scene {
         WindowGroup {
-            NavigationStack {
+            NavigationStack(path: $navPath) {
                 RootView()
+                    .environmentObject(authService)
+                    .environmentObject(firebaseService)
+                    .environmentObject(userStore)
+                    .environmentObject(currentUser)
+                    .environmentObject(evalStore)
+                    .environmentObject(qodStore)
             }
-            .environmentObject(authService)
-            .environmentObject(firebaseService)
-            .environmentObject(userStore)
-            .environmentObject(currentUser)
-            .environmentObject(evalStore)
-            .environmentObject(qodStore)
+
         }
     }
 }
