@@ -13,6 +13,9 @@ struct LocationsView: View {
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
     
+    @Binding var navPath: NavigationPath
+
+    
     @State private var currentView: NavOption = .home
     @EnvironmentObject var currUser: CurrentUser
     
@@ -50,7 +53,7 @@ struct LocationsView: View {
                         case .search:
                             SearchView()
                         case .profile:
-                            ProfileView()
+                            ProfileView(navPath: $navPath)
                         case .users:
                             SearchView()
                         case .eval:
@@ -71,7 +74,7 @@ struct LocationsView: View {
 // Preview
 #Preview {
     NavigationStack {
-        LocationsView()
+        LocationsView(navPath: .constant(NavigationPath()))
     }
     .environmentObject(FirebaseService())
     .environmentObject(CurrentUser())
