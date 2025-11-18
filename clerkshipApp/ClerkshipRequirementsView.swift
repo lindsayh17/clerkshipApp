@@ -107,9 +107,9 @@ struct ClerkshipRequirementsView: View {
 #Preview {
     NavigationStack {
         ClerkshipRequirementsView()
-            .environmentObject(FirebaseService())
-            .environmentObject(CurrentUser())
-            .environmentObject(AuthService())
     }
+    .environmentObject(FirebaseService())
+    .environmentObject(CurrentUser())
+    .environmentObject(AuthService())
 }
 
