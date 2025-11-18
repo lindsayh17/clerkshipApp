@@ -9,11 +9,11 @@ struct Evaluation: Identifiable, Codable {
     var formId: String             // Link to form type
     var preceptorId: String        // ID of preceptor filling out form
     var studentId: String          // ID of student being evaluated
-    var responses: [String: ResponseLabel]
+    var responses: [UUID: ResponseLabel]
     var submittedAt: Date
     var notes = ""
     
-    init(formId: String, preceptorId: String, studentId: String, responses: [String: ResponseLabel], submittedAt: Date) {
+    init(formId: String, preceptorId: String, studentId: String, responses: [UUID: ResponseLabel], submittedAt: Date) {
         self.formId = formId
         self.preceptorId = preceptorId
         self.studentId = studentId
@@ -21,7 +21,7 @@ struct Evaluation: Identifiable, Codable {
         self.submittedAt = submittedAt
     }
     
-    init(formId: String, preceptorId: String, studentId: String, responses: [String: ResponseLabel], submittedAt: Date, notes: String) {
+    init(formId: String, preceptorId: String, studentId: String, responses: [UUID: ResponseLabel], submittedAt: Date, notes: String) {
         self.formId = formId
         self.preceptorId = preceptorId
         self.studentId = studentId
