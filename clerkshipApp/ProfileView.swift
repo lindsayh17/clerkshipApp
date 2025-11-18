@@ -58,7 +58,7 @@ struct ProfileView: View {
                         
                         // Logout button
                         Button(action: {
-                            navControl.showRoot = true
+                            //navControl.showRoot = true
                             signOut()
                         }) {
                             Text("Log Out")

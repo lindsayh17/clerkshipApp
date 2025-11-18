@@ -7,29 +7,29 @@ import FirebaseCore
 
 @main
 struct clerkshipAppApp: App {
-//    var firebase = FirebaseService()
-    @StateObject var auth = AuthService()
+    @StateObject var authService = AuthService()
+    @StateObject var firebaseService = FirebaseService()
+    @StateObject var userStore = UserStore()
+    @StateObject var currentUser = CurrentUser()
+    @StateObject var evalStore = EvalStore()
+    @StateObject var qodStore = QODStore()
 
     init() {
-        // Use Firebase library to configure APIs
         FirebaseApp.configure()
     }
+
     var body: some Scene {
         WindowGroup {
             NavigationStack {
-                if auth.isLoggedIn {
-                    RootView()
-                } else {
-                    LoginView()
-                }
+                RootView()
             }
-            .environmentObject(auth)
-            .environmentObject(FirebaseService())
-            .environmentObject(AuthService())
-            .environmentObject(UserStore())
-            .environmentObject(CurrentUser())
-            .environmentObject(EvalStore())
-            .environmentObject(QODStore())          
+            .environmentObject(authService)
+            .environmentObject(firebaseService)
+            .environmentObject(userStore)
+            .environmentObject(currentUser)
+            .environmentObject(evalStore)
+            .environmentObject(qodStore)
         }
     }
 }
+
