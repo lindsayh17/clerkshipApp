@@ -38,7 +38,7 @@ struct HomeView: View {
     @EnvironmentObject var qod: QODStore
     
     var body: some View {
-        Group {
+        VStack {
             // If user is admin show web dashboard
             if currUser.user?.access == .admin {
                 AdminDashboardView()
@@ -125,11 +125,13 @@ struct HomeView: View {
 
                 // Eval via Home card
                 .navigationDestination(isPresented: $navControl.showEvalChoice) {
-                    FormChoiceView()
+//                    FormChoiceView()
+                    SearchView()
                 }
                 // Eval via bottom tab
                 .navigationDestination(isPresented: $showEvalFromTab) {
-                    FormChoiceView()
+//                    FormChoiceView()
+                    SearchView()
                 }
                 // Other destinations
                 .navigationDestination(isPresented: $navControl.showOrientation) {

@@ -88,7 +88,7 @@ struct FormChoiceView: View {
 // Preview
 #Preview {
     NavigationStack {
-        FormChoiceView()
+        FormChoiceView(currStudent: User(firstName: "Place", lastName: "Holder", email: "email"))
     }
     .environmentObject(FirebaseService())
     .environmentObject(FormStore())
