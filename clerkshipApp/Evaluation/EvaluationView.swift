@@ -36,12 +36,11 @@ struct FillOutFormView: View {
     }
     
     // Submit form data to Firestore
-    // TODO: fix issue with nested lists
     func submitForm() {
-        var responseDict: [String: ResponseLabel] = [:]
+        var responseDict: [UUID: ResponseLabel] = [:]
         for category in currForm.categories {
             for question in category.questions {
-                responseDict[question.question] = question.response
+                responseDict[question.id] = question.response
             }
         }
         
@@ -95,7 +94,7 @@ struct FillOutFormView: View {
                         }
                     }
                     
-                    // TODO: add notes field
+                    // notes field
                     VStack(alignment: .leading, spacing: 5) {
                         Text("Notes: ")
                             .foregroundColor(.white)
@@ -113,8 +112,7 @@ struct FillOutFormView: View {
                         .cornerRadius(10)
                     }.padding()
                     
-                    // TODO: Student-only preceptor email field (BROKEN)
-                    // Student-only preceptor email field (once at the bottom)
+                    // Student-only preceptor email field
                     if currUser.user?.access == .student {
                         VStack(alignment: .leading, spacing: 5) {
                             Text("Preceptor Email")
@@ -128,12 +126,10 @@ struct FillOutFormView: View {
                                 .background(Color.white)
                                 .cornerRadius(10)
                         }
-                        .padding(.top, 15)
+                        .padding()
                     }
                     
-                    // TODO: Submit button (BROKEN)
                     Button(action: {
-                        submitted = true
                         submitForm()
                     }) {
                         Text("Submit Form")
@@ -143,16 +139,23 @@ struct FillOutFormView: View {
                             .foregroundColor(.white)
                             .padding()
                             .frame(maxWidth: .infinity)
-                            .background(currForm.validForm() ? buttonColor : Color.gray)
+                            .background(
+                                currForm.validForm() ||
+                                (currUser.user?.access == .student &&
+                                 preceptorEmail.trimmingCharacters(in: .whitespaces).isEmpty)
+                                ? buttonColor : Color.gray
+                            )
                             .cornerRadius(10)
                             .lineLimit(nil)
                             .frame(maxWidth: .infinity, minHeight: 20)
                             .padding()
                     }
-//                    .disabled(!currForm.validForm() || (currUser.user?.access == .student && preceptorEmail.trimmingCharacters(in: .whitespaces).isEmpty))
+                    .disabled(!currForm.validForm() || (currUser.user?.access == .student && preceptorEmail.trimmingCharacters(in: .whitespaces).isEmpty)
+                    )
                     .padding(.top, 20)
                 }
             }
+            .navigationDestination(isPresented: $submitted) { SubmittedView() }
         }
     }
 }
@@ -191,7 +194,7 @@ struct QuestionRowView: View {
     }
 }
 
-
+// TODO: make submitted view nicer, and have back button go to the home page, not back to eval
 // SubmittedView
 struct SubmittedView: View {
     var body: some View {
