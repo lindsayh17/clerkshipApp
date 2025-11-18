@@ -68,7 +68,7 @@ struct LoginView: View {
         }
     }
     
-    // MARK: - Body
+    // Body
     var body: some View {
         ZStack(alignment: .topLeading) {
             VStack(spacing: 20) {
@@ -140,7 +140,7 @@ struct LoginView: View {
     }
 }
 
-// MARK: - Preview
+// Preview
 #Preview {
     NavigationStack {
         LoginView()

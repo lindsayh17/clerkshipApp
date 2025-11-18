@@ -3,10 +3,6 @@
 
 import SwiftUI
 
-/*
- TODO: read person info from firebase
- */
-
 struct ProfileView: View {
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")

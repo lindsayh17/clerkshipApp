@@ -1,7 +1,6 @@
 //  BackButtonToResources.swift
 //  clerkshipApp
 
-
 import SwiftUI
 
 struct   BackButtonToResources: View {

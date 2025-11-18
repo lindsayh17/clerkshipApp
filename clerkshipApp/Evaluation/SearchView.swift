@@ -90,7 +90,6 @@ struct SearchView: View {
                             .foregroundColor(.white)
                             .tint(buttonColor)
                         
-                        
                         // Alphabet index
                         VStack(spacing: 6) {
                             ForEach(alphabet, id: \.self) { letter in
