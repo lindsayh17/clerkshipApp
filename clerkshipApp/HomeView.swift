@@ -23,7 +23,7 @@ struct HomeView: View {
     private let backgroundColor = Color("BackgroundColor")
     private let cardColor = Color("CardColor")
     private let accentColor = Color("AccentColor")
-    
+
     @State private var currentView = NavOption.home
     @State private var showDailyQuestionAnswer = false
     @State private var showLocationInfo = false

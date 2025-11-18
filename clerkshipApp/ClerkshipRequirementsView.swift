@@ -13,7 +13,7 @@ struct ClerkshipRequirementsView: View {
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
-    
+
     @State private var navigateHome: Bool = false
     @State private var currentView: NavOption = .home
     @EnvironmentObject var currUser: CurrentUser
@@ -107,9 +107,9 @@ struct ClerkshipRequirementsView: View {
 #Preview {
     NavigationStack {
         ClerkshipRequirementsView()
+            .environmentObject(FirebaseService())
+            .environmentObject(CurrentUser())
+            .environmentObject(AuthService())
     }
-    .environmentObject(FirebaseService())
-    .environmentObject(CurrentUser())
-    .environmentObject(AuthService())
 }
 

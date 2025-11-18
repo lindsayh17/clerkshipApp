@@ -15,6 +15,7 @@ struct OrientationView: View {
     @State private var navigateHome: Bool = false
     @State private var currentView: NavOption = .home
     @EnvironmentObject var currUser: CurrentUser
+
     
     var body: some View {
         ZStack(alignment: .topLeading) {
