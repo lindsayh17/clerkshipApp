@@ -37,28 +37,19 @@ struct FillOutFormView: View {
     
     // Submit form data to Firestore
     // TODO: fix issue with nested lists
-    // already using a compact map, so having a list w/in it makes it mad
     func submitForm() {
-        let responses = currForm.categories.compactMap { cat -> [Response]? in
-            let questions = cat.questions
-            var questionResponses: [Response] = []
-            
-            for q in questions {
-                questionResponses.append(
-                    Response(
-                        questionId: q.id.uuidString,
-                        answer: infoTitle(for: q.response ?? .none),
-                        responseCat: cat.category)
-                )
+        var responseDict: [String: ResponseLabel] = [:]
+        for category in currForm.categories {
+            for question in category.questions {
+                responseDict[question.question] = question.response
             }
-            return questionResponses
         }
         
         let evaluation = Evaluation(
             formId: currForm.type,
             preceptorId: currUser.user?.firebaseID ?? "0",
             studentId: currStudent.firebaseID,
-            responses: responses,
+            responses: responseDict,
             submittedAt: Date(),
             notes: addedNotes
         )
@@ -158,7 +149,7 @@ struct FillOutFormView: View {
                             .frame(maxWidth: .infinity, minHeight: 20)
                             .padding()
                     }
-                    .disabled(!currForm.validForm() || (currUser.user?.access == .student && preceptorEmail.trimmingCharacters(in: .whitespaces).isEmpty))
+//                    .disabled(!currForm.validForm() || (currUser.user?.access == .student && preceptorEmail.trimmingCharacters(in: .whitespaces).isEmpty))
                     .padding(.top, 20)
                 }
             }
