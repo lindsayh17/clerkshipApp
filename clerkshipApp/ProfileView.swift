@@ -76,7 +76,7 @@ struct ProfileView: View {
                 
             }
         }
-    .navigationDestination(isPresented: $navControl.showRoot) { RootView() }
+   // .navigationDestination(isPresented: $navControl.showRoot) { RootView() }
     .navigationBarBackButtonHidden(true)
     }
 }

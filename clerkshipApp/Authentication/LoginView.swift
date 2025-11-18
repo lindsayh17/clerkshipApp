@@ -14,10 +14,11 @@ struct LoginView: View {
     @State private var email = ""
     @State private var password = ""
     @State private var loginError: String? = nil
+    @State private var isLoading = false
     
     private let backgroundColor = Color("BackgroundColor")
     
-    // MARK: - Firebase fetch functions
+    // Firebase fetch functions
     func getNames() async {
         do {
             try await firebase.fetchUsers()
@@ -55,16 +56,19 @@ struct LoginView: View {
     }
     
     func signin() {
+        loginError = nil
+        isLoading = true
         Task {
             do {
                 try await auth.signIn(email: email, password: password)
                 await getNames()
                 await getCurrUser()
                 await getQOD()
-                auth.isLoggedIn = true
+               // auth.isLoggedIn = true
             } catch {
                 loginError = "Wrong email or password"
             }
+            isLoading = false
         }
     }
     
@@ -133,9 +137,9 @@ struct LoginView: View {
                 .ignoresSafeArea(.all, edges: .top)
         }
         // Navigate to HomeView on login
-        .navigationDestination(isPresented: $auth.isLoggedIn) {
-            HomeView()
-        }
+       // .navigationDestination(isPresented: $auth.isLoggedIn) {
+           // HomeView()
+       // }
         .navigationBarBackButtonHidden(true)
     }
 }
