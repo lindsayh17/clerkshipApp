@@ -14,4 +14,4 @@ class EvalStore: ObservableObject {
         }
     }
   
-} // class EvalStore
+}

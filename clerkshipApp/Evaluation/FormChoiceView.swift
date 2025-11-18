@@ -43,7 +43,7 @@ struct FormChoiceView: View {
             VStack {
                 ScrollView {
                     // Screen Label
-                    Text("Evaluation Type")
+                    Text("Evaluation\nType")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundColor(.white)

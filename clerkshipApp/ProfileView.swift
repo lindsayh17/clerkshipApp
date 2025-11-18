@@ -3,10 +3,6 @@
 
 import SwiftUI
 
-/*
- TODO: read person info from firebase
- */
-
 struct ProfileView: View {
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
@@ -62,7 +58,6 @@ struct ProfileView: View {
                         
                         // Logout button
                         Button(action: {
-                            navControl.showRoot = true
                             signOut()
                         }) {
                             Text("Log Out")
@@ -80,16 +75,17 @@ struct ProfileView: View {
                 
             }
         }
-    .navigationDestination(isPresented: $navControl.showRoot) { RootView() }
+   // .navigationDestination(isPresented: $navControl.showRoot) { RootView() }
     .navigationBarBackButtonHidden(true)
     }
 }
 
 // Preview
 #Preview {
-    NavigationStack {
+    
+    NavigationStack() {
         ProfileView()
+            .environmentObject(AuthService())
+            .environmentObject(CurrentUser())
     }
-    .environmentObject(AuthService())
-    .environmentObject(CurrentUser())
 }

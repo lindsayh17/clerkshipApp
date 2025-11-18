@@ -3,7 +3,6 @@
 
 import Foundation
 
-
 // defines the form objects
 struct EvalForm: Identifiable, Codable {
     var id = UUID()

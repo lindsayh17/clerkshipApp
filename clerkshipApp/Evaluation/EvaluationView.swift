@@ -93,8 +93,7 @@ struct FillOutFormView: View {
                             QuestionRowView(question: q)
                         }
                     }
-                    
-                    // notes field
+                
                     VStack(alignment: .leading, spacing: 5) {
                         Text("Notes: ")
                             .foregroundColor(.white)
