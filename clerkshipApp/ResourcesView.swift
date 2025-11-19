@@ -11,6 +11,7 @@ struct ResourcesView: View {
     // State for nav tab
     @State private var currentView: NavOption = .resources
     @State private var showBreastExam = false
+    @State private var showLaborTriage = false
     @EnvironmentObject var currUser: CurrentUser
     
     var body: some View {
@@ -40,7 +41,9 @@ struct ResourcesView: View {
                             MainButtonView(title: "New Patient History", color: buttonColor)
                             MainButtonView(title: "Prenatal-Antepartum Patient", color: buttonColor)
                             MainButtonView(title: "Vaginal Delivery", color: buttonColor)
-                            MainButtonView(title: "Labor Triage", color: buttonColor)
+                            MainButtonView(title: "Labor Triage", color: buttonColor) {
+                                showLaborTriage = true
+                            }
                             MainButtonView(title: "Preeclampsia Triage", color: buttonColor)
                             MainButtonView(title: "Laboring Patient", color: buttonColor)
                             MainButtonView(title: "C-Section", color: buttonColor)
@@ -57,8 +60,11 @@ struct ResourcesView: View {
             }
         }
         .navigationDestination(isPresented: $showBreastExam) {
-                   BreastExamView() 
-               }
+            BreastExamView()
+        }
+        .navigationDestination(isPresented: $showLaborTriage) {
+            LaborTriageView()
+        }
     }
 }
 
