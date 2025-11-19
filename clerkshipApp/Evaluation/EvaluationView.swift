@@ -109,7 +109,7 @@ struct FillOutFormView: View {
                     }.padding()
                     
                     // Student-only preceptor email field
-                    if currUser.user?.access == .student {
+                    if let user = currUser.user, user.access == .student {
                         VStack(alignment: .leading, spacing: 5) {
                             Text("Preceptor Email")
                                 .foregroundColor(.white)
@@ -124,6 +124,7 @@ struct FillOutFormView: View {
                         }
                         .padding()
                     }
+                    
                     
                     Button(action: {
                         submitForm()
@@ -157,6 +158,13 @@ struct FillOutFormView: View {
                 .padding(.top, 10)
                 .padding(.leading, 10)
                 .ignoresSafeArea(.all, edges: .top)
+        }
+        .task {
+            if let user = currUser.user {
+                print("Current user: \(user.firstName), access: \(user.access.rawValue)")
+            } else {
+                print("Current user is nil")
+            }
         }
         .navigationBarBackButtonHidden(true)
     }
