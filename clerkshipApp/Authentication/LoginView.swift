@@ -68,7 +68,7 @@ struct LoginView: View {
         }
     }
     
-    // Body
+    // MARK: - Body
     var body: some View {
         ZStack(alignment: .topLeading) {
             VStack(spacing: 20) {
@@ -140,7 +140,7 @@ struct LoginView: View {
     }
 }
 
-// Preview
+// MARK: - Preview
 #Preview {
     NavigationStack {
         LoginView()
@@ -151,4 +151,3 @@ struct LoginView: View {
     .environmentObject(AuthService())
     .environmentObject(QODStore())
 }
-

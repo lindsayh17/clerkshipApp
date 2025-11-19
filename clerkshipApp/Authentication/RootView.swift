@@ -4,40 +4,35 @@
 import SwiftUI
 
 struct RootView: View {
-    @EnvironmentObject var auth: AuthService
-    
     private let backgroundColor = Color("BackgroundColor")
     @StateObject var navControl = NavControl()
     
     var body: some View {
         ZStack {
             backgroundColor.ignoresSafeArea()
-            if auth.isLoggedIn {
-                HomeView()
-            } else {
-                VStack(spacing: 30) {
-                    Image("GreenUVMLogo")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                    
-                    // Log In button
-                    BigButtonView(
-                        text: "Log In",
-                        action: { navControl.showSignIn = true },
-                        foregroundColor: .white,
-                        backgroundColor: backgroundColor
-                    )
-                    .padding(.horizontal, 40)
-                    
-                    // Create Account button
-                    BigButtonView(
-                        text: "Create Account",
-                        action: { navControl.showCreateAccount = true },
-                        foregroundColor: backgroundColor,
-                        backgroundColor: .white
-                    )
-                    .padding(.horizontal, 40)
-                }
+            
+            VStack(spacing: 30) {
+                Image("GreenUVMLogo")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                
+                // Log In button
+                BigButtonView(
+                    text: "Log In",
+                    action: { navControl.showSignIn = true },
+                    foregroundColor: .white,
+                    backgroundColor: backgroundColor
+                )
+                .padding(.horizontal, 40)
+                
+                // Create Account button
+                BigButtonView(
+                    text: "Create Account",
+                    action: { navControl.showCreateAccount = true },
+                    foregroundColor: backgroundColor,
+                    backgroundColor: .white
+                )
+                .padding(.horizontal, 40)
             }
         }
         // Navigation destinations for buttons
@@ -51,7 +46,7 @@ struct RootView: View {
 }
 
 #Preview {
-    NavigationStack {  
+    NavigationStack {
         RootView()
     }
     .environmentObject(FirebaseService())

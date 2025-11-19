@@ -8,7 +8,7 @@ struct RRMCView: View {
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
     // @Binding var destination: HomeDestination
-
+    
     @State private var navigateLocations: Bool = false
     
     @State private var currentView = NavOption.home

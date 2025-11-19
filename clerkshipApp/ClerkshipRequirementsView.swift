@@ -13,13 +13,14 @@ struct ClerkshipRequirementsView: View {
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
-
+    
     @State private var navigateHome: Bool = false
     @State private var currentView: NavOption = .home
     @EnvironmentObject var currUser: CurrentUser
     
     private let requirements = [
         "Attendance",
+        "Rotation Checklist",
         "Obstetrics Service",
         "Clinic Service",
         "Gyn/Inpatient Service",
