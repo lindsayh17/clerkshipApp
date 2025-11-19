@@ -139,7 +139,7 @@ class FirebaseService: ObservableObject {
                     let firstName = data["firstName"] as? String ?? ""
                     let lastName = data["lastName"] as? String ?? ""
                     let email = data["email"] as? String ?? ""
-                    let userPriv = data["privilege"] as? String ?? ""
+                    let userPriv = data["access"] as? String ?? ""
                     
                     switch userPriv {
                     case "student":
