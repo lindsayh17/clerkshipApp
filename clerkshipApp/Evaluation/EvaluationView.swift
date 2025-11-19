@@ -65,6 +65,14 @@ struct FillOutFormView: View {
                     .foregroundColor(.white)
                     .padding(.bottom, 4)
                 
+                if let curr = currUser.user{
+                    if curr.access == .preceptor{
+                        Text("Student Name: \(curr.firstName) \(curr.lastName) (\(curr.email))")
+                            .foregroundColor(.white)
+                            .padding()
+                    }
+                }
+                
                 // button labels at the top
                 HStack {
                     ForEach(ResponseLabel.allCases, id: \.self) { opt in
@@ -158,13 +166,6 @@ struct FillOutFormView: View {
                 .padding(.top, 10)
                 .padding(.leading, 10)
                 .ignoresSafeArea(.all, edges: .top)
-        }
-        .task {
-            if let user = currUser.user {
-                print("Current user: \(user.firstName), access: \(user.access.rawValue)")
-            } else {
-                print("Current user is nil")
-            }
         }
         .navigationBarBackButtonHidden(true)
     }
