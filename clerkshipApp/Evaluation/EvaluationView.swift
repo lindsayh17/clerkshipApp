@@ -216,19 +216,6 @@ struct QuestionRowView: View {
     }
 }
 
-// TODO: make submitted view nicer, and have back button go to the home page, not back to eval
-// SubmittedView
-struct SubmittedView: View {
-    var body: some View {
-        VStack(spacing: 30) {
-            Text("Submitted!")
-            Spacer()
-        }
-        .padding()
-    }
-}
-
-
 #Preview {
     EvaluationView(
         currForm: EvalForm(
