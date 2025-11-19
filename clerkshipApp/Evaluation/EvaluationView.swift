@@ -67,7 +67,7 @@ struct EvaluationView: View {
                 
                 if let curr = currUser.user{
                     if curr.access == .preceptor{
-                        Text("Student Name: \(curr.firstName) \(curr.lastName) (\(curr.email))")
+                        Text("Student Name: \(currStudent.firstName) \(currStudent.lastName) (\(currStudent.email))")
                             .foregroundColor(.white)
                             .padding()
                     }
