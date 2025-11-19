@@ -1,4 +1,3 @@
-//
 //  QuestionOfDay.swift
 //  clerkshipApp
 

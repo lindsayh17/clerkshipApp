@@ -12,9 +12,10 @@ struct QuickFactItem: Identifiable {
 struct QuickFactsView: View {
     // Colors
     private let backgroundColor = Color("BackgroundColor")
-    @State private var navigateHome: Bool = false
     // Dropdown state
     @State private var openItem: UUID? = nil
+    
+    @Environment(\.dismiss) var dismiss
 
     // State for nav tab
     @State private var currentView: NavOption = .resources
@@ -119,14 +120,10 @@ struct QuickFactsView: View {
             }
             
             // Floating back button above safe area (next to front camera)
-            BackToHomeButton(navigateHome: $navigateHome)
+            BackButton()
                 .padding(.top, 10)   // flush to top
                 .padding(.leading, 10)
                 .ignoresSafeArea(.all, edges: .top) 
-        }
-        .navigationDestination(isPresented: $navigateHome) {
-            HomeView()
-                .transition(.move(edge: .leading))
         }
     .navigationBarBackButtonHidden(true)
     }

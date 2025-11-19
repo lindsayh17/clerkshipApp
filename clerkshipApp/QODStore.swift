@@ -1,4 +1,3 @@
-//
 //  QODStore.swift
 //  clerkshipApp
 

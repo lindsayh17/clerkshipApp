@@ -9,7 +9,9 @@ struct BackButton: View {
 
     var body: some View {
         Button(action: {
-            dismiss()
+            withAnimation(.easeInOut) {
+                dismiss()
+            }
         }) {
             Text(title)
                 .fontWeight(.semibold)

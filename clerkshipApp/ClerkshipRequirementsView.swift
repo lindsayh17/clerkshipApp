@@ -14,7 +14,7 @@ struct ClerkshipRequirementsView: View {
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
     
-    @State private var navigateHome: Bool = false
+    @Environment(\.dismiss) var dismiss
     @State private var currentView: NavOption = .home
     @EnvironmentObject var currUser: CurrentUser
     
@@ -91,14 +91,10 @@ struct ClerkshipRequirementsView: View {
                     // Bottom NavTab
                     NavTab(currentTab: $currentView)
                 }
-                BackToHomeButton(navigateHome: $navigateHome)
+                BackButton()
                     .padding(.top, 10)
                     .padding(.leading, 10)
                     .ignoresSafeArea(.all, edges: .top)
-            }
-            .navigationDestination(isPresented: $navigateHome) {
-                HomeView()
-                    .transition(.move(edge: .leading))
             }
         .navigationBarBackButtonHidden()
     }

@@ -12,7 +12,7 @@ struct LocationsView: View {
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
-    
+    @Environment(\.dismiss) var dismiss
     @State private var currentView: NavOption = .home
     @EnvironmentObject var currUser: CurrentUser
     

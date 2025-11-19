@@ -8,8 +8,7 @@ struct BreastExamView: View {
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
     // @Binding var destination: HomeDestination
-    
-    @State private var navigateResources: Bool = false
+    @Environment(\.dismiss) var dismiss
     
     @State private var currentView = NavOption.home
     // @State var loginManager
@@ -55,14 +54,10 @@ struct BreastExamView: View {
 
                 NavTab(currentTab: $currentView)
             }
-            BackButtonToResources(navigateResources: $navigateResources)
+            BackButton()
                 .padding(.top, 10)
                 .padding(.leading, 10)
                 .ignoresSafeArea(.all, edges: .top)
-        }
-        .navigationDestination(isPresented: $navigateResources) {
-            ResourcesView()
-                .transition(.move(edge: . leading))
         }
     .navigationBarBackButtonHidden(true)
     }

@@ -7,12 +7,9 @@ struct LaborTriageView: View {
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
-    // @Binding var destination: HomeDestination
-    
-    @State private var navigateResources: Bool = false
     
     @State private var currentView = NavOption.home
-    // @State var loginManager
+    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var currUser: CurrentUser
     @EnvironmentObject var auth: AuthService
     
@@ -55,14 +52,10 @@ struct LaborTriageView: View {
 
                 NavTab(currentTab: $currentView)
             }
-            BackButtonToResources(navigateResources: $navigateResources)
+            BackButton()
                 .padding(.top, 10)
                 .padding(.leading, 10)
                 .ignoresSafeArea(.all, edges: .top)
-        }
-        .navigationDestination(isPresented: $navigateResources) {
-            ResourcesView()
-                .transition(.move(edge: . leading))
         }
     .navigationBarBackButtonHidden(true)
     }

@@ -8,6 +8,8 @@ struct OrientationView: View {
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
     
+    @Environment(\.dismiss) var dismiss
+    
     @State private var goToSurgical: Bool = false
     @State private var goToTrauma: Bool = false
     @State private var goToFamilyPlanning: Bool = false
@@ -84,7 +86,7 @@ struct OrientationView: View {
                 // Bottom navigation
                 NavTab(currentTab: $currentView)
             }
-            BackToHomeButton(navigateHome: $navigateHome)
+            BackButton()
                 .padding(.top, 10)
                 .padding(.leading, 10)
                 .ignoresSafeArea(.all, edges: .top)

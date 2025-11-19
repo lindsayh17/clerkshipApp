@@ -7,12 +7,10 @@ struct SummativeClerkshipView: View {
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
-    // @Binding var destination: HomeDestination
-    
-    @State private var navigateRequirements: Bool = false
     
     @State private var currentView = NavOption.home
     // @State var loginManager
+    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var currUser: CurrentUser
     @EnvironmentObject var auth: AuthService
     
@@ -68,14 +66,10 @@ struct SummativeClerkshipView: View {
 
                 NavTab(currentTab: $currentView)
             }
-            ClerkshipRequirementsButtonView(navigateRequirements: $navigateRequirements)
+            BackButton()
                 .padding(.top, 10)
                 .padding(.leading, 10)
                 .ignoresSafeArea(.all, edges: .top)
-        }
-        .navigationDestination(isPresented: $navigateRequirements) {
-            ClerkshipRequirementsView()
-                .transition(.move(edge: . leading))
         }
     .navigationBarBackButtonHidden(true)
     }

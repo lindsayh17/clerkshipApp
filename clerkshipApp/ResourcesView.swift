@@ -10,6 +10,7 @@ struct ResourcesView: View {
     
     // State for nav tab
     @State private var currentView: NavOption = .resources
+    @State private var showBreastExam = false
     @EnvironmentObject var currUser: CurrentUser
     
     var body: some View {
@@ -32,7 +33,9 @@ struct ResourcesView: View {
                         // Buttons
                         VStack(spacing: 20) {
                             MainButtonView(title: "Acronyms", color: buttonColor)
-                            MainButtonView(title: "Breast Exam", color: buttonColor)
+                            MainButtonView(title: "Breast Exam", color: buttonColor) {
+                                showBreastExam = true
+                            }
                             MainButtonView(title: "Pelvic Exam & Pap Smear", color: buttonColor)
                             MainButtonView(title: "New Patient History", color: buttonColor)
                             MainButtonView(title: "Prenatal-Antepartum Patient", color: buttonColor)
@@ -53,6 +56,9 @@ struct ResourcesView: View {
                 }
             }
         }
+        .navigationDestination(isPresented: $showBreastExam) {
+                   BreastExamView() 
+               }
     }
 }
 

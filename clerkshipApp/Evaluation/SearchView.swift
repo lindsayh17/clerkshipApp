@@ -13,8 +13,8 @@ struct SearchView: View {
     @EnvironmentObject var evalStore: EvalStore
     @State private var searchText = ""
     @State private var selectedUser: User? = nil
-    
-    @State private var navigateFormChoice: Bool = false
+
+    @Environment(\.dismiss) var dismiss
     
     // Colors
     private let backgroundColor = Color("BackgroundColor")
@@ -109,17 +109,13 @@ struct SearchView: View {
                     }
                 }
             }
-            FormChoiceBackButtonView(navigateFormChoice: $navigateFormChoice)
+            BackButton()
                 .padding(.top, 10)
                 .padding(.leading, 10)
                 .ignoresSafeArea(.all, edges: .top)
             
         }
-//        .navigationDestination(isPresented: $navigateFormChoice) {
-//            FormChoiceView()
-//                .transition(.move(edge: .leading))
-//        }
-        .task { // like onAppear but for async?
+        .task {
             namesList()
         }
         .navigationDestination(isPresented: $navControl.showEvalForm){

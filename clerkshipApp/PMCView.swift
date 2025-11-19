@@ -7,12 +7,10 @@ struct PMCView: View {
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
-    // @Binding var destination: HomeDestination
-    
-    @State private var navigateLocations: Bool = false
     
     @State private var currentView = NavOption.home
     // @State var loginManager
+    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var currUser: CurrentUser
     @EnvironmentObject var auth: AuthService
     
@@ -119,14 +117,10 @@ struct PMCView: View {
 
                 NavTab(currentTab: $currentView)
             }
-            BackButtonToLocations(navigateLocations: $navigateLocations)
+            BackButton()
                 .padding(.top, 10)
                 .padding(.leading, 10)
                 .ignoresSafeArea(.all, edges: .top)
-        }
-        .navigationDestination(isPresented: $navigateLocations) {
-            LocationsView()
-                .transition(.move(edge: . leading))
         }
     .navigationBarBackButtonHidden(true)
     }

@@ -13,12 +13,11 @@ struct Instruments: Identifiable {
 struct SurgicalInstrumentsView: View {
     // Colors
     private let backgroundColor = Color("BackgroundColor")
-    
-    @State private var navigateOrientation: Bool = false
-    
+
     // State for nav tab
     @State private var currentView: NavOption = .resources
     @EnvironmentObject var currUser: CurrentUser
+    @Environment(\.dismiss) var dismiss
     
     // Quick Facts data
     private let data: [Instruments] = [
@@ -76,14 +75,10 @@ struct SurgicalInstrumentsView: View {
                 // Bottom Navigation
                 NavTab(currentTab: $currentView)
             }
-            BackButtonToOrientation(navigateOrientation: $navigateOrientation)
+            BackButton()
                 .padding(.top, 10)
                 .padding(.leading, 10)
                 .ignoresSafeArea(.all, edges: .top)
-        }
-        .navigationDestination(isPresented: $navigateOrientation) {
-            OrientationView()
-                .transition(.move(edge: .leading))
         }
     .navigationBarBackButtonHidden(true)
     }

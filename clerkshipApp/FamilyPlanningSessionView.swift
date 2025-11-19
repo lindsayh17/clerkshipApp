@@ -7,12 +7,10 @@ struct FamilyPlanningSessionView: View {
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
-    // @Binding var destination: HomeDestination
-    
-    @State private var navigateOrientation: Bool = false
     
     @State private var currentView = NavOption.home
     // @State var loginManager
+    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var currUser: CurrentUser
     @EnvironmentObject var auth: AuthService
     
@@ -87,14 +85,10 @@ struct FamilyPlanningSessionView: View {
 
                 NavTab(currentTab: $currentView)
             }
-            BackButtonToOrientation(navigateOrientation: $navigateOrientation)
+            BackButton()
                 .padding(.top, 10)
                 .padding(.leading, 10)
                 .ignoresSafeArea(.all, edges: .top)
-        }
-        .navigationDestination(isPresented: $navigateOrientation) {
-            OrientationView()
-                .transition(.move(edge: .leading))
         }
     .navigationBarBackButtonHidden(true)
     }
