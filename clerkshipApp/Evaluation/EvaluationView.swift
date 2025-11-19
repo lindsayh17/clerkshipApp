@@ -3,7 +3,7 @@
 
 import SwiftUI
 
-struct FillOutFormView: View {
+struct EvaluationView: View {
     @EnvironmentObject var evalStore: EvalStore
     @EnvironmentObject var currUser: CurrentUser
     
@@ -65,6 +65,14 @@ struct FillOutFormView: View {
                     .foregroundColor(.white)
                     .padding(.bottom, 4)
                 
+                if let curr = currUser.user{
+                    if curr.access == .preceptor{
+                        Text("Student Name: \(curr.firstName) \(curr.lastName) (\(curr.email))")
+                            .foregroundColor(.white)
+                            .padding()
+                    }
+                }
+                
                 // button labels at the top
                 HStack {
                     ForEach(ResponseLabel.allCases, id: \.self) { opt in
@@ -109,7 +117,7 @@ struct FillOutFormView: View {
                     }.padding()
                     
                     // Student-only preceptor email field
-                    if currUser.user?.access == .student {
+                    if let user = currUser.user, user.access == .student {
                         VStack(alignment: .leading, spacing: 5) {
                             Text("Preceptor Email")
                                 .foregroundColor(.white)
@@ -124,6 +132,7 @@ struct FillOutFormView: View {
                         }
                         .padding()
                     }
+                    
                     
                     Button(action: {
                         submitForm()
@@ -210,7 +219,7 @@ struct SubmittedView: View {
 
 
 #Preview {
-    FillOutFormView(
+    EvaluationView(
         currForm: EvalForm(
             categories: [
                 QuestionCategory(

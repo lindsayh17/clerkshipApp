@@ -73,7 +73,7 @@ struct FormChoiceView: View {
         }
         .navigationDestination(isPresented: $choiceMade) {
             if let selected = selectedForm {
-                FillOutFormView(currForm: selected, currStudent: currStudent)
+                EvaluationView(currForm: selected, currStudent: currStudent)
             }
         }
         .navigationBarBackButtonHidden(true)
