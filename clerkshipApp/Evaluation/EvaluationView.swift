@@ -3,7 +3,7 @@
 
 import SwiftUI
 
-struct FillOutFormView: View {
+struct EvaluationView: View {
     @EnvironmentObject var evalStore: EvalStore
     @EnvironmentObject var currUser: CurrentUser
     
@@ -219,7 +219,7 @@ struct SubmittedView: View {
 
 
 #Preview {
-    FillOutFormView(
+    EvaluationView(
         currForm: EvalForm(
             categories: [
                 QuestionCategory(

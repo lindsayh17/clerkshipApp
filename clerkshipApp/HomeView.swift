@@ -130,8 +130,9 @@ struct HomeView: View {
                 }
                 // Eval via bottom tab
                 .navigationDestination(isPresented: $showEvalFromTab) {
-//                    FormChoiceView()
-                    SearchView()
+                    if let curr = currUser.user{
+                        FormChoiceView(currStudent: curr)
+                    }
                 }
                 // Other destinations
                 .navigationDestination(isPresented: $navControl.showOrientation) {
