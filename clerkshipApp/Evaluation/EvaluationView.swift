@@ -1,15 +1,12 @@
 //  EvaluationView.swift
 //  clerkshipApp
 
-/*
- TODO: link student, preceptor, form type ids to firebase write
- TODO: display a list of completed evaluations somewhere for the preceptors
-*/
 import SwiftUI
 
 struct FillOutFormView: View {
     @EnvironmentObject var evalStore: EvalStore
     @EnvironmentObject var currUser: CurrentUser
+    
     
     @State var addedNotes = ""
     @State var showLabels = false
@@ -58,11 +55,11 @@ struct FillOutFormView: View {
     }
     
     var body: some View {
-        ZStack {
+        ZStack (alignment: .topLeading) {
             backgroundColor.ignoresSafeArea()
             VStack {
                 // Title
-                Text("\(currForm.type) Evaluation")
+                Text("\(currForm.type) Evaluation\n")
                     .font(.title)
                     .fontWeight(.bold)
                     .foregroundColor(.white)
@@ -155,7 +152,13 @@ struct FillOutFormView: View {
                 }
             }
             .navigationDestination(isPresented: $submitted) { SubmittedView() }
+            
+            BackButton()
+                .padding(.top, 10)
+                .padding(.leading, 10)
+                .ignoresSafeArea(.all, edges: .top)
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 
