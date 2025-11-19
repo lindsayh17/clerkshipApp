@@ -34,15 +34,15 @@ struct FillOutFormView: View {
     
     // Submit form data to Firestore
     func submitForm() {
-        var responseDict: [UUID: ResponseLabel] = [:]
+        var responseDict: [String: String] = [:]
         for category in currForm.categories {
             for question in category.questions {
-                responseDict[question.id] = question.response
+                responseDict[question.id.uuidString] = infoTitle(for: question.response ?? .none)
             }
         }
         
         let evaluation = Evaluation(
-            formId: currForm.type,
+            formId: currForm.id.uuidString,
             preceptorId: currUser.user?.firebaseID ?? "0",
             studentId: currStudent.firebaseID,
             responses: responseDict,
