@@ -1,10 +1,6 @@
 //  SearchView1.swift
 //  clerkshipApp
 
-/*
- TODO: link each name to evaluation form
- */
-
 import SwiftUI
 
 struct SearchView: View {
@@ -48,28 +44,30 @@ struct SearchView: View {
     func namesList(){
         for u in userStore.allUsers{
             let firstChar = String(u.firstName.prefix(1)).uppercased()
-            print(firstChar)
-            //let fullName = "\(u.firstName) \(u.lastName)"
-            
             namesByLetter[firstChar, default: []].append(u)
         }
     }
     
-    init(){
-        UITextField
-            .appearance(whenContainedInInstancesOf: [UISearchBar.self])
-            .attributedPlaceholder = NSAttributedString(
-                string: "Search",
-                attributes: [NSAttributedString.Key.foregroundColor: UIColor(.white)]
-            )
-        
-    }
-    
     var body: some View {
-        ZStack (alignment: .topLeading) {
+        ZStack(alignment: .topLeading) {
             backgroundColor.ignoresSafeArea()
             
             VStack(spacing: 0) {
+                // Fixed search bar at the top
+                HStack {
+                    Image(systemName: "magnifyingglass")
+                        .foregroundColor(.white.opacity(0.7))
+                    TextField("Search", text: $searchText)
+                        .foregroundColor(.white)
+                        .autocapitalization(.none)
+                        .disableAutocorrection(true)
+                }
+                .padding(10)
+                .background(buttonColor.opacity(0.2))
+                .cornerRadius(10)
+                .padding(.horizontal, 16)
+                .padding(.top, 60)
+                
                 ScrollViewReader { proxy in
                     ZStack(alignment: .trailing) {
                         NamesView(
@@ -77,18 +75,12 @@ struct SearchView: View {
                             selectedUser: $selectedUser,
                             showEvalForm: $navControl.showEvalForm
                         )
-                            .environment(\.defaultMinListRowHeight, 28)
-                            .listSectionSpacing(.compact)
-                            .scrollContentBackground(.hidden)
-                            .background(backgroundColor)
-                            .listStyle(.insetGrouped)
-                            .searchable(
-                                text: $searchText,
-                                placement: .navigationBarDrawer(displayMode: .always),
-                                prompt: "Search"
-                            )
-                            .foregroundColor(.white)
-                            .tint(buttonColor)
+                        .environment(\.defaultMinListRowHeight, 28)
+                        .listSectionSpacing(.compact)
+                        .scrollContentBackground(.hidden)
+                        .background(backgroundColor)
+                        .listStyle(.insetGrouped)
+                        .foregroundColor(.white)
                         
                         // Alphabet index
                         VStack(spacing: 6) {
@@ -109,11 +101,12 @@ struct SearchView: View {
                     }
                 }
             }
+            
+            // Back button stays in the ZStack
             BackButton()
                 .padding(.top, 10)
                 .padding(.leading, 10)
                 .ignoresSafeArea(.all, edges: .top)
-            
         }
         .task {
             namesList()
@@ -151,7 +144,6 @@ struct NamesView: View{
     @Binding var showEvalForm: Bool
     
     var body: some View{
-        // Contact list
         List {
             ForEach(filteredNames.keys.sorted(), id: \.self) { letter in
                 Section(
