@@ -32,6 +32,20 @@ struct EvaluationView: View {
         }
     }
     
+    func canSubmit() -> Bool{
+        if let curr = currUser.user{
+            //if curr.access == .preceptor {
+                return currForm.validForm()
+            //}
+            
+            if curr.access == .student {
+                return !preceptorEmail.trimmingCharacters(in: .whitespaces).isEmpty
+            }
+        }
+        
+        return false
+    }
+    
     // Submit form data to Firestore
     func submitForm() {
         var responseDict: [String: String] = [:]
@@ -145,9 +159,7 @@ struct EvaluationView: View {
                             .padding()
                             .frame(maxWidth: .infinity)
                             .background(
-                                currForm.validForm() ||
-                                (currUser.user?.access == .student &&
-                                 preceptorEmail.trimmingCharacters(in: .whitespaces).isEmpty)
+                                canSubmit()
                                 ? buttonColor : Color.gray
                             )
                             .cornerRadius(10)
@@ -155,8 +167,7 @@ struct EvaluationView: View {
                             .frame(maxWidth: .infinity, minHeight: 20)
                             .padding()
                     }
-                    .disabled(!currForm.validForm() || (currUser.user?.access == .student && preceptorEmail.trimmingCharacters(in: .whitespaces).isEmpty)
-                    )
+                    .disabled(!canSubmit())
                     .padding(.top, 20)
                 }
             }
