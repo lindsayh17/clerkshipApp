@@ -10,6 +10,8 @@ struct SubmittedView: View {
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
     @Environment(\.dismiss) private var dismiss
+    @State private var goHome = false
+
     
     var body: some View {
         ZStack {
@@ -19,9 +21,12 @@ struct SubmittedView: View {
                     .font(.largeTitle)
                     .foregroundColor(.white)
                 
+                NavigationLink(destination: HomeView(), isActive: $goHome) {
+                    EmptyView()
+                }
+
                 Button("Return Home") {
-                    dismiss()
-                    dismiss()
+                    goHome = true
                 }
                 .padding()
                 .frame(maxWidth: .infinity)
