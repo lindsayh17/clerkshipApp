@@ -28,12 +28,12 @@ struct SubmittedView: View {
                 .background(buttonColor)
                 .foregroundColor(.white)
                 .cornerRadius(12)
+                .padding(.horizontal, 24)
+                .padding(.bottom, 40)
                 
-                Spacer()
             }
                
         }
-        .padding()
         .navigationBarBackButtonHidden(true)
     }
 
