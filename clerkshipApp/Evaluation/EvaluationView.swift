@@ -89,20 +89,9 @@ struct EvaluationView: View {
                             .padding()
                     }
                 }
-                
-                // button labels at the top
-                HStack {
-                    ForEach(ResponseLabel.allCases, id: \.self) { opt in
-                        Text(infoTitle(for: opt))
-                            .foregroundColor(.white)
-                            .baselineOffset(1)
-                            .font(.system(size: 12))
-                            .multilineTextAlignment(.center)
-                    }.frame(maxWidth: .infinity)
-                }
-                Divider().background(Color.gray)
                     
                 ScrollView {
+                    Divider().background(.gray)
                     ForEach (formState.data.categories) { cat in
                         CategoryView(category: cat, formState: formState)
                     }
@@ -182,6 +171,15 @@ struct QuestionRowView: View {
     @ObservedObject var formState: EvalFormState
     private let buttonColor = Color("ButtonColor")
     
+    private func infoTitle(for opt: ResponseLabel) -> String {
+        switch opt {
+        case .novice: return "Novice"
+        case .apprentice: return "Apprentice"
+        case .expert: return "Expert"
+        case .none: return "N/A"
+        }
+    }
+    
     var body: some View {
         VStack {
             // show the question
@@ -199,10 +197,18 @@ struct QuestionRowView: View {
                     Button(action: {
                         formState.responses[question.id] = opt
                     }) {
-                        Image(systemName: formState.responses[question.id] == opt ? "circle.inset.filled" : "circle")
-                            .foregroundColor(formState.responses[question.id] == opt ? buttonColor : .white)
-                            .buttonStyle(BorderlessButtonStyle())
-                            .frame(maxWidth: .infinity)
+                        VStack {
+                            Image(systemName: formState.responses[question.id] == opt ? "circle.inset.filled" : "circle")
+                                .foregroundColor(formState.responses[question.id] == opt ? buttonColor : .white)
+                                .buttonStyle(BorderlessButtonStyle())
+                                .frame(maxWidth: .infinity)
+                            
+                            Text(infoTitle(for: opt))
+                                .foregroundColor(.white)
+                                .font(.system(size: 10))
+                                .multilineTextAlignment(.center)
+                                .padding(.top, 4)
+                        }
                     }
                 }
             }.padding(.vertical, 4)
@@ -221,13 +227,14 @@ struct CategoryView: View {
 
     
     var body: some View {
+        Group {
             HStack {
                 Text(category.category)
                     .foregroundColor(.white)
                     .font(.title2)
                     .fontWeight(.bold)
                     .fixedSize(horizontal: false, vertical: true)
-                    .padding(.top, 6)
+                    .padding(.top, 8)
                     .multilineTextAlignment(.center)
                 
                 Button {
@@ -235,15 +242,22 @@ struct CategoryView: View {
                 } label: {
                     Image(systemName: "info.circle")
                         .foregroundColor(.white)
-                        .baselineOffset(1)
+                        .baselineOffset(2)
                         .font(.system(size: 12))
                 }
                 .buttonStyle(BorderlessButtonStyle())
             }
             
-            ForEach (category.questions) { q in
-                QuestionRowView(question: q, formState: formState)
+            VStack {
+                ForEach (category.questions) { q in
+                    QuestionRowView(question: q, formState: formState)
+                }
             }
+            .padding()
+            .background(Color.white.opacity(0.1))
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .shadow(radius: 10)
+        }.padding(.horizontal)
             
 //            Button {
 //                // next category
@@ -256,9 +270,10 @@ struct CategoryView: View {
 //                    .cornerRadius(20)
 //                    .padding()
 //            }
+        
             // show rubric menu
             .sheet(isPresented: $showMoreInfo) {
-                InfoBlurbView()
+                InfoBlurbView(category: category.category)
                     .presentationDetents([.fraction(0.9)])
                     .presentationCornerRadius(50)
                     .presentationBackground(.thinMaterial)
@@ -267,6 +282,8 @@ struct CategoryView: View {
 }
 
 struct InfoBlurbView: View {
+    var category: String
+    
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
@@ -287,7 +304,7 @@ struct InfoBlurbView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     
-                    Text("Category rubrics")
+                    Text("\(category) Rubric")
                         .foregroundColor(.white.opacity(0.9))
                         .fontWeight(.bold)
                     
@@ -312,6 +329,7 @@ struct InfoBlurbView: View {
                     .padding()
                     .background(Color.white.opacity(0.1))
                     .clipShape(RoundedRectangle(cornerRadius: 16))
+                    .shadow(radius: 10)
                 }
             }
             .padding(.horizontal, 30)
@@ -334,6 +352,13 @@ struct InfoBlurbView: View {
                         questions: [
                             Question(question: "Skill level"),
                             Question(question: "Experience level")
+                        ]
+                    ),
+                    QuestionCategory(
+                        category: "Second Category",
+                        questions: [
+                            Question(question: "Ability"),
+                            Question(question: "Another question")
                         ]
                     )
                 ],
