@@ -83,8 +83,6 @@ struct ProfileView: View {
         }
         .onChange(of: navControl.showRoot) {
             dismiss()
-            dismiss()
-            dismiss()
         }
 //    .navigationDestination(isPresented: $navControl.showRoot) { RootView() }
     .navigationBarBackButtonHidden(true)
