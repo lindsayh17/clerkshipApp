@@ -33,12 +33,12 @@ struct Evaluation: Identifiable, Codable {
 
 struct Response: Identifiable, Codable {
     var id = UUID()
-    var questionId: String
+    var question: String
     var answer: String
     var responseCat: String
     
-    init(questionId: String, answer: String, responseCat: String) {
-        self.questionId = questionId
+    init(question: String, answer: String, responseCat: String) {
+        self.question = question
         self.answer = answer
         self.responseCat = responseCat
     }

@@ -52,8 +52,8 @@ struct EvaluationView: View {
         var responseDict: [String: String] = [:]
         for category in formState.data.categories {
             for question in category.questions {
-                let response = formState.responses[question.id] ?? .none
-                responseDict[question.id.uuidString] = infoTitle(for: response)
+                let response = formState.responses[question.question] ?? .none
+                responseDict[question.question] = infoTitle(for: response)
             }
         }
         
@@ -63,7 +63,7 @@ struct EvaluationView: View {
             studentId: currStudent.id ?? "1",
             responses: responseDict,
             submittedAt: Date(),
-            notes: formState.notes
+            notes: addedNotes
         )
         
         evalStore.add(evaluation: evaluation)
@@ -195,11 +195,11 @@ struct QuestionRowView: View {
                 ForEach(ResponseLabel.allCases, id: \.self) { opt in
                     
                     Button(action: {
-                        formState.responses[question.id] = opt
+                        formState.responses[question.question] = opt
                     }) {
                         VStack {
-                            Image(systemName: formState.responses[question.id] == opt ? "circle.inset.filled" : "circle")
-                                .foregroundColor(formState.responses[question.id] == opt ? buttonColor : .white)
+                            Image(systemName: formState.responses[question.question] == opt ? "circle.inset.filled" : "circle")
+                                .foregroundColor(formState.responses[question.question] == opt ? buttonColor : .white)
                                 .buttonStyle(BorderlessButtonStyle())
                                 .frame(maxWidth: .infinity)
                             

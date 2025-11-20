@@ -10,7 +10,7 @@ import SwiftUI
 class EvalFormState: ObservableObject {
     let data: EvalForm
 
-    @Published var responses: [UUID: ResponseLabel] = [:]
+    @Published var responses: [String: ResponseLabel] = [:]
     @Published var notes: String = ""
 
     init(data: EvalForm) {
@@ -20,7 +20,7 @@ class EvalFormState: ObservableObject {
     func validForm() -> Bool {
         for category in data.categories {
             for question in category.questions where question.required {
-                if responses[question.id] == nil {
+                if responses[question.question] == nil {
                     return false
                 }
             }
