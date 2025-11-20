@@ -11,6 +11,7 @@ struct EvaluationView: View {
     @State var addedNotes = ""
     @State var showLabels = false
     @State private var submitted = false
+    @State private var showMoreInfo = false
     
     @StateObject var formState: EvalFormState
     let currStudent: User
@@ -80,6 +81,7 @@ struct EvaluationView: View {
                     .fontWeight(.bold)
                     .foregroundColor(.white)
                     .padding(.bottom, 4)
+                    .multilineTextAlignment(.center)
                 
                 if let curr = currUser.user{
                     if curr.access == .preceptor{
@@ -96,20 +98,32 @@ struct EvaluationView: View {
                             .foregroundColor(.white)
                             .baselineOffset(1)
                             .font(.system(size: 12))
+                            .multilineTextAlignment(.center)
                     }.frame(maxWidth: .infinity)
                 }
                 Divider().background(Color.gray)
                 
                 ScrollView {
                     ForEach (formState.data.categories) { cat in
-                        
-                        Text(cat.category)
-                            .foregroundColor(.white)
-                            .font(.title2)
-                            .fontWeight(.bold)
-                            .fixedSize(horizontal: false, vertical: true)
-                            .padding(.top, 6)
-                        
+                        HStack {
+                            Text(cat.category)
+                                .foregroundColor(.white)
+                                .font(.title2)
+                                .fontWeight(.bold)
+                                .fixedSize(horizontal: false, vertical: true)
+                                .padding(.top, 6)
+                                .multilineTextAlignment(.center)
+                            
+                            Button {
+                                showMoreInfo.toggle()
+                            } label: {
+                                Image(systemName: "info.circle")
+                                    .foregroundColor(.white)
+                                    .baselineOffset(1)
+                                    .font(.system(size: 12))
+                            }
+                            .buttonStyle(BorderlessButtonStyle())
+                        }
                         ForEach (cat.questions) { q in
                             QuestionRowView(question: q, formState: formState)
                         }
@@ -180,6 +194,12 @@ struct EvaluationView: View {
                 .padding(.leading, 10)
                 .ignoresSafeArea(.all, edges: .top)
         }
+        .sheet(isPresented: $showMoreInfo) {
+            InfoBlurbView()
+                .presentationDetents([.fraction(0.5)])
+                .presentationCornerRadius(50)
+                .presentationBackground(.thinMaterial)
+        }
         .navigationBarBackButtonHidden(true)
     }
 }
@@ -215,6 +235,77 @@ struct QuestionRowView: View {
             }.padding(.vertical, 4)
             
             Divider().background(Color.gray)
+        }
+    }
+}
+
+struct InfoBlurbView: View {
+    // Colors
+    private let backgroundColor = Color("BackgroundColor")
+    // Dropdown state
+    @State private var openItem: UUID? = nil
+    
+    @Environment(\.dismiss) var dismiss
+    
+    // Hardcoded values for now, could eventually grab from firebase
+    private let quickFacts: [QuickFactItem] = [
+        QuickFactItem(title: "Novice",
+                      description: "Gathers too little or too much info, does not link info in a clinically relevant fashion, communication is not patient-focused, uses same broad template for all interactions."),
+        QuickFactItem(title: "Apprentice",
+                      description: "Gathers most relevant info, links most findings in a clinically relevant way, communication is mostly patient-focused but occasionally unidirectional, tailors history to specific encounters."),
+        QuickFactItem(title: "Expert",
+                     description: "Gathers complete and accurate history appropriate to the situation, demonstrates clinical reasoning useful in patient care, communication is bidirectional and patient-family centered, adapts history to multiple clinical settings (acute, chronic, inpatient, outpatient)."),
+        ]
+    
+    var body: some View {
+        ZStack {
+            backgroundColor.opacity(0.9).ignoresSafeArea()
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+                    
+                    Text("Category rubrics")
+                        .foregroundColor(.white.opacity(0.9))
+                        .fontWeight(.bold)
+                    
+                    ForEach(quickFacts) { item in
+                    
+                        VStack(alignment: .leading, spacing: 8) {
+                            // Header Row
+                            HStack {
+                                Text(item.title)
+                                    .font(.headline)
+                                    .foregroundColor(.white)
+                                
+                                Spacer()
+                                
+                                Image(systemName: "chevron.right")
+                                    .foregroundColor(.white.opacity(0.7))
+                                    .rotationEffect(.degrees(openItem == item.id ? 90 : 0))
+                                    .animation(.easeInOut, value: openItem == item.id)
+                            }
+                            .padding()
+                            .background(Color.white.opacity(0.1))
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                            .onTapGesture {
+                                withAnimation(.spring()) {
+                                    openItem = (openItem == item.id ? nil : item.id)
+                                }
+                            }
+                            
+                            // Expanded description
+                            if openItem == item.id {
+                                Text(item.description)
+                                    .foregroundColor(.white.opacity(0.9))
+                                    .padding(.horizontal, 10)
+                                    .padding(.bottom, 12)
+                                    .transition(.opacity.combined(with: .move(edge: .top)))
+                            }
+                        }
+                    }
+                }
+            }
+            .padding(.horizontal, 30)
+            .padding(.vertical, 30)
         }
     }
 }

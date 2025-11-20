@@ -27,6 +27,8 @@ struct QuestionCategory: Identifiable, Codable {
     var id = UUID()
     var category: String // Physical exam, collecting info, etc
     var questions: [Question] // sub aspects of the overall category
+    // if we want to get novice, apprentice, etc. info from firebase
+//    var descriptions: [String: String] = [:]
     
     init(category: String, questions: [Question]) {
         self.category = category

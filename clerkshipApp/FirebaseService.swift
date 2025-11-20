@@ -63,12 +63,6 @@ class FirebaseService: ObservableObject {
                     categories.append(QuestionCategory(category: category, questions: questions))
                 }
                 
-                // Add notes field
-//                categories.append(QuestionCategory(
-//                    category: "Notes",
-//                    questions: [Question(question: "Notes", type: .open, required: false)]
-//                ))
-                
                 switch type {
                 case "Clinic":
                     fetchedForms.append(EvalForm(categories: categories, type: type, formChoice: .clinic))
