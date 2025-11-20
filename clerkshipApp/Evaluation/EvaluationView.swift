@@ -12,7 +12,7 @@ struct EvaluationView: View {
     @State var showLabels = false
     @State private var submitted = false
     
-    @State var currForm: EvalForm
+    @StateObject var formState: EvalFormState
     let currStudent: User
     
     // For if a student pulls the form up
@@ -34,9 +34,10 @@ struct EvaluationView: View {
     
     func canSubmit() -> Bool{
         if let curr = currUser.user{
-            //if curr.access == .preceptor {
-                return currForm.validForm()
-            //}
+            print("Checking submit")
+            if curr.access == .preceptor {
+                return formState.validForm()
+            }
             
             if curr.access == .student {
                 return !preceptorEmail.trimmingCharacters(in: .whitespaces).isEmpty
@@ -49,19 +50,20 @@ struct EvaluationView: View {
     // Submit form data to Firestore
     func submitForm() {
         var responseDict: [String: String] = [:]
-        for category in currForm.categories {
+        for category in formState.data.categories {
             for question in category.questions {
-                responseDict[question.id.uuidString] = infoTitle(for: question.response ?? .none)
+                let response = formState.responses[question.id] ?? .none
+                responseDict[question.id.uuidString] = infoTitle(for: response)
             }
         }
         
         let evaluation = Evaluation(
-            formId: currForm.id.uuidString,
+            formId: formState.data.id.uuidString,
             preceptorId: currUser.user?.firebaseID ?? "0",
             studentId: currStudent.firebaseID,
             responses: responseDict,
             submittedAt: Date(),
-            notes: addedNotes
+            notes: formState.notes
         )
         
         evalStore.add(evaluation: evaluation)
@@ -73,7 +75,7 @@ struct EvaluationView: View {
             backgroundColor.ignoresSafeArea()
             VStack {
                 // Title
-                Text("\(currForm.type) Evaluation\n")
+                Text("\(formState.data.type) Evaluation\n")
                     .font(.title)
                     .fontWeight(.bold)
                     .foregroundColor(.white)
@@ -99,7 +101,7 @@ struct EvaluationView: View {
                 Divider().background(Color.gray)
                 
                 ScrollView {
-                    ForEach (currForm.categories) { cat in
+                    ForEach (formState.data.categories) { cat in
                         
                         Text(cat.category)
                             .foregroundColor(.white)
@@ -109,7 +111,7 @@ struct EvaluationView: View {
                             .padding(.top, 6)
                         
                         ForEach (cat.questions) { q in
-                            QuestionRowView(question: q)
+                            QuestionRowView(question: q, formState: formState)
                         }
                     }
                 
@@ -184,6 +186,7 @@ struct EvaluationView: View {
 
 struct QuestionRowView: View {
     @ObservedObject var question: Question
+    @ObservedObject var formState: EvalFormState
     private let buttonColor = Color("ButtonColor")
     
     var body: some View {
@@ -201,10 +204,10 @@ struct QuestionRowView: View {
                 ForEach(ResponseLabel.allCases, id: \.self) { opt in
                     
                     Button(action: {
-                        question.response = opt
+                        formState.responses[question.id] = opt
                     }) {
-                        Image(systemName: question.response == opt ? "circle.inset.filled" : "circle")
-                            .foregroundColor(question.response == opt ? buttonColor : .white)
+                        Image(systemName: formState.responses[question.id] == opt ? "circle.inset.filled" : "circle")
+                            .foregroundColor(formState.responses[question.id] == opt ? buttonColor : .white)
                             .buttonStyle(BorderlessButtonStyle())
                             .frame(maxWidth: .infinity)
                     }
@@ -218,18 +221,20 @@ struct QuestionRowView: View {
 
 #Preview {
     EvaluationView(
-        currForm: EvalForm(
-            categories: [
-                QuestionCategory(
-                    category: "Type of Question",
-                    questions: [
-                        Question(question: "Skill coding in Swift"),
-                        Question(question: "Experience with debugging")
-                    ]
-                )
-            ],
-            type: "Clinic",
-            formChoice: .clinic
+        formState: EvalFormState(
+            data: EvalForm(
+                categories: [
+                    QuestionCategory(
+                        category: "Type of Question",
+                        questions: [
+                            Question(question: "Skill coding in Swift"),
+                            Question(question: "Experience with debugging")
+                        ]
+                    )
+                ],
+                type: "Clinic",
+                formChoice: .clinic
+            )
         ),
         currStudent: User(firstName: "Place", lastName: "Holder", email: "email")
     )

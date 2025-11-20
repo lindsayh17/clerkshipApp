@@ -17,15 +17,15 @@ struct EvalForm: Identifiable, Codable {
     }
     
     // Validation
-    func validForm() -> Bool {
-        // Ensures all required questions are answered
-        for cat in categories {
-            for question in cat.questions where question.required == true {
-                if question.response == nil {
-                    return false
-                }
-            }
-        }
-        return true
-    }
+//    func validForm() -> Bool {
+//        // Ensures all required questions are answered
+//        for cat in categories {
+//            for question in cat.questions where question.required == true {
+//                if question.response == nil {
+//                    return false
+//                }
+//            }
+//        }
+//        return true
+//    }
 }
