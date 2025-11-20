@@ -7,6 +7,12 @@ struct RootView: View {
     private let backgroundColor = Color("BackgroundColor")
     @StateObject var navControl = NavControl()
     
+    func reset() {
+        print("resetting nav variables...")
+        navControl.showSignIn = false
+        navControl.showCreateAccount = false
+    }
+    
     var body: some View {
         ZStack {
             backgroundColor.ignoresSafeArea()
@@ -34,6 +40,11 @@ struct RootView: View {
                 )
                 .padding(.horizontal, 40)
             }
+        }
+        .onAppear {
+            reset()
+            navControl.showRoot = true
+            navControl.showSignIn = false
         }
         // Navigation destinations for buttons
         .navigationDestination(isPresented: $navControl.showSignIn) {
