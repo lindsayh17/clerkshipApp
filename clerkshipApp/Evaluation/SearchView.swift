@@ -7,6 +7,8 @@ struct SearchView: View {
     @EnvironmentObject var firebase: FirebaseService
     @EnvironmentObject var userStore: UserStore
     @EnvironmentObject var evalStore: EvalStore
+    @EnvironmentObject var currUser: CurrentUser
+    
     @State private var searchText = ""
     @State private var selectedUser: User? = nil
 
@@ -105,12 +107,14 @@ struct SearchView: View {
                     }
                 }
             }
-            
+            // Don't need back button if user is preceptor; use nav bar
             // Back button stays in the ZStack
-            BackButton()
-                .padding(.top, 10)
-                .padding(.leading, 10)
-                .ignoresSafeArea(.all, edges: .top)
+            if currUser.user?.access == .student {
+                BackButton()
+                    .padding(.top, 10)
+                    .padding(.leading, 10)
+                    .ignoresSafeArea(.all, edges: .top)
+            }
         }
         .task {
             namesList()
@@ -186,5 +190,6 @@ struct NamesView: View{
     .environmentObject(FirebaseService())
     .environmentObject(UserStore())
     .environmentObject(EvalStore())
+    .environmentObject(CurrentUser())
 }
 
