@@ -44,8 +44,12 @@ struct SearchView: View {
     func namesList(){
         for u in userStore.allUsers{
             let firstChar = String(u.firstName.prefix(1)).uppercased()
-            namesByLetter[firstChar, default: []].append(u)
+            // only add new names (avoid duplication)
+            if !namesByLetter[firstChar, default: []].contains(where: { $0.id == u.id }) {
+                namesByLetter[firstChar, default: []].append(u)
+            }
         }
+        print("Names list: \(namesByLetter)")
     }
     
     var body: some View {

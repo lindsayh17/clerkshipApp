@@ -3,7 +3,7 @@
 
 import SwiftUI
 
-struct User: Identifiable, Codable {
+struct User: Identifiable, Codable, Hashable {
     
     enum AccessLevel: String, Codable {
         case student
