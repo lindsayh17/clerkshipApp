@@ -221,7 +221,6 @@ struct CategoryView: View {
 
     
     var body: some View {
-        Group {
             HStack {
                 Text(category.category)
                     .foregroundColor(.white)
@@ -246,23 +245,23 @@ struct CategoryView: View {
                 QuestionRowView(question: q, formState: formState)
             }
             
-            Button {
-                // next category
-            } label: {
-                Text("Next")
-                    .fontWeight(.semibold)
-                    .frame(width: 100, height: 50)
-                    .background(buttonColor)
-                    .foregroundColor(.white)
-                    .cornerRadius(20)
-                    .padding()
-            }
-        }
-        .sheet(isPresented: $showMoreInfo) {
-            InfoBlurbView()
-                .presentationDetents([.fraction(0.5)])
-                .presentationCornerRadius(50)
-                .presentationBackground(.thinMaterial)
+//            Button {
+//                // next category
+//            } label: {
+//                Text("Next")
+//                    .fontWeight(.semibold)
+//                    .frame(width: 100, height: 50)
+//                    .background(buttonColor)
+//                    .foregroundColor(.white)
+//                    .cornerRadius(20)
+//                    .padding()
+//            }
+            // show rubric menu
+            .sheet(isPresented: $showMoreInfo) {
+                InfoBlurbView()
+                    .presentationDetents([.fraction(0.9)])
+                    .presentationCornerRadius(50)
+                    .presentationBackground(.thinMaterial)
         }
     }
 }
@@ -270,24 +269,21 @@ struct CategoryView: View {
 struct InfoBlurbView: View {
     // Colors
     private let backgroundColor = Color("BackgroundColor")
-    // Dropdown state
-    @State private var openItem: UUID? = nil
+    private let buttonColor = Color("ButtonColor")
     
-    @Environment(\.dismiss) var dismiss
     
     // Hardcoded values for now, could eventually grab from firebase
     private let quickFacts: [QuickFactItem] = [
         QuickFactItem(title: "Novice",
-                      description: "Gathers too little or too much info, does not link info in a clinically relevant fashion, communication is not patient-focused, uses same broad template for all interactions."),
+                      description: "\u{2022} Gathers too little or too much info\n\u{2022} Does not link info in a clinically relevant fashion\n\u{2022} Communication is not patient-focused\n\u{2022} Uses same broad template for all interactions."),
         QuickFactItem(title: "Apprentice",
-                      description: "Gathers most relevant info, links most findings in a clinically relevant way, communication is mostly patient-focused but occasionally unidirectional, tailors history to specific encounters."),
+                      description: "\u{2022} Gathers most relevant info \n\u{2022} Links most findings in a clinically relevant way \n\u{2022} Communication is mostly patient-focused but occasionally unidirectional \n\u{2022} Tailors history to specific encounters."),
         QuickFactItem(title: "Expert",
-                     description: "Gathers complete and accurate history appropriate to the situation, demonstrates clinical reasoning useful in patient care, communication is bidirectional and patient-family centered, adapts history to multiple clinical settings (acute, chronic, inpatient, outpatient)."),
+                     description: "\u{2022} Gathers complete and accurate history appropriate to the situation \n\u{2022} Demonstrates clinical reasoning useful in patient care \n\u{2022} Communication is bidirectional and patient-family centered \n\u{2022} Adapts history to multiple clinical settings (acute, chronic, inpatient, outpatient)."),
         ]
     
     var body: some View {
         ZStack {
-            backgroundColor.opacity(0.9).ignoresSafeArea()
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     
@@ -303,38 +299,28 @@ struct InfoBlurbView: View {
                                 Text(item.title)
                                     .font(.headline)
                                     .foregroundColor(.white)
-                                
                                 Spacer()
-                                
-                                Image(systemName: "chevron.right")
-                                    .foregroundColor(.white.opacity(0.7))
-                                    .rotationEffect(.degrees(openItem == item.id ? 90 : 0))
-                                    .animation(.easeInOut, value: openItem == item.id)
-                            }
-                            .padding()
-                            .background(Color.white.opacity(0.1))
-                            .clipShape(RoundedRectangle(cornerRadius: 16))
-                            .onTapGesture {
-                                withAnimation(.spring()) {
-                                    openItem = (openItem == item.id ? nil : item.id)
-                                }
                             }
                             
-                            // Expanded description
-                            if openItem == item.id {
-                                Text(item.description)
-                                    .foregroundColor(.white.opacity(0.9))
-                                    .padding(.horizontal, 10)
-                                    .padding(.bottom, 12)
-                                    .transition(.opacity.combined(with: .move(edge: .top)))
-                            }
+                            // Description
+                            Text(item.description)
+                                .foregroundColor(.white)
+                                .padding(.horizontal, 10)
+                                .padding(.bottom, 12)
                         }
                     }
+                    .padding()
+                    .background(Color.white.opacity(0.1))
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
                 }
             }
             .padding(.horizontal, 30)
             .padding(.vertical, 30)
         }
+        .background(
+            LinearGradient(gradient: Gradient(colors: [
+                buttonColor.opacity(0.9), backgroundColor]), startPoint: .topTrailing, endPoint: .bottom)
+        )
     }
 }
 
@@ -344,7 +330,7 @@ struct InfoBlurbView: View {
             data: EvalForm(
                 categories: [
                     QuestionCategory(
-                        category: "Type of Question",
+                        category: "Category of Question",
                         questions: [
                             Question(question: "Skill level"),
                             Question(question: "Experience level")
