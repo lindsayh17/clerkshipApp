@@ -75,7 +75,7 @@ struct EvaluationView: View {
             backgroundColor.ignoresSafeArea()
             VStack {
                 // Title
-                Text("\(formState.data.type) Evaluation\n")
+                Text("\(formState.data.type)\n Evaluation")
                     .font(.title)
                     .fontWeight(.bold)
                     .foregroundColor(.white)

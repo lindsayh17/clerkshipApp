@@ -34,6 +34,7 @@ struct SubmittedView: View {
                
         }
         .padding()
+        .navigationBarBackButtonHidden(true)
     }
 
 }
