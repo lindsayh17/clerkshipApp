@@ -58,7 +58,7 @@ struct EvaluationView: View {
         }
         
         let evaluation = Evaluation(
-            formId: formState.data.id.uuidString,
+            formType: formState.data.type,
             preceptorId: currUser.user?.id ?? "0",
             studentId: currStudent.id ?? "1",
             responses: responseDict,
