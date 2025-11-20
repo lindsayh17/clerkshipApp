@@ -102,13 +102,13 @@ class FirebaseService: ObservableObject {
                 let data = document.data()
                 
                 // try to cast to strings otherwise return empty
-                let id = data["id"] as? String ?? ""
+                let id = document.documentID
                 let firstName = data["firstName"] as? String ?? ""
                 let lastName = data["lastName"] as? String ?? ""
                 let email = data["email"] as? String ?? ""
                 
                 if firstName != "" && lastName != "" && email != ""{
-                    let u = User(firebaseID: id, firstName: firstName, lastName: lastName, email: email)
+                    let u = User(id: id, firstName: firstName, lastName: lastName, email: email)
                     fetchedUsers.append(u)
                 }
             }
@@ -135,7 +135,7 @@ class FirebaseService: ObservableObject {
                 for document in querySnapshot.documents{
                     let data = document.data()
                     
-                    let id = data["id"] as? String ?? ""
+                    let id = document.documentID
                     let firstName = data["firstName"] as? String ?? ""
                     let lastName = data["lastName"] as? String ?? ""
                     let email = data["email"] as? String ?? ""
@@ -143,13 +143,13 @@ class FirebaseService: ObservableObject {
                     
                     switch userPriv {
                     case "student":
-                        fetchedUser = User(firebaseID: id, firstName: firstName, lastName: lastName, email: email, access: .student)
+                        fetchedUser = User(id: id, firstName: firstName, lastName: lastName, email: email, access: .student)
                     case "preceptor":
-                        fetchedUser = User(firebaseID: id, firstName: firstName, lastName: lastName, email: email, access: .preceptor)
+                        fetchedUser = User(id: id, firstName: firstName, lastName: lastName, email: email, access: .preceptor)
                     case "admin":
-                        fetchedUser = User(firebaseID: id, firstName: firstName, lastName: lastName, email: email, access: .admin)
+                        fetchedUser = User(id: id, firstName: firstName, lastName: lastName, email: email, access: .admin)
                     default:
-                        fetchedUser = User(firebaseID: id, firstName: firstName, lastName: lastName, email: email)
+                        fetchedUser = User(id: id, firstName: firstName, lastName: lastName, email: email)
                     }
                 }
                 

@@ -11,37 +11,22 @@ struct User: Identifiable, Codable, Hashable {
         case admin
     }
     
-    var id = UUID()
-    var firebaseID = ""
+    var id: String?
     var firstName: String
     var lastName: String
     var email: String
     var access: AccessLevel
     
-    init(firebaseID: String, firstName: String, lastName: String, email: String, access: AccessLevel) {
-        self.firebaseID = firebaseID;
+    init(id: String? = nil, firstName: String, lastName: String, email: String, access: AccessLevel) {
+        self.id = id
         self.firstName = firstName
         self.lastName = lastName
         self.email = email
         self.access = access
     }
     
-    init(firebaseID: String, firstName: String, lastName: String, email: String) {
-        self.firebaseID = firebaseID;
-        self.firstName = firstName
-        self.lastName = lastName
-        self.email = email
-        self.access = .student
-    }
-    
-    init(firstName: String, lastName: String, email: String, access: AccessLevel) {
-        self.firstName = firstName
-        self.lastName = lastName
-        self.email = email
-        self.access = access
-    }
-    
-    init(firstName: String, lastName: String, email: String){
+    init(id: String? = nil, firstName: String, lastName: String, email: String) {
+        self.id = id
         self.firstName = firstName
         self.lastName = lastName
         self.email = email

@@ -59,8 +59,8 @@ struct EvaluationView: View {
         
         let evaluation = Evaluation(
             formId: formState.data.id.uuidString,
-            preceptorId: currUser.user?.firebaseID ?? "0",
-            studentId: currStudent.firebaseID,
+            preceptorId: currUser.user?.id ?? "0",
+            studentId: currStudent.id ?? "1",
             responses: responseDict,
             submittedAt: Date(),
             notes: formState.notes

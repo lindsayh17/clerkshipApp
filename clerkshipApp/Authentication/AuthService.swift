@@ -49,10 +49,17 @@ class AuthService: ObservableObject {
   }
     
     func createUser(fname: String, lname: String, email: String) async throws{
-        let u = User(firstName: fname, lastName: lname, email: email, access: .student)
-        
+        var u = User(firstName: fname, lastName: lname, email: email, access: .student)
+        let ref = db.collection("Users").document()
+        u.id = ref.documentID
         do {
-            try db.collection("Users").addDocument(from: u)
+            try await ref.setData([
+                "id": u.id ?? "",
+                "firstName": u.firstName,
+                "lastName": u.lastName,
+                "email": u.email,
+                "access": u.access.rawValue
+            ])
         } catch let error {
             print("Error writing responses to Firestore: \(error)")
         }
