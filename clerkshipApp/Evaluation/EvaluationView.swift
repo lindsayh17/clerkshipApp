@@ -89,9 +89,9 @@ struct EvaluationView: View {
                             .padding()
                     }
                 }
+                Divider().background(.gray)
                     
                 ScrollView {
-                    Divider().background(.gray)
                     ForEach (formState.data.categories) { cat in
                         CategoryView(category: cat, formState: formState)
                     }
