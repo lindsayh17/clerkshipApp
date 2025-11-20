@@ -22,7 +22,7 @@ enum ResponseLabel: CaseIterable, Codable {
 }
 
 // This is going to hold a bunch of questions
-struct QuestionCategory: Identifiable, Codable {
+class QuestionCategory: Identifiable, Codable, ObservableObject {
     // Properties
     var id = UUID()
     var category: String // Physical exam, collecting info, etc

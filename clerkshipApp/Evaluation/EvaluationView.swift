@@ -11,7 +11,6 @@ struct EvaluationView: View {
     @State var addedNotes = ""
     @State var showLabels = false
     @State private var submitted = false
-    @State private var showMoreInfo = false
     
     @StateObject var formState: EvalFormState
     let currStudent: User
@@ -102,31 +101,10 @@ struct EvaluationView: View {
                     }.frame(maxWidth: .infinity)
                 }
                 Divider().background(Color.gray)
-                
+                    
                 ScrollView {
                     ForEach (formState.data.categories) { cat in
-                        HStack {
-                            Text(cat.category)
-                                .foregroundColor(.white)
-                                .font(.title2)
-                                .fontWeight(.bold)
-                                .fixedSize(horizontal: false, vertical: true)
-                                .padding(.top, 6)
-                                .multilineTextAlignment(.center)
-                            
-                            Button {
-                                showMoreInfo.toggle()
-                            } label: {
-                                Image(systemName: "info.circle")
-                                    .foregroundColor(.white)
-                                    .baselineOffset(1)
-                                    .font(.system(size: 12))
-                            }
-                            .buttonStyle(BorderlessButtonStyle())
-                        }
-                        ForEach (cat.questions) { q in
-                            QuestionRowView(question: q, formState: formState)
-                        }
+                        CategoryView(category: cat, formState: formState)
                     }
                 
                     VStack(alignment: .leading, spacing: 5) {
@@ -194,12 +172,7 @@ struct EvaluationView: View {
                 .padding(.leading, 10)
                 .ignoresSafeArea(.all, edges: .top)
         }
-        .sheet(isPresented: $showMoreInfo) {
-            InfoBlurbView()
-                .presentationDetents([.fraction(0.5)])
-                .presentationCornerRadius(50)
-                .presentationBackground(.thinMaterial)
-        }
+        
         .navigationBarBackButtonHidden(true)
     }
 }
@@ -235,6 +208,61 @@ struct QuestionRowView: View {
             }.padding(.vertical, 4)
             
             Divider().background(Color.gray)
+        }
+    }
+}
+
+struct CategoryView: View {
+    @ObservedObject var category: QuestionCategory
+    @StateObject var formState: EvalFormState
+    @State private var showMoreInfo = false
+    
+    private let buttonColor = Color("ButtonColor")
+
+    
+    var body: some View {
+        Group {
+            HStack {
+                Text(category.category)
+                    .foregroundColor(.white)
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.top, 6)
+                    .multilineTextAlignment(.center)
+                
+                Button {
+                    showMoreInfo.toggle()
+                } label: {
+                    Image(systemName: "info.circle")
+                        .foregroundColor(.white)
+                        .baselineOffset(1)
+                        .font(.system(size: 12))
+                }
+                .buttonStyle(BorderlessButtonStyle())
+            }
+            
+            ForEach (category.questions) { q in
+                QuestionRowView(question: q, formState: formState)
+            }
+            
+            Button {
+                // next category
+            } label: {
+                Text("Next")
+                    .fontWeight(.semibold)
+                    .frame(width: 100, height: 50)
+                    .background(buttonColor)
+                    .foregroundColor(.white)
+                    .cornerRadius(20)
+                    .padding()
+            }
+        }
+        .sheet(isPresented: $showMoreInfo) {
+            InfoBlurbView()
+                .presentationDetents([.fraction(0.5)])
+                .presentationCornerRadius(50)
+                .presentationBackground(.thinMaterial)
         }
     }
 }
@@ -318,8 +346,8 @@ struct InfoBlurbView: View {
                     QuestionCategory(
                         category: "Type of Question",
                         questions: [
-                            Question(question: "Skill coding in Swift"),
-                            Question(question: "Experience with debugging")
+                            Question(question: "Skill level"),
+                            Question(question: "Experience level")
                         ]
                     )
                 ],
