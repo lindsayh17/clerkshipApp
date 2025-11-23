@@ -13,9 +13,6 @@ enum Destination: Identifiable {
     case register
     case home
     
-    case adminDash
-    
-    
 }
 
 extension Destination: Hashable {
@@ -42,7 +39,6 @@ extension Destination {
         case .home:
             return HomeView()
             
-            
-        
+        }
     }
 }

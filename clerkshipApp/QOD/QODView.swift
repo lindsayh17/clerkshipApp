@@ -2,9 +2,10 @@
 //  QODView.swift
 //  clerkshipApp
 //
+import SwiftUI
 
 struct QODView: View {
-    @State private var showDailyQuestionAnswer = false
+    @State var showDailyQuestionAnswer = false
     @EnvironmentObject var qod: QODStore
     
     var body: some View {
