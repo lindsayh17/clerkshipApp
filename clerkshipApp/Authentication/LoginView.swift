@@ -67,7 +67,7 @@ struct LoginView: View {
                 auth.isLoggedIn = true
                 
                 // switch the root from the welcome screen to home
-                router.switchRoot(.home, animation: false)
+                router.switchRoot(.home)
             } catch {
                 loginError = "Wrong email or password"
             }

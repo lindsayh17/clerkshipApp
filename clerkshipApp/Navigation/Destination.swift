@@ -8,14 +8,18 @@ import SwiftUI
 enum Destination: Identifiable {
     var id: String { "\(self)" }
 
-    case root // initial  screen
+    // auth screens
+    case root
     case login
     case register
+    
+    // main app
     case home
     
 }
 
 extension Destination: Hashable {
+    // overloaded operator
     static func == (lhs: Destination, rhs: Destination) -> Bool {
         lhs.id == rhs.id
     }

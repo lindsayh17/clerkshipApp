@@ -65,7 +65,7 @@ struct ProfileView: View {
                         // Logout button
                         Button(action: {
                             signOut()
-                            router.switchRoot(.root, animation: false)
+                            router.switchRoot(.root)
                             
                         }) {
                             Text("Log Out")

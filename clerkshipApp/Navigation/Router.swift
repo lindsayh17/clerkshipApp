@@ -4,6 +4,7 @@
 //
 //  Created by Hannah Deyst on 11/22/25.
 //
+
 import SwiftUI
 
 class Router: ObservableObject {
@@ -16,71 +17,44 @@ class Router: ObservableObject {
         self.root = root
     }
     
-    func switchRoot(_ root: Destination, animation: Bool = true) {
-        perform(animation: animation) {
-            path.removeAll()
-            self.root = root
-        }
+    func switchRoot(_ root: Destination) {
+        path.removeAll()
+        self.root = root
     }
     
-    func push(_ destination: Destination, animation: Bool = true) {
-        perform(animation: animation) {
-            path.append(destination)
-        }
+    func push(_ destination: Destination) {
+        path.append(destination)
     }
     
-    func pop(animation: Bool = true) {
-        perform(animation: animation) {
+    func pop() {
             path.removeLast()
-        }
     }
     
-    func popTo(_ destination: Destination, animation: Bool = true) {
+    func popTo(_ destination: Destination) {
         guard let index = path.lastIndex(where: { $0 == destination }) else { return }
-        perform(animation: animation) {
-            path.popItem(to: index)
-        }
+        path.popItem(to: index)
     }
     
-    func popToRoot(animation: Bool = true) {
-        perform(animation: animation) {
-            path.removeAll()
-        }
+    func popToRoot() {
+        path.removeAll()
     }
     
-    func sheet(_ destination: Destination, animation: Bool = true) {
-            perform(animation: animation) {
-                sheet = destination
-            }
-        }
-
-    func fullScreenCover(_ destination: Destination, animation: Bool = true) {
-        perform(animation: animation) {
-            fullScreenCover = destination
-        }
+    func sheet(_ destination: Destination) {
+        sheet = destination
     }
 
-    func dismiss(animation: Bool = true) {
-        perform(animation: animation) {
-            if sheet != nil {
-                sheet = nil
-            } else if fullScreenCover != nil {
-                fullScreenCover = nil
-            }
+    func fullScreenCover(_ destination: Destination) {
+        fullScreenCover = destination
+    }
+
+    func dismiss() {
+        if sheet != nil {
+            sheet = nil
+        } else if fullScreenCover != nil {
+            fullScreenCover = nil
         }
     }
     
-    private func perform(animation: Bool, block: () -> Void) {
-        if !animation {
-            var transaction = Transaction()
-            transaction.disablesAnimations = true
-            withTransaction(transaction) {
-                block()
-            }
-        } else {
-            block()
-        }
-    }
 }
 
 extension Array {

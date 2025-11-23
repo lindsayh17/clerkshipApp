@@ -32,7 +32,7 @@ struct CreateAccountView: View {
                 auth.isLoggedIn = true
                 
                 // switch the root from the welcome screen to home
-                router.switchRoot(.home, animation: false)
+                router.switchRoot(.home)
             } catch {
                 print("Error creating account")
             }
@@ -143,7 +143,7 @@ struct CreateAccountView: View {
                 .padding(.leading, 10)
                 .ignoresSafeArea(.all, edges: .top)
         }
-        .navigationDestination(isPresented: $auth.isLoggedIn) { HomeView() }
+//        .navigationDestination(isPresented: $auth.isLoggedIn) { HomeView() }
     .navigationBarBackButtonHidden(true)
     }
 }
