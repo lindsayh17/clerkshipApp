@@ -5,6 +5,9 @@ import SwiftUI
 import FirebaseAuth
 
 struct LoginView: View {
+    // Navigation tool
+    @EnvironmentObject private var router: Router
+    
     @EnvironmentObject var firebase: FirebaseService
     @EnvironmentObject var auth: AuthService
     @EnvironmentObject var userStore: UserStore
@@ -62,6 +65,9 @@ struct LoginView: View {
                 await getCurrUser()
                 await getQOD()
                 auth.isLoggedIn = true
+                
+                // switch the root from the welcome screen to home
+                router.switchRoot(.home, animation: false)
             } catch {
                 loginError = "Wrong email or password"
             }

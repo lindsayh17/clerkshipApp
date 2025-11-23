@@ -4,14 +4,9 @@
 import SwiftUI
 
 struct RootView: View {
+    @EnvironmentObject private var router: Router
     private let backgroundColor = Color("BackgroundColor")
-    @StateObject var navControl = NavControl()
-    
-    func reset() {
-        print("resetting nav variables...")
-        navControl.showSignIn = false
-        navControl.showCreateAccount = false
-    }
+
     
     var body: some View {
         ZStack {
@@ -25,7 +20,7 @@ struct RootView: View {
                 // Log In button
                 BigButtonView(
                     text: "Log In",
-                    action: { navControl.showSignIn = true },
+                    action: { router.push(.login)},
                     foregroundColor: .white,
                     backgroundColor: backgroundColor
                 )
@@ -34,36 +29,25 @@ struct RootView: View {
                 // Create Account button
                 BigButtonView(
                     text: "Create Account",
-                    action: { navControl.showCreateAccount = true },
+                    action: { router.push(.register) },
                     foregroundColor: backgroundColor,
                     backgroundColor: .white
                 )
                 .padding(.horizontal, 40)
+                
             }
-        }
-        .onAppear {
-            reset()
-            navControl.showRoot = true
-            navControl.showSignIn = false
-        }
-        // Navigation destinations for buttons
-        .navigationDestination(isPresented: $navControl.showSignIn) {
-            LoginView()
-        }
-        .navigationDestination(isPresented: $navControl.showCreateAccount) {
-            CreateAccountView()
+            .navigationTitle("Login")
         }
     }
 }
 
 #Preview {
-    NavigationStack {
-        RootView()
-    }
-    .environmentObject(FirebaseService())
-    .environmentObject(UserStore())
-    .environmentObject(CurrentUser())
-    .environmentObject(AuthService())
-    .environmentObject(QODStore())
+    RootView()
+        .environmentObject(Router(root: .root))
+        .environmentObject(FirebaseService())
+        .environmentObject(UserStore())
+        .environmentObject(CurrentUser())
+        .environmentObject(AuthService())
+        .environmentObject(QODStore())
 }
 
