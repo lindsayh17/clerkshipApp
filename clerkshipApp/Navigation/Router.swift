@@ -28,6 +28,7 @@ class Router: ObservableObject {
         print("path: \(path)")
     }
     
+    
     func pop() {
         path.removeLast()
         print("path: \(path)")

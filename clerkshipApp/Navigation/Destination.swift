@@ -27,6 +27,7 @@ enum Destination: Identifiable {
     
     case evalChoice // eval
     case eval
+    
 }
 
 extension Destination: Hashable {
@@ -45,15 +46,15 @@ extension Destination {
 
     private var destinationView: any View {
         switch self {
-        // auth views
+            // auth views
         case .root:
             return RootView()
         case .login:
             return LoginView()
         case .register:
             return CreateAccountView()
-        
-        // main app views
+            
+            // main app views
         case .home:
             return HomeView()
         case .quickFacts:
@@ -63,17 +64,20 @@ extension Destination {
         case .requirements:
             return ClerkshipRequirementsView()
             
-        // nav tab options
+            // nav tab options
         case .resources:
             return ResourcesView()
         case .search:
             return SearchView()
+        // TODO: this could take you to the profile of each user
         case .users:
             return SearchView()
         case .profile:
             return ProfileView()
         case .evalChoice:
             return EmptyView()
+
+//            return FormChoiceView()
         case .eval:
             return EmptyView()
         }
