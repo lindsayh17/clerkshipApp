@@ -20,31 +20,38 @@ class Router: ObservableObject {
     func switchRoot(_ root: Destination) {
         path.removeAll()
         self.root = root
+        print(path)
     }
     
     func push(_ destination: Destination) {
         path.append(destination)
+        print(path)
     }
     
     func pop() {
-            path.removeLast()
+        path.removeLast()
+        print(path)
     }
     
     func popTo(_ destination: Destination) {
         guard let index = path.lastIndex(where: { $0 == destination }) else { return }
         path.popItem(to: index)
+        print(path)
     }
     
     func popToRoot() {
         path.removeAll()
+        print(path)
     }
     
     func sheet(_ destination: Destination) {
         sheet = destination
+        print(path)
     }
 
     func fullScreenCover(_ destination: Destination) {
         fullScreenCover = destination
+        print(path)
     }
 
     func dismiss() {
@@ -53,6 +60,7 @@ class Router: ObservableObject {
         } else if fullScreenCover != nil {
             fullScreenCover = nil
         }
+        print(path)
     }
     
 }

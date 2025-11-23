@@ -15,6 +15,10 @@ enum Destination: Identifiable {
     
     // main app
     case home
+    case quickFacts
+    case orientation
+    case requirements
+    case evalChoice
     
 }
 
@@ -42,7 +46,15 @@ extension Destination {
             return CreateAccountView()
         case .home:
             return HomeView()
-            
+        
+        case .quickFacts:
+            return QuickFactsView()
+        case .orientation:
+            return OrientationView()
+        case .requirements:
+            return ClerkshipRequirementsView()
+        case .evalChoice:
+            return EmptyView()
         }
     }
 }

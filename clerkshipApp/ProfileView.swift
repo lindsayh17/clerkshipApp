@@ -21,6 +21,7 @@ struct ProfileView: View {
         Task {
             do {
                 try await auth.signOut()
+                router.switchRoot(.root)
             } catch {
                 print("Error signing out")
             }
@@ -65,7 +66,6 @@ struct ProfileView: View {
                         // Logout button
                         Button(action: {
                             signOut()
-                            router.switchRoot(.root)
                             
                         }) {
                             Text("Log Out")

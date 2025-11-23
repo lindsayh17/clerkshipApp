@@ -16,6 +16,8 @@ struct StudentHomeView: View {
     @State private var showEvalFromTab = false
     
     @EnvironmentObject var currUser: CurrentUser
+    @EnvironmentObject var auth: AuthService
+
     
     // Router object to centralize navigation
     @EnvironmentObject var router: Router
@@ -47,18 +49,22 @@ struct StudentHomeView: View {
                             VStack(spacing: 20) {
                                 HomeNavCard(title: "Quick Facts", icon: "book.fill", color: .purple) {
                                     navControl.showQuickFacts = true
+                                    router.push(.quickFacts)
                                 }
                                 
                                 HomeNavCard(title: "Orientation", icon: "figure.wave", color: .teal) {
                                     navControl.showOrientation = true
+                                    router.push(.orientation)
                                 }
                                 
                                 HomeNavCard(title: "Clerkship Requirements", icon: "checkmark.seal.fill", color: .pink) {
                                     navControl.showRequirements = true
+                                    router.push(.requirements)
                                 }
                                 
                                 HomeNavCard(title: "Evaluation Form", icon: "doc.text.fill", color: .orange) {
                                     navControl.showEvalChoice = true
+                                    router.push(.evalChoice)
                                 }
                                 
                             }
