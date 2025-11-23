@@ -5,6 +5,7 @@ import SwiftUI
 
 struct RootView: View {
     @EnvironmentObject private var router: Router
+    @StateObject var navControl = NavControl()
     private let backgroundColor = Color("BackgroundColor")
 
     
@@ -20,7 +21,10 @@ struct RootView: View {
                 // Log In button
                 BigButtonView(
                     text: "Log In",
-                    action: { router.push(.login)},
+                    action: {
+                        router.push(.login)
+                        navControl.showSignIn = true
+                    },
                     foregroundColor: .white,
                     backgroundColor: backgroundColor
                 )
@@ -29,14 +33,27 @@ struct RootView: View {
                 // Create Account button
                 BigButtonView(
                     text: "Create Account",
-                    action: { router.push(.register) },
+                    action: {
+                        router.push(.register)
+                        navControl.showCreateAccount = true
+                    },
                     foregroundColor: backgroundColor,
                     backgroundColor: .white
                 )
                 .padding(.horizontal, 40)
                 
             }
-//            .navigationTitle("Login")
+        }
+        .onAppear {
+            navControl.showRoot = true
+            navControl.showSignIn = false
+        }
+        // Navigation destinations for buttons
+        .navigationDestination(isPresented: $navControl.showSignIn) {
+            LoginView()
+        }
+        .navigationDestination(isPresented: $navControl.showCreateAccount) {
+            CreateAccountView()
         }
     }
 }

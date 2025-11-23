@@ -1,3 +1,6 @@
+// CreateAccountView.swift
+// clerkshipApp
+
 import SwiftUI
 
 struct CreateAccountView: View {
@@ -143,7 +146,7 @@ struct CreateAccountView: View {
                 .padding(.leading, 10)
                 .ignoresSafeArea(.all, edges: .top)
         }
-//        .navigationDestination(isPresented: $auth.isLoggedIn) { HomeView() }
+        .navigationDestination(isPresented: $auth.isLoggedIn) { HomeView() }
     .navigationBarBackButtonHidden(true)
     }
 }
