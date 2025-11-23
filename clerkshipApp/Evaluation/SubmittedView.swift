@@ -6,6 +6,7 @@
 import SwiftUI
 
 struct SubmittedView: View {
+    @EnvironmentObject var router: Router
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
@@ -27,6 +28,8 @@ struct SubmittedView: View {
 
                 Button("Return Home") {
                     goHome = true
+                    router.popToRoot()
+                    
                 }
                 .padding()
                 .frame(maxWidth: .infinity)

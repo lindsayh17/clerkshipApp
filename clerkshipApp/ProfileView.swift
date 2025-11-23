@@ -10,8 +10,11 @@ import SwiftUI
 struct ProfileView: View {
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
+    
+    @EnvironmentObject var router: Router
     @EnvironmentObject var auth: AuthService
     @EnvironmentObject var currUser: CurrentUser
+    
     @State private var currentView: NavOption = .profile
     @StateObject var navControl = NavControl()
     @Environment(\.dismiss) var dismiss
@@ -65,6 +68,8 @@ struct ProfileView: View {
                         Button(action: {
                             navControl.showRoot = true
                             signOut()
+                            router.switchRoot(.root, animation: false)
+                            
                         }) {
                             Text("Log Out")
                                 .foregroundColor(.white)

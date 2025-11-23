@@ -36,7 +36,7 @@ struct RootView: View {
                 .padding(.horizontal, 40)
                 
             }
-            .navigationTitle("Login")
+//            .navigationTitle("Login")
         }
     }
 }

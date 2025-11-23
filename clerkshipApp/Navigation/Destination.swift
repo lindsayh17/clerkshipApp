@@ -8,7 +8,7 @@ import SwiftUI
 enum Destination: Identifiable {
     var id: String { "\(self)" }
 
-    case root // this can be the initial intro screen
+    case root // initial  screen
     case login
     case register
     case home
@@ -40,6 +40,8 @@ extension Destination {
             return CreateAccountView()
         case .home:
             return HomeView()
+            
+            
         case .itemDetails(let id):
             return EmptyView()
 //            ItemDetailsScreen(id: id)

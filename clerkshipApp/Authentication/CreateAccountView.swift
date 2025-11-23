@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct CreateAccountView: View {
-    // Navigation object
+    // Navigation tool
     @EnvironmentObject private var router: Router
     
     @EnvironmentObject var firebase: FirebaseService
@@ -31,7 +31,7 @@ struct CreateAccountView: View {
                 await getQOD()
                 auth.isLoggedIn = true
                 
-                // switch root from welcome to home screen
+                // switch the root from the welcome screen to home
                 router.switchRoot(.home, animation: false)
             } catch {
                 print("Error creating account")
