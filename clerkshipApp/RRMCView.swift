@@ -8,7 +8,7 @@ struct RRMCView: View {
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
 
-    @State private var currentView = NavOption.home
+    @State private var currentView = Destination.home
     // @State var loginManager
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var currUser: CurrentUser

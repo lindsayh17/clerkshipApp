@@ -10,7 +10,7 @@ struct BreastExamView: View {
     // @Binding var destination: HomeDestination
     @Environment(\.dismiss) var dismiss
     
-    @State private var currentView = NavOption.home
+    @State private var currentView = Destination.home
     // @State var loginManager
     @EnvironmentObject var currUser: CurrentUser
     @EnvironmentObject var auth: AuthService

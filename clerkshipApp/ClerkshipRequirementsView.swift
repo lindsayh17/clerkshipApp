@@ -15,7 +15,7 @@ struct ClerkshipRequirementsView: View {
     private let buttonColor = Color("ButtonColor")
     
     @Environment(\.dismiss) var dismiss
-    @State private var currentView: NavOption = .home
+    @State private var currentView: Destination = .home
     @EnvironmentObject var currUser: CurrentUser
     
     private let requirements = [
@@ -83,6 +83,20 @@ struct ClerkshipRequirementsView: View {
                                 SearchView()
                             case .eval:
                                 SearchView()
+                            case .root:
+                                EmptyView()
+                            case .login:
+                                EmptyView()
+                            case .register:
+                                EmptyView()
+                            case .quickFacts:
+                                EmptyView()
+                            case .orientation:
+                                EmptyView()
+                            case .requirements:
+                                EmptyView()
+                            case .evalChoice:
+                                EmptyView()
                             }
                         }
                         .padding(.top, 10)

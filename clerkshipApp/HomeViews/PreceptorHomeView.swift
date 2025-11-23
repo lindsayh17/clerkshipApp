@@ -9,8 +9,7 @@ struct PreceptorHomeView: View {
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     
-    @State private var currentView = NavOption.home
-    @StateObject var navControl = NavControl()
+    @State private var currentView = Destination.home
 
     // Allows Eval tab to trigger navigation instead of swapping the whole screen
     @State private var showEvalFromTab = false
@@ -52,6 +51,20 @@ struct PreceptorHomeView: View {
                             
                         case .eval:
                             EmptyView()
+                        case .root:
+                            EmptyView()
+                        case .login:
+                            EmptyView()
+                        case .register:
+                            EmptyView()
+                        case .quickFacts:
+                            EmptyView()
+                        case .orientation:
+                            EmptyView()
+                        case .requirements:
+                            EmptyView()
+                        case .evalChoice:
+                            EmptyView()
                         }
                     }
                     .padding()
@@ -69,22 +82,5 @@ struct PreceptorHomeView: View {
             }
         }
         .navigationBarBackButtonHidden()
-        .navigationDestination(isPresented: $navControl.showEvalChoice) {
-            SearchView() // or another view if needed
-        }
-        .navigationDestination(isPresented: $showEvalFromTab) {
-            if let curr = currUser.user {
-                FormChoiceView(currStudent: curr) // probably preceptors won't use this
-            }
-        }
-        .navigationDestination(isPresented: $navControl.showOrientation) {
-            OrientationView()
-        }
-        .navigationDestination(isPresented: $navControl.showQuickFacts) {
-            QuickFactsView()
-        }
-        .navigationDestination(isPresented: $navControl.showRequirements) {
-            ClerkshipRequirementsView()
-        }
     }
 }

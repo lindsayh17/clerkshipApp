@@ -9,7 +9,7 @@ struct ResourcesView: View {
     private let buttonColor = Color("ButtonColor")
     
     // State for nav tab
-    @State private var currentView: NavOption = .resources
+    @State private var currentView: Destination = .resources
     @State private var showBreastExam = false
     @State private var showLaborTriage = false
     @EnvironmentObject var currUser: CurrentUser

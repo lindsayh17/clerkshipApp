@@ -8,7 +8,7 @@ struct LaborTriageView: View {
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
     
-    @State private var currentView = NavOption.home
+    @State private var currentView = Destination.home
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var currUser: CurrentUser
     @EnvironmentObject var auth: AuthService

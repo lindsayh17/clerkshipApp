@@ -15,7 +15,7 @@ struct SurgicalInstrumentsView: View {
     private let backgroundColor = Color("BackgroundColor")
 
     // State for nav tab
-    @State private var currentView: NavOption = .resources
+    @State private var currentView: Destination = .resources
     @EnvironmentObject var currUser: CurrentUser
     @Environment(\.dismiss) var dismiss
     

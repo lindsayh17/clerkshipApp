@@ -18,7 +18,7 @@ struct QuickFactsView: View {
     @Environment(\.dismiss) var dismiss
 
     // State for nav tab
-    @State private var currentView: NavOption = .resources
+    @State private var currentView: Destination = .resources
     @EnvironmentObject var currUser: CurrentUser
     
     // Quick Facts data

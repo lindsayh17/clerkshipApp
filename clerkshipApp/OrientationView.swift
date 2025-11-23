@@ -15,7 +15,7 @@ struct OrientationView: View {
     @State private var goToFamilyPlanning: Bool = false
     @State private var goToSchedule = false
     @State private var navigateHome: Bool = false
-    @State private var currentView: NavOption = .home
+    @State private var currentView: Destination = .home
     @EnvironmentObject var currUser: CurrentUser
     
     var body: some View {
@@ -78,6 +78,21 @@ struct OrientationView: View {
                             SearchView()
                         case .eval:
                             SearchView()
+                        // TODO: fix these
+                        case .root:
+                            EmptyView()
+                        case .login:
+                            EmptyView()
+                        case .register:
+                            EmptyView()
+                        case .quickFacts:
+                            EmptyView()
+                        case .orientation:
+                            EmptyView()
+                        case .requirements:
+                            EmptyView()
+                        case .evalChoice:
+                            EmptyView()
                         }
                     }
                     .padding(.top, 10)

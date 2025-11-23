@@ -9,8 +9,8 @@ struct StudentHomeView: View {
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     
-    @State private var currentView = NavOption.home
-    @StateObject var navControl = NavControl()
+    @State private var currentView = Destination.home
+//    @StateObject var navControl = NavControl()
 
     // Allows Eval tab to trigger navigation instead of swapping the whole screen
     @State private var showEvalFromTab = false
@@ -48,22 +48,18 @@ struct StudentHomeView: View {
                             
                             VStack(spacing: 20) {
                                 HomeNavCard(title: "Quick Facts", icon: "book.fill", color: .purple) {
-                                    navControl.showQuickFacts = true
                                     router.push(.quickFacts)
                                 }
                                 
                                 HomeNavCard(title: "Orientation", icon: "figure.wave", color: .teal) {
-                                    navControl.showOrientation = true
                                     router.push(.orientation)
                                 }
                                 
                                 HomeNavCard(title: "Clerkship Requirements", icon: "checkmark.seal.fill", color: .pink) {
-                                    navControl.showRequirements = true
                                     router.push(.requirements)
                                 }
                                 
                                 HomeNavCard(title: "Evaluation Form", icon: "doc.text.fill", color: .orange) {
-                                    navControl.showEvalChoice = true
                                     router.push(.evalChoice)
                                 }
                                 
@@ -85,6 +81,20 @@ struct StudentHomeView: View {
                             
                         case .eval:
                             // Do not show FormChoiceView here anymore, eval tab now triggers a navigation push instead of replacing the screen so formatting doesn't get messed up
+                            EmptyView()
+                        case .root:
+                            EmptyView()
+                        case .login:
+                            EmptyView()
+                        case .register:
+                            EmptyView()
+                        case .quickFacts:
+                            EmptyView()
+                        case .orientation:
+                            EmptyView()
+                        case .requirements:
+                            EmptyView()
+                        case .evalChoice:
                             EmptyView()
                         }
                     }
@@ -108,25 +118,25 @@ struct StudentHomeView: View {
         // NAVIGATION DESTINATIONS
 
         // Eval via Home card
-        .navigationDestination(isPresented: $navControl.showEvalChoice) {
-            SearchView()
-        }
-        // Eval via bottom tab
-        .navigationDestination(isPresented: $showEvalFromTab) {
-            if let curr = currUser.user{
-                FormChoiceView(currStudent: curr)
-            }
-        }
-        // Other destinations
-        .navigationDestination(isPresented: $navControl.showOrientation) {
-            OrientationView()
-        }
-        .navigationDestination(isPresented: $navControl.showQuickFacts) {
-            QuickFactsView()
-        }
-        .navigationDestination(isPresented: $navControl.showRequirements) {
-            ClerkshipRequirementsView()
-        }
+//        .navigationDestination(isPresented: $navControl.showEvalChoice) {
+//            SearchView()
+//        }
+//        // Eval via bottom tab
+//        .navigationDestination(isPresented: $showEvalFromTab) {
+//            if let curr = currUser.user{
+//                FormChoiceView(currStudent: curr)
+//            }
+//        }
+//        // Other destinations
+//        .navigationDestination(isPresented: $navControl.showOrientation) {
+//            OrientationView()
+//        }
+//        .navigationDestination(isPresented: $navControl.showQuickFacts) {
+//            QuickFactsView()
+//        }
+//        .navigationDestination(isPresented: $navControl.showRequirements) {
+//            ClerkshipRequirementsView()
+//        }
     }
     
 }

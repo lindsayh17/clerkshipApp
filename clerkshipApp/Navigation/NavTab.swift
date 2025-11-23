@@ -3,26 +3,17 @@
 
 import SwiftUI
 
-// Nav options for different screens
-enum NavOption {
-    case home
-    case resources
-    case search
-    case profile
-    case users
-    case eval
-}
-
 // Bottom navigation bar
 struct NavTab: View {
-    @Binding var currentTab: NavOption
+    @EnvironmentObject var router: Router
+    @Binding var currentTab: Destination
     @EnvironmentObject var currUser: CurrentUser
 
     private let buttonColor = Color("ButtonColor")
     private let backgroundColor = Color("BackgroundColor")
 
     // Determine which buttons to show for each user type
-    private func buttonsForUser() -> [(icon: String, selection: NavOption, text: String)] {
+    private func buttonsForUser() -> [(icon: String, selection: Destination, text: String)] {
         switch currUser.user?.access {
         case .student:
             return [
@@ -86,9 +77,9 @@ struct NavTab: View {
 // Individual navigation button
 struct NavBarButton: View {
     let icon: String
-    let selection: NavOption
+    let selection: Destination
     let text: String
-    @Binding var currentTab: NavOption
+    @Binding var currentTab: Destination
     let buttonColor: Color
     let backgroundColor: Color
 

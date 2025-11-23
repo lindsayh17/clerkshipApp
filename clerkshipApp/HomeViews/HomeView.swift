@@ -24,12 +24,10 @@ struct HomeView: View {
     private let cardColor = Color("CardColor")
     private let accentColor = Color("AccentColor")
     
-    @State private var currentView = NavOption.home
+//    @State private var currentView = Destination.home
     @State private var showDailyQuestionAnswer = false
     @State private var showLocationInfo = false
     
-    @StateObject var navControl = NavControl()
-
     // Allows Eval tab to trigger navigation instead of swapping the whole screen
     @State private var showEvalFromTab = false
     

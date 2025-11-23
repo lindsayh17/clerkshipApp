@@ -22,8 +22,7 @@ struct SearchView: View {
     @State private var namesByLetter: [String: [User]] = [:]
     
     // Nav state
-    @State private var currentView: NavOption = .search
-    @StateObject var navControl = NavControl()
+    @State private var currentView: Destination = .search
     
     // Filtered data based on search text
     private var filteredNames: [String: [User]] {
@@ -78,8 +77,8 @@ struct SearchView: View {
                     ZStack(alignment: .trailing) {
                         NamesView(
                             filteredNames: filteredNames,
-                            selectedUser: $selectedUser,
-                            showEvalForm: $navControl.showEvalForm
+                            selectedUser: $selectedUser
+//                            showEvalForm: $navControl.showEvalForm
                         )
                         .environment(\.defaultMinListRowHeight, 28)
                         .listSectionSpacing(.compact)
@@ -119,11 +118,11 @@ struct SearchView: View {
         .task {
             namesList()
         }
-        .navigationDestination(isPresented: $navControl.showEvalForm){
-            if let selected = selectedUser{
-                FormChoiceView(currStudent: selected)
-            }
-        }
+//        .navigationDestination(isPresented: $navControl.showEvalForm){
+//            if let selected = selectedUser{
+//                FormChoiceView(currStudent: selected)
+//            }
+//        }
         .navigationBarBackButtonHidden(true)
     }
 }
@@ -149,7 +148,9 @@ struct NamesView: View{
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
     @Binding var selectedUser: User?
-    @Binding var showEvalForm: Bool
+//    @Binding var showEvalForm: Bool
+    
+    @EnvironmentObject var router: Router
     
     var body: some View{
         List {
@@ -162,7 +163,11 @@ struct NamesView: View{
                     ForEach(filteredNames[letter, default: []], id: \.id) { student in
                         Button {
                             selectedUser = student
-                            showEvalForm = true
+                            
+                            // TODO: check this !!!!
+                            router.push(.evalChoice)
+//                            showEvalForm = true
+                            
                         } label: {
                             HStack{
                                 Text("\(student.firstName) \(student.lastName)")

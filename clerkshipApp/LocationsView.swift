@@ -13,7 +13,7 @@ struct LocationsView: View {
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
     @Environment(\.dismiss) var dismiss
-    @State private var currentView: NavOption = .home
+    @State private var currentView: Destination = .home
     @EnvironmentObject var currUser: CurrentUser
     
     var body: some View {
@@ -55,6 +55,21 @@ struct LocationsView: View {
                             SearchView()
                         case .eval:
                             SearchView()
+                        // TODO: fix these
+                        case .root:
+                            EmptyView()
+                        case .login:
+                            EmptyView()
+                        case .register:
+                            EmptyView()
+                        case .quickFacts:
+                            EmptyView()
+                        case .orientation:
+                            EmptyView()
+                        case .requirements:
+                            EmptyView()
+                        case .evalChoice:
+                            EmptyView()
                         }
                     }
                     .padding(.top, 10)
