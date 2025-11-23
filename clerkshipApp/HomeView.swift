@@ -37,6 +37,8 @@ struct HomeView: View {
     @EnvironmentObject var auth: AuthService
     @EnvironmentObject var qod: QODStore
     
+    @EnvironmentObject var router: Router
+    
     var body: some View {
         VStack {
             // If user is admin show web dashboard
@@ -209,84 +211,6 @@ struct HomeView: View {
                 }
                 .navigationDestination(isPresented: $navControl.showRequirements) {
                     ClerkshipRequirementsView()
-                }
-            }
-        }
-    }
-}
-
-
-
-
-
-// HomeNavCard
-struct HomeNavCard: View {
-    var title: String
-    var icon: String
-    var color: Color
-    var action: () -> Void
-    
-    var body: some View {
-        Button(action: action) {
-            HStack {
-                Image(systemName: icon)
-                    .foregroundColor(.white)
-                    .font(.title2)
-                    .padding(12)
-                    .background(color.opacity(0.8))
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                
-                Text(title)
-                    .foregroundColor(.white)
-                    .font(.headline)
-                    .padding(.leading, 4)
-                
-                Spacer()
-                
-                Image(systemName: "chevron.right")
-                    .foregroundColor(.white.opacity(0.7))
-            }
-            .padding()
-            .background(Color.white.opacity(0.1))
-            .clipShape(RoundedRectangle(cornerRadius: 16))
-        }
-        .buttonStyle(.plain)
-    }
-}
-
-struct QODView: View {
-    @State private var showDailyQuestionAnswer = false
-    @EnvironmentObject var qod: QODStore
-    
-    var body: some View {
-        // Daily Question
-        SectionView(title: "Daily Question") {
-            VStack(alignment: .leading, spacing: 12) {
-                if let dailyQuestion = qod.qod{
-                    Text(dailyQuestion.questionText)
-                        .foregroundColor(.white)
-                        .font(.title3)
-                        .fontWeight(.semibold)
-                        .bold()
-                Button(action: {
-                        withAnimation {
-                            // Show answer
-                            showDailyQuestionAnswer.toggle()
-                        }
-                    }) {
-                        Text(showDailyQuestionAnswer ? "Hide Answer" : "Show Answer")
-                            .underline()
-                    }
-                    // Answer
-                    if showDailyQuestionAnswer {
-                        if let dailyAnswer = qod.qod{
-                            Text(dailyAnswer.answer)
-                                .foregroundColor(.white)
-                        }
-                    }
-                } else {
-                    Text("No daily question available.")
-                        .foregroundColor(.white.opacity(0.7))
                 }
             }
         }

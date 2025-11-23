@@ -15,8 +15,6 @@ struct ProfileView: View {
     @EnvironmentObject var auth: AuthService
     @EnvironmentObject var currUser: CurrentUser
     
-    @State private var currentView: NavOption = .profile
-    @StateObject var navControl = NavControl()
     @Environment(\.dismiss) var dismiss
     
     func signOut() {
@@ -66,7 +64,6 @@ struct ProfileView: View {
                         
                         // Logout button
                         Button(action: {
-                            navControl.showRoot = true
                             signOut()
                             router.switchRoot(.root, animation: false)
                             
@@ -86,10 +83,6 @@ struct ProfileView: View {
                 
             }
         }
-        .onChange(of: navControl.showRoot) {
-            dismiss()
-        }
-//    .navigationDestination(isPresented: $navControl.showRoot) { RootView() }
     .navigationBarBackButtonHidden(true)
     }
 }

@@ -13,8 +13,9 @@ enum Destination: Identifiable {
     case register
     case home
     
+    case adminDash
     
-    case itemDetails(id: String)
+    
 }
 
 extension Destination: Hashable {
@@ -42,9 +43,6 @@ extension Destination {
             return HomeView()
             
             
-        case .itemDetails(let id):
-            return EmptyView()
-//            ItemDetailsScreen(id: id)
-        }
+        
     }
 }
