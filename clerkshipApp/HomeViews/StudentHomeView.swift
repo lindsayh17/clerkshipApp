@@ -10,7 +10,6 @@ struct StudentHomeView: View {
     private let backgroundColor = Color("BackgroundColor")
     
     @State private var currentView = Destination.home
-//    @StateObject var navControl = NavControl()
 
     // Allows Eval tab to trigger navigation instead of swapping the whole screen
     @State private var showEvalFromTab = false
@@ -24,7 +23,7 @@ struct StudentHomeView: View {
     
     
     var body: some View {
-        // Otherwise show normal app content
+        // show normal app content
         ZStack {
             // Fill the screen with background color
             backgroundColor.ignoresSafeArea()
@@ -60,7 +59,7 @@ struct StudentHomeView: View {
                                 }
                                 
                                 HomeNavCard(title: "Evaluation Form", icon: "doc.text.fill", color: .orange) {
-                                    router.push(.evalChoice)
+                                    showEvalFromTab = true
                                 }
                                 
                             }
@@ -115,28 +114,11 @@ struct StudentHomeView: View {
         }
         .navigationBarBackButtonHidden()
 
-        // NAVIGATION DESTINATIONS
-
-        // Eval via Home card
-//        .navigationDestination(isPresented: $navControl.showEvalChoice) {
-//            SearchView()
-//        }
-//        // Eval via bottom tab
-//        .navigationDestination(isPresented: $showEvalFromTab) {
-//            if let curr = currUser.user{
-//                FormChoiceView(currStudent: curr)
-//            }
-//        }
-//        // Other destinations
-//        .navigationDestination(isPresented: $navControl.showOrientation) {
-//            OrientationView()
-//        }
-//        .navigationDestination(isPresented: $navControl.showQuickFacts) {
-//            QuickFactsView()
-//        }
-//        .navigationDestination(isPresented: $navControl.showRequirements) {
-//            ClerkshipRequirementsView()
-//        }
+        // NAVIGATION DESTINATION
+        .navigationDestination(isPresented: $showEvalFromTab) {
+            if let curr = currUser.user{
+                FormChoiceView(currStudent: curr)
+            }
+        }
     }
-    
 }
