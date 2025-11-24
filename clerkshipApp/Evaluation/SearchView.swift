@@ -11,6 +11,7 @@ struct SearchView: View {
     
     @State private var searchText = ""
     @State private var selectedUser: User? = nil
+    @State private var hasChosenStudent = false
 
     @Environment(\.dismiss) var dismiss
     
@@ -77,8 +78,8 @@ struct SearchView: View {
                     ZStack(alignment: .trailing) {
                         NamesView(
                             filteredNames: filteredNames,
-                            selectedUser: $selectedUser
-//                            showEvalForm: $navControl.showEvalForm
+                            selectedUser: $selectedUser,
+                            showEvalForm: $hasChosenStudent
                         )
                         .environment(\.defaultMinListRowHeight, 28)
                         .listSectionSpacing(.compact)
@@ -118,11 +119,11 @@ struct SearchView: View {
         .task {
             namesList()
         }
-//        .navigationDestination(isPresented: $navControl.showEvalForm){
-//            if let selected = selectedUser{
-//                FormChoiceView(currStudent: selected)
-//            }
-//        }
+        .navigationDestination(isPresented: $hasChosenStudent){
+            if let selected = selectedUser{
+                FormChoiceView(currStudent: selected)
+            }
+        }
         .navigationBarBackButtonHidden(true)
     }
 }
@@ -148,7 +149,7 @@ struct NamesView: View{
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
     @Binding var selectedUser: User?
-//    @Binding var showEvalForm: Bool
+    @Binding var showEvalForm: Bool
     
     @EnvironmentObject var router: Router
     
@@ -163,10 +164,10 @@ struct NamesView: View{
                     ForEach(filteredNames[letter, default: []], id: \.id) { student in
                         Button {
                             selectedUser = student
-                            
+
                             // TODO: check this !!!!
-                            router.push(.evalChoice)
-//                            showEvalForm = true
+                            router.push(.evalChoice) // pushes an empty view as a placeholder
+                            showEvalForm = true
                             
                         } label: {
                             HStack{
