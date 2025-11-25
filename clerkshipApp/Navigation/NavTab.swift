@@ -144,7 +144,8 @@ struct NavTab: View {
                 ("house", .home, "Home"),
                 ("text.document", .resources, "Docs"),
                 ("person.crop.circle.fill", .profile, "Profile"),
-                ("pencil", .eval, "Eval")
+                // TODO: these should not be unbound w/ the !
+                ("pencil", .evalChoice(userToEval: currUser.user!), "Eval")
             ]
         case .preceptor:
             return [
@@ -158,12 +159,14 @@ struct NavTab: View {
                 ("magnifyingglass", .users, "Users"),
                 ("person.crop.circle.fill", .profile, "Profile")
             ]
+        // defaults to a student
         default:
             return [
                 ("house", .home, "Home"),
                 ("text.document", .resources, "Docs"),
                 ("person.crop.circle.fill", .profile, "Profile"),
-                ("pencil", .eval, "Eval")
+                // TODO: these should not be unbound w/ the !
+                ("pencil", .evalChoice(userToEval: currUser.user!), "Eval")
             ]
         }
     }

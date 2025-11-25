@@ -163,7 +163,7 @@ struct NamesView: View{
                             selectedUser = student
 
                             // TODO: check this !!!!
-                            router.push(.evalChoice) // pushes an empty view as a placeholder
+                            router.push(.evalChoice(userToEval: student)) // pushes an empty view as a placeholder
                             showEvalForm = true
                             
                         } label: {

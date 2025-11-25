@@ -12,7 +12,7 @@ struct FormChoiceView: View {
     
     @State private var selectedForm: EvalForm? = nil
     @State private var choiceMade = false
-    @State private var currentView = Destination.eval
+//    @State private var currentView = Destination.evalChoice(userToEval: <#T##User#>)
     
     @Environment(\.dismiss) var dismiss
     
@@ -59,7 +59,7 @@ struct FormChoiceView: View {
                         })
                     }
                 }
-                NavTab(currView: currentView)
+                NavTab(currView: .evalChoice(userToEval: currStudent))
             }
             BackButton()
                 .padding(.top, 10)

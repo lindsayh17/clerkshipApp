@@ -25,8 +25,9 @@ enum Destination: Identifiable {
     case users
     case profile
     
-    case evalChoice // eval
-    case eval
+    // form choice
+    case evalChoice(userToEval: User)
+    case eval(formState: EvalFormState, student: User)
     
 //    case empty
     
@@ -76,11 +77,11 @@ extension Destination {
             return SearchView()
         case .profile:
             return ProfileView()
-        case .evalChoice:
-            return EmptyView()
+        case .evalChoice(let student):
+            return FormChoiceView(currStudent: student)
 
-        case .eval:
-            return EmptyView()
+        case .eval(let form, let student):
+            return EvaluationView(formState: form, currStudent: student)
         
 //        case .empty:
 //            return EmptyView()
