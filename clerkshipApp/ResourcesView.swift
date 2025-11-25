@@ -36,14 +36,14 @@ struct ResourcesView: View {
                         VStack(spacing: 20) {
                             MainButtonView(title: "Acronyms", color: buttonColor)
                             MainButtonView(title: "Breast Exam", color: buttonColor) {
-//                                router.push()
+                                router.push(.breastExam)
                             }
                             MainButtonView(title: "Pelvic Exam & Pap Smear", color: buttonColor)
                             MainButtonView(title: "New Patient History", color: buttonColor)
                             MainButtonView(title: "Prenatal-Antepartum Patient", color: buttonColor)
                             MainButtonView(title: "Vaginal Delivery", color: buttonColor)
                             MainButtonView(title: "Labor Triage", color: buttonColor) {
-//                                router.push()
+                                router.push(.laborTriage)
                             }
                             MainButtonView(title: "Preeclampsia Triage", color: buttonColor)
                             MainButtonView(title: "Laboring Patient", color: buttonColor)
@@ -61,12 +61,6 @@ struct ResourcesView: View {
                 NavTab(currView: .resources)
             }
         }
-//        .navigationDestination(isPresented: $showBreastExam) {
-//            BreastExamView()
-//        }
-//        .navigationDestination(isPresented: $showLaborTriage) {
-//            LaborTriageView()
-//        }
     }
 }
 

@@ -15,7 +15,6 @@ struct ClerkshipRequirementsView: View {
     private let buttonColor = Color("ButtonColor")
     
     @Environment(\.dismiss) var dismiss
-    @State private var currentView: Destination = .home
     @EnvironmentObject var currUser: CurrentUser
     
     private let requirements = [

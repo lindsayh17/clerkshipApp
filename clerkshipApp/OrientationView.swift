@@ -9,14 +9,11 @@ struct OrientationView: View {
     private let buttonColor = Color("ButtonColor")
     
     @Environment(\.dismiss) var dismiss
-    
-    @State private var goToSurgical: Bool = false
-    @State private var goToTrauma: Bool = false
-    @State private var goToFamilyPlanning: Bool = false
-    @State private var goToSchedule = false
+
     @State private var navigateHome: Bool = false
     @State private var currentView: Destination = .home
     @EnvironmentObject var currUser: CurrentUser
+    @EnvironmentObject var router: Router
     
     var body: some View {
         ZStack(alignment: .topLeading) {
@@ -44,25 +41,19 @@ struct OrientationView: View {
                         
                         // Buttons
                         VStack(spacing: 15) {
-                            // Hidden navigation links
-                            NavigationLink("", destination: ScheduleView(), isActive: $goToSchedule).hidden()
-                            NavigationLink("", destination: FamilyPlanningSessionView(), isActive: $goToFamilyPlanning).hidden()
-                            NavigationLink("", destination: TraumaView(), isActive: $goToTrauma).hidden()
-                            NavigationLink("", destination: SurgicalInstrumentsView(), isActive: $goToSurgical).hidden()
-                            
                             MainButtonView(title: "Schedule", color: buttonColor) {
-                                goToSchedule = true
+                                router.push(.schedule)
                             }
                             MainButtonView(title: "Intrapartum FHR Interpretation", color: buttonColor)
                             MainButtonView(title: "Family Planning Session", color: buttonColor) {
-                                goToFamilyPlanning = true
+                                router.push(.familyPlan)
                             }
                             MainButtonView(title: "Trauma Informed Care and Labor Support", color: buttonColor) {
-                                goToTrauma = true
+                                router.push(.trauma)
                             }
                             MainButtonView(title: "EPIC Orientation", color: buttonColor)
                             MainButtonView(title: "Surgical Instruments", color: buttonColor) {
-                                goToSurgical = true
+                                router.push(.surgicalInst)
                             }
                         }
                         .padding(.horizontal, 20)
@@ -72,35 +63,13 @@ struct OrientationView: View {
                     .padding(.top, 10)
                 }
                 
-                // Bottom navigation
-//                NavTab(currentTab: $currentView)
             }
             BackButton()
                 .padding(.top, 10)
                 .padding(.leading, 10)
                 .ignoresSafeArea(.all, edges: .top)
         }
-        .navigationDestination(isPresented: $navigateHome) {
-            HomeView()
-                .transition(.move(edge: .leading))
-        }
-        .navigationDestination(isPresented: $goToSchedule) {
-            ScheduleView()
-                .transition(.move(edge: .leading))
-        }
-        .navigationDestination(isPresented: $goToFamilyPlanning) {
-            FamilyPlanningSessionView()
-                .transition(.move(edge: .trailing))
-        }
-        .navigationDestination(isPresented: $goToTrauma) {
-            TraumaView()
-                .transition(.move(edge: .trailing))
-        }
-        .navigationDestination(isPresented: $goToSurgical) {
-            SurgicalInstrumentsView()
-                .transition(.move(edge: .trailing))
-        }
-    .navigationBarBackButtonHidden(true)
+        .navigationBarBackButtonHidden(true)
     }
 }
 

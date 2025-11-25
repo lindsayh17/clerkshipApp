@@ -13,24 +13,32 @@ enum Destination: Identifiable {
     case login
     case register
     
-    // main app
+    // user aid
     case home
+    case profile
     case quickFacts
+    
+    // orientation
     case orientation
+    case schedule
+    case familyPlan
+    case trauma
+    case surgicalInst
+    
+    // put all requirement views beneath here
     case requirements
     
-    // nav tab
+    // resources
     case resources
+    case breastExam
+    case laborTriage
+
+    // form views
     case search
     case users
-    case profile
-    
-    // form choice
     case evalChoice(userToEval: User)
     case eval(formState: EvalFormState, student: User)
-    
-//    case empty
-    
+        
 }
 
 extension Destination: Hashable {
@@ -49,7 +57,7 @@ extension Destination {
 
     private var destinationView: any View {
         switch self {
-            // auth views
+        // auth views
         case .root:
             return RootView()
         case .login:
@@ -57,26 +65,43 @@ extension Destination {
         case .register:
             return CreateAccountView()
             
-            // main app views
+            
         case .home:
             return HomeView()
+        case .profile:
+            return ProfileView()
         case .quickFacts:
             return QuickFactsView()
+            
         case .orientation:
             return OrientationView()
+        case .schedule:
+            return ScheduleView()
+        case .familyPlan:
+            return FamilyPlanningSessionView()
+        case .trauma:
+            return TraumaView()
+        case .surgicalInst:
+            return SurgicalInstrumentsView()
+            
+            
         case .requirements:
             return ClerkshipRequirementsView()
             
-            // nav tab options
+        // resources
         case .resources:
             return ResourcesView()
+        case .breastExam:
+            return BreastExamView()
+        case .laborTriage:
+            return LaborTriageView()
+            
+            
         case .search:
             return SearchView()
         // TODO: this could take you to the profile of each user
         case .users:
             return SearchView()
-        case .profile:
-            return ProfileView()
         case .evalChoice(let student):
             return FormChoiceView(currStudent: student)
 

@@ -53,7 +53,7 @@ struct FormChoiceView: View {
                     ForEach(firebase.forms) { form in
                         MainButtonView(title: form.type, color: buttonColor, action: {
                             router.push(.eval(formState: EvalFormState(data: form), student: currStudent))
-                        })
+                        }).padding(.horizontal)
                     }
                 }
                 // student uses nav tab for eval
