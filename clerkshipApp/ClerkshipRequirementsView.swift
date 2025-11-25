@@ -42,68 +42,38 @@ struct ClerkshipRequirementsView: View {
                 VStack(spacing: 0) {
                     ScrollView {
                         VStack(alignment: .leading, spacing: 20) {
-//                            switch currentView {
-//                            case .home:
-//                                // Section Title
-//                                Text("Clerkship Requirements")
-//                                    .font(.largeTitle)
-//                                    .fontWeight(.bold)
-//                                    .foregroundColor(.white)
-//                                    .padding(.top, 20)
-//                                    .padding(.bottom, 20)
-//                                    .padding(.horizontal, 40)
-//                                    .frame(maxWidth: .infinity, alignment: .center)
-//                                    .multilineTextAlignment(.center)
-//
-//                                // Buttons
-//                                VStack(spacing: 25) {
-//                                    ForEach(requirements, id: \.self) { title in
-//                                        Button(action: {
-//                                        }) {
-//                                            Text(title)
-//                                                .foregroundColor(.white)
-//                                                .font(.headline)
-//                                                .frame(maxWidth: .infinity, alignment: .center)
-//                                                .padding()
-//                                                .background(buttonColor)
-//                                                .cornerRadius(12)
-//                                        }
-//                                    }
-//                                }
-//                                .padding(.horizontal, 20)
-//                                .padding(.bottom, 30)
-//                                
-//                            case .resources:
-//                                ResourcesView()
-//                            case .search:
-//                                SearchView()
-//                            case .profile:
-//                                ProfileView()
-//                            case .users:
-//                                SearchView()
-//                            case .eval:
-//                                SearchView()
-//                            case .root:
-//                                EmptyView()
-//                            case .login:
-//                                EmptyView()
-//                            case .register:
-//                                EmptyView()
-//                            case .quickFacts:
-//                                EmptyView()
-//                            case .orientation:
-//                                EmptyView()
-//                            case .requirements:
-//                                EmptyView()
-//                            case .evalChoice:
-//                                EmptyView()
-//                            }
+                            
+                            // Section Title
+                            Text("Clerkship Requirements")
+                                .font(.largeTitle)
+                                .fontWeight(.bold)
+                                .foregroundColor(.white)
+                                .padding(.top, 20)
+                                .padding(.bottom, 20)
+                                .padding(.horizontal, 40)
+                                .frame(maxWidth: .infinity, alignment: .center)
+                                .multilineTextAlignment(.center)
+                            
+                            // Buttons
+                            VStack(spacing: 25) {
+                                ForEach(requirements, id: \.self) { title in
+                                    Button(action: {
+                                    }) {
+                                        Text(title)
+                                            .foregroundColor(.white)
+                                            .font(.headline)
+                                            .frame(maxWidth: .infinity, alignment: .center)
+                                            .padding()
+                                            .background(buttonColor)
+                                            .cornerRadius(12)
+                                    }
+                                }
+                            }
+                            .padding(.horizontal, 20)
+                            .padding(.bottom, 30)
                         }
                         .padding(.top, 10)
                     }
-                    
-                    // Bottom NavTab
-//                    NavTab(currentTab: $currentView)
                 }
                 BackButton()
                     .padding(.top, 10)
