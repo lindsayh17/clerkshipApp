@@ -49,7 +49,7 @@ struct InpatientGynServiceView: View {
                         Spacer()
                 }
 
-                NavTab(currentTab: $currentView)
+//                NavTab(currentTab: $currentView)
             }
             BackButton()
                 .padding(.top, 10)

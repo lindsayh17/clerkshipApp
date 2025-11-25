@@ -73,7 +73,7 @@ struct SurgicalInstrumentsView: View {
                     }
                 }
                 // Bottom Navigation
-                NavTab(currentTab: $currentView)
+//                NavTab(currentTab: $currentView)
             }
             BackButton()
                 .padding(.top, 10)

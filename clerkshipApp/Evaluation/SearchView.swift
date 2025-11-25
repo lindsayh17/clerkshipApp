@@ -114,15 +114,12 @@ struct SearchView: View {
                     .padding(.top, 10)
                     .padding(.leading, 10)
                     .ignoresSafeArea(.all, edges: .top)
+            } else {
+                NavTab(currView: currentView)
             }
         }
         .task {
             namesList()
-        }
-        .navigationDestination(isPresented: $hasChosenStudent){
-            if let selected = selectedUser{
-                FormChoiceView(currStudent: selected)
-            }
         }
         .navigationBarBackButtonHidden(true)
     }

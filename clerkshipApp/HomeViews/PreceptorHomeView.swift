@@ -26,59 +26,18 @@ struct PreceptorHomeView: View {
             backgroundColor.ignoresSafeArea()
             VStack(spacing: 0) {
                 ScrollView {
-                    VStack(alignment: .leading, spacing: 40) {
-                        switch currentView {
-                        case .home:
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text("Welcome, \(currUser.user?.firstName ?? "Preceptor")")
-                                    .font(.title)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.white)
-                            }
-                            Spacer()
-                            
-                        case .resources:
-                            ResourcesView()
-                            
-                        case .search:
-                            SearchView()
-                            
-                        case .profile:
-                            ProfileView()
-                            
-                        case .users:
-                            SearchView()
-                            
-                        case .eval:
-                            EmptyView()
-                        case .root:
-                            EmptyView()
-                        case .login:
-                            EmptyView()
-                        case .register:
-                            EmptyView()
-                        case .quickFacts:
-                            EmptyView()
-                        case .orientation:
-                            EmptyView()
-                        case .requirements:
-                            EmptyView()
-                        case .evalChoice:
-                            EmptyView()
-                        }
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Welcome, \(currUser.user?.firstName ?? "Preceptor")")
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
                     }
-                    .padding()
+                    Spacer()
                 }
                 .padding(.horizontal)
                 
                 // Bottom Navigation
-                NavTab(currentTab: $currentView)
-                    .onChange(of: currentView) { newTab in
-                        if newTab == .eval {
-                            showEvalFromTab = true
-                            currentView = .home
-                        }
-                    }
+                NavTab(currView: currentView)
             }
         }
         .navigationBarBackButtonHidden()

@@ -28,6 +28,8 @@ enum Destination: Identifiable {
     case evalChoice // eval
     case eval
     
+//    case empty
+    
 }
 
 extension Destination: Hashable {
@@ -79,6 +81,9 @@ extension Destination {
 
         case .eval:
             return EmptyView()
+        
+//        case .empty:
+//            return EmptyView()
         }
     }
 }

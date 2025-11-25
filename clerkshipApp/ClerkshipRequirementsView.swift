@@ -103,7 +103,7 @@ struct ClerkshipRequirementsView: View {
                     }
                     
                     // Bottom NavTab
-                    NavTab(currentTab: $currentView)
+//                    NavTab(currentTab: $currentView)
                 }
                 BackButton()
                     .padding(.top, 10)

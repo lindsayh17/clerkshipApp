@@ -76,7 +76,7 @@ struct LocationsView: View {
                 }
                 
                 // Bottom NavTab
-                NavTab(currentTab: $currentView)
+//                NavTab(currentTab: $currentView)
             }
         }
     .navigationBarBackButtonHidden()

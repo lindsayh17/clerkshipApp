@@ -49,6 +49,7 @@ struct HomeView: View {
             } else {
                 StudentHomeView()
             }
+            NavTab(currView: .home)
         }
     }
 }
@@ -62,5 +63,6 @@ struct HomeView: View {
     .environmentObject(FirebaseService())
     .environmentObject(CurrentUser())
     .environmentObject(AuthService())
+    .environmentObject(Router(root: .home))
     .environmentObject(QODStore())
 }

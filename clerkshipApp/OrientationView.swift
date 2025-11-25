@@ -99,7 +99,7 @@ struct OrientationView: View {
                 }
                 
                 // Bottom navigation
-                NavTab(currentTab: $currentView)
+//                NavTab(currentTab: $currentView)
             }
             BackButton()
                 .padding(.top, 10)

@@ -116,7 +116,7 @@ struct QuickFactsView: View {
                 }
                 
                 // Bottom Navigation
-                NavTab(currentTab: $currentView)
+//                NavTab(currentTab: $currentView)
             }
             
             // Floating back button above safe area (next to front camera)

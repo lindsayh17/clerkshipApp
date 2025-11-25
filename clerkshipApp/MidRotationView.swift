@@ -48,7 +48,7 @@ struct MidRotationView: View {
                         .padding(.bottom, 20)
                 }
 
-                NavTab(currentTab: $currentView)
+//                NavTab(currentTab: $currentView)
             }
             BackButton()
                 .padding(.top, 10)

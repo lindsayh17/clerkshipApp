@@ -8,7 +8,7 @@ struct RCEView: View {
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
 
-    @State private var currentView = Destination.home
+//    @State private var currentView = Destination.home
     // @State var loginManager
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var currUser: CurrentUser
@@ -64,7 +64,7 @@ struct RCEView: View {
                     .padding(.bottom, 40)
                 }
 
-                NavTab(currentTab: $currentView)
+//                NavTab(currentTab: $currentView)
             }
             BackButton()
                 .padding(.top, 10)

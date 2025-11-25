@@ -128,7 +128,7 @@ struct RRMCView: View {
                     .padding(.bottom, 40)
                 }
 
-                NavTab(currentTab: $currentView)
+//                NavTab(currentTab: $currentView)
             }
             BackButton()
                 .padding(.top, 10)
