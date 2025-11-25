@@ -9,10 +9,8 @@ enum FormChoice: String, Codable {
 struct FormChoiceView: View {
     @EnvironmentObject var firebase: FirebaseService
     @EnvironmentObject var formStore: FormStore
-    
-    @State private var selectedForm: EvalForm? = nil
-    @State private var choiceMade = false
-//    @State private var currentView = Destination.evalChoice(userToEval: <#T##User#>)
+    @EnvironmentObject var currUser: CurrentUser
+    @EnvironmentObject var router: Router
     
     @Environment(\.dismiss) var dismiss
     
@@ -54,28 +52,28 @@ struct FormChoiceView: View {
                     
                     ForEach(firebase.forms) { form in
                         MainButtonView(title: form.type, color: buttonColor, action: {
-                            selectedForm = form
-                            choiceMade = true
+                            router.push(.eval(formState: EvalFormState(data: form), student: currStudent))
                         })
                     }
                 }
-                NavTab(currView: .evalChoice(userToEval: currStudent))
+                // student uses nav tab for eval
+                if currUser.user?.access == .student {
+                    NavTab(currView: .evalChoice(userToEval: currStudent))
+                }
             }
-            BackButton()
-                .padding(.top, 10)
-                .padding(.leading, 10)
-                .ignoresSafeArea(.all, edges: .top)
+            // since the preceptor chooses a student to eval first, they need a back button
+            if currUser.user?.access != .student || router.path != [] {
+                BackButton()
+                    .padding(.top, 10)
+                    .padding(.leading, 10)
+                    .ignoresSafeArea(.all, edges: .top)
+            }
         }
         .task {
             do {
                 try await firebase.fetchForms()
             } catch {
                 print("Error fetching form data \(error)")
-            }
-        }
-        .navigationDestination(isPresented: $choiceMade) {
-            if let selected = selectedForm {
-                EvaluationView(formState: EvalFormState(data: selected), currStudent: currStudent)
             }
         }
         .navigationBarBackButtonHidden(true)

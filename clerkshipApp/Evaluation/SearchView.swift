@@ -106,6 +106,9 @@ struct SearchView: View {
                         .padding(.trailing, 6)
                     }
                 }
+                if currUser.user?.access != .student {
+                    NavTab(currView: currentView)
+                }
             }
             // Don't need back button if user is preceptor; use nav bar
             // Back button stays in the ZStack
@@ -114,8 +117,6 @@ struct SearchView: View {
                     .padding(.top, 10)
                     .padding(.leading, 10)
                     .ignoresSafeArea(.all, edges: .top)
-            } else {
-                NavTab(currView: currentView)
             }
         }
         .task {

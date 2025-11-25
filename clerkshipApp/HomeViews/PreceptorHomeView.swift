@@ -35,9 +35,6 @@ struct PreceptorHomeView: View {
                     Spacer()
                 }
                 .padding(.horizontal)
-                
-                // Bottom Navigation
-                NavTab(currView: currentView)
             }
         }
         .navigationBarBackButtonHidden()

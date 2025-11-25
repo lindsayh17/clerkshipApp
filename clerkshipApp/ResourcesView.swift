@@ -13,6 +13,7 @@ struct ResourcesView: View {
     @State private var showBreastExam = false
     @State private var showLaborTriage = false
     @EnvironmentObject var currUser: CurrentUser
+    @EnvironmentObject var router: Router
     
     var body: some View {
         ZStack {
@@ -35,14 +36,14 @@ struct ResourcesView: View {
                         VStack(spacing: 20) {
                             MainButtonView(title: "Acronyms", color: buttonColor)
                             MainButtonView(title: "Breast Exam", color: buttonColor) {
-                                showBreastExam = true
+//                                router.push()
                             }
                             MainButtonView(title: "Pelvic Exam & Pap Smear", color: buttonColor)
                             MainButtonView(title: "New Patient History", color: buttonColor)
                             MainButtonView(title: "Prenatal-Antepartum Patient", color: buttonColor)
                             MainButtonView(title: "Vaginal Delivery", color: buttonColor)
                             MainButtonView(title: "Labor Triage", color: buttonColor) {
-                                showLaborTriage = true
+//                                router.push()
                             }
                             MainButtonView(title: "Preeclampsia Triage", color: buttonColor)
                             MainButtonView(title: "Laboring Patient", color: buttonColor)
@@ -60,12 +61,12 @@ struct ResourcesView: View {
                 NavTab(currView: .resources)
             }
         }
-        .navigationDestination(isPresented: $showBreastExam) {
-            BreastExamView()
-        }
-        .navigationDestination(isPresented: $showLaborTriage) {
-            LaborTriageView()
-        }
+//        .navigationDestination(isPresented: $showBreastExam) {
+//            BreastExamView()
+//        }
+//        .navigationDestination(isPresented: $showLaborTriage) {
+//            LaborTriageView()
+//        }
     }
 }
 

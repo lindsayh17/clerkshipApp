@@ -53,7 +53,7 @@ struct StudentHomeView: View {
                         
                         HomeNavCard(title: "Evaluation Form", icon: "doc.text.fill", color: .orange) {
                             if let student = currUser.user {
-                                router.push(.evalChoice(userToEval: student))
+                                router.switchRoot(.evalChoice(userToEval: student))
                             }
                         }
                         
