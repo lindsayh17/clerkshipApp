@@ -31,6 +31,7 @@ struct CreateAccountView: View {
                 try await auth.createUser(fname: firstname, lname: lastname, email: email)
                 await getNames()
                 await getCurrUser()
+                print(currentUser)
                 await getQOD()
                 auth.isLoggedIn = true
                 
@@ -146,7 +147,7 @@ struct CreateAccountView: View {
                 .padding(.leading, 10)
                 .ignoresSafeArea(.all, edges: .top)
         }
-        .navigationDestination(isPresented: $auth.isLoggedIn) { HomeView() }
+//        .navigationDestination(isPresented: $auth.isLoggedIn) { HomeView() }
     .navigationBarBackButtonHidden(true)
     }
 }

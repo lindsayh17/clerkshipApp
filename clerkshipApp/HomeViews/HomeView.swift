@@ -38,18 +38,21 @@ struct HomeView: View {
     @EnvironmentObject var router: Router
     
     var body: some View {
-        VStack {
-            // If user is admin show web dashboard
-            if currUser.user?.access == .admin {
-                AdminDashboardView()
-                
-            } else if currUser.user?.access == .preceptor {
-                PreceptorHomeView()
-                
-            } else {
-                StudentHomeView()
+        ZStack {
+            backgroundColor.ignoresSafeArea()
+            VStack {
+                // If user is admin show web dashboard
+                if currUser.user?.access == .admin {
+                    AdminDashboardView()
+                    
+                } else if currUser.user?.access == .preceptor {
+                    PreceptorHomeView()
+                    
+                } else {
+                    StudentHomeView()
+                }
+                NavTab(currView: .home)
             }
-            NavTab(currView: .home)
         }
     }
 }

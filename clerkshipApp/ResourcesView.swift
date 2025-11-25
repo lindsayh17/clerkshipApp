@@ -57,6 +57,7 @@ struct ResourcesView: View {
                         .padding(.bottom, 50)
                     }
                 }
+                NavTab(currView: .resources)
             }
         }
         .navigationDestination(isPresented: $showBreastExam) {

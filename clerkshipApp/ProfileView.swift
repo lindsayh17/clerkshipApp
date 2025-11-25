@@ -80,10 +80,10 @@ struct ProfileView: View {
                         .padding(.bottom, 50)
                     }
                 }
-                
+                NavTab(currView: .profile)
             }
         }
-    .navigationBarBackButtonHidden(true)
+        .navigationBarBackButtonHidden(true)
     }
 }
 

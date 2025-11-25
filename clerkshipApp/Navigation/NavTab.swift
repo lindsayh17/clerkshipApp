@@ -132,9 +132,9 @@ struct NavTab: View {
     @EnvironmentObject var router: Router
     @EnvironmentObject var currUser: CurrentUser
     @State var currView: Destination
-
-    private let buttonColor = Color(.purple)
-    private let backgroundColor = Color(.gray)
+    
+    private let buttonColor = Color("ButtonColor")
+    private let backgroundColor = Color("BackgroundColor")
     
     // Determine which buttons to show for each user type
     private func buttonsForUser() -> [(icon: String, selection: Destination, text: String)] {
@@ -190,7 +190,7 @@ struct NavTab: View {
             }
             .padding(.vertical, 18)
             .padding(.horizontal, 16)
-            .frame(maxWidth: UIScreen.main.bounds.width * 0.9, minHeight: 80)
+            .frame(maxWidth: UIScreen.main.bounds.width * 0.9, minHeight: 80, alignment: .bottom)
             .background(buttonColor)
             .cornerRadius(40)
             .padding(.top, 15)
@@ -219,7 +219,7 @@ struct NavBarButton: View {
             VStack(spacing: 4) {
                 // Circle icon
                 Circle()
-                    .fill(isSelected ? backgroundColor : Color.blue)
+                    .fill(isSelected ? backgroundColor : Color.white)
                     .frame(width: 50, height: 50)
                     .overlay(
                         Image(systemName: icon)
