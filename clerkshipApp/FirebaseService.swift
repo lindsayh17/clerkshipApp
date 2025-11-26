@@ -87,7 +87,7 @@ class FirebaseService: ObservableObject {
     }
     
     // function to fetch completed evaluations from firebase
-    func fetchCompletedEvals() async throws {
+    func fetchCompletedEvals(student: User) async throws {
         var fetchedEvals: [Evaluation] = []
         
         do {
@@ -115,14 +115,17 @@ class FirebaseService: ObservableObject {
                     }
                 }
                 
-                fetchedEvals.append(Evaluation(
-                    formType: formType,
-                    preceptorId: preceptorId,
-                    studentId: studentId,
-                    responses: responses,
-                    submittedAt: submittedAt,
-                    notes: notes
-                ))
+                // only fetch evals for indicated student
+                if student.id == studentId {
+                    fetchedEvals.append(Evaluation(
+                        formType: formType,
+                        preceptorId: preceptorId,
+                        studentId: studentId,
+                        responses: responses,
+                        submittedAt: submittedAt,
+                        notes: notes
+                    ))
+                }
             }
             DispatchQueue.main.async {
                 self.userEvals = fetchedEvals

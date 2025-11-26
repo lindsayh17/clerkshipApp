@@ -3,10 +3,6 @@
 
 import SwiftUI
 
-/*
- TODO: read person info from firebase
- */
-
 struct ProfileView: View {
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
@@ -34,7 +30,7 @@ struct ProfileView: View {
             
             VStack(spacing: 0) {
                 ScrollView {
-                    VStack(alignment: .leading, spacing: 30) {
+                    VStack(alignment: .leading, spacing: 20) {
                         // Profile picture
                         Image(systemName: "person.crop.circle.fill")
                             .font(.system(size: 170))
@@ -63,21 +59,35 @@ struct ProfileView: View {
                             .bold()
                         }
                         
-                        // Logout button
-                        Button(action: {
-                            signOut()
-                            
-                        }) {
-                            Text("Log Out")
-                                .foregroundColor(.white)
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(buttonColor)
-                                .cornerRadius(30)
+                        // create button so students can see their evals
+                        if let user = currUser.user {
+                            if user.access == .student {
+                                Button(action: {
+                                    // TODO: push a seeEvaluations view onto nav
+                                    // TODO: call func to fetch completed evals
+                                }) {
+                                    Text("Completed Evaluations")
+                                        .foregroundColor(.white)
+                                        .padding()
+                                        .frame(maxWidth: .infinity)
+                                        .background(.white.opacity(0.1))
+                                        .cornerRadius(30)
+                                        .font(.headline)
+                                }
+                                .padding(.horizontal, 80)
+                                .padding(.vertical, 10)
+                            }
                         }
-                        .padding(.top, 10)
-                        .padding(.horizontal, 20)
+                        
+                        // Logout button
+                        MainButtonView(
+                            title: "Log Out",
+                            color: .button,
+                            action: {
+                                signOut()
+                            })
                         .padding(.bottom, 50)
+                        .padding(.horizontal, 40)
                     }
                 }
                 NavTab(currView: .profile)
