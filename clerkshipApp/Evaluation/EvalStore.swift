@@ -5,6 +5,7 @@ import Firebase
 
 class EvalStore: ObservableObject {
     private var db = Firestore.firestore()
+    @Published var currUserEvals: [Evaluation] = []
     
     func add(evaluation: Evaluation) {
         do {
@@ -12,6 +13,10 @@ class EvalStore: ObservableObject {
         } catch let error {
           print("Error writing responses to Firestore: \(error)")
         }
+    }
+    
+    func getComplete(evaluation: Evaluation){
+        currUserEvals.append(evaluation)
     }
   
 }
