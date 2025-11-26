@@ -21,15 +21,11 @@ struct SubmittedView: View {
                 Text("Submitted!")
                     .font(.largeTitle)
                     .foregroundColor(.white)
-                
-                NavigationLink(destination: HomeView(), isActive: $goHome) {
-                    EmptyView()
-                }
 
                 Button("Return Home") {
                     goHome = true
                     router.popToRoot()
-                    
+                    router.switchRoot(.home)
                 }
                 .padding()
                 .frame(maxWidth: .infinity)
