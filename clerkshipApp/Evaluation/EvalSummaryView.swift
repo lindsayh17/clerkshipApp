@@ -23,10 +23,11 @@ struct EvalSummaryView: View {
                 if firebase.downloadSuccessful {
                     for eval in firebase.userEvals {
                         evalStore.addFetchedEvals(eval)
+                        print(eval)
                     }
                 }
             } catch {
-                print("Error fetching forms: \(error)")
+                print("Error fetching evaluations: \(error)")
             }
         }
     }
@@ -34,7 +35,17 @@ struct EvalSummaryView: View {
     var body: some View {
         ZStack {
             backgroundColor.ignoresSafeArea()
+            
+            BackButton()
+                .padding(.top, 10)
+                .padding(.leading, 10)
+                .ignoresSafeArea(.all, edges: .top)
+            
+            
         }
-        
+        .task {
+            getEvals()
+        }
+        .navigationBarBackButtonHidden(true)
     }
 }

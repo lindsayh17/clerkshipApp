@@ -64,7 +64,7 @@ struct ProfileView: View {
                             if user.access == .student {
                                 Button(action: {
                                     // push a seeEvaluations view onto nav
-                                    router.push(.seeEval(currStudent: user))
+                                    router.push(.seeEval(student: user))
                                     // TODO: call func to fetch completed evals
                                 }) {
                                     Text("Completed Evaluations")
