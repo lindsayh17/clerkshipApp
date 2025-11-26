@@ -66,7 +66,7 @@ struct EvaluationView: View {
             notes: addedNotes
         )
         
-        evalStore.add(evaluation: evaluation)
+        evalStore.addToFirestore(evaluation: evaluation)
         submitted = true
     }
     
