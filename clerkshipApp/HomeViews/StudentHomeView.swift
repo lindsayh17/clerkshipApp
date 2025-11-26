@@ -60,6 +60,9 @@ struct StudentHomeView: View {
                     }
                     .padding(.horizontal)
                     .padding(.bottom, 50)
+                    
+                    EvaluationSummaryMiniView()
+                        .padding(.horizontal)
                 }
             }
         }
