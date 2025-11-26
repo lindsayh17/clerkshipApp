@@ -39,6 +39,9 @@ struct StudentHomeView: View {
                         .padding()
                     
                     VStack(spacing: 20) {
+                        EvaluationSummaryMiniView()
+                            .padding(.horizontal)
+                        
                         HomeNavCard(title: "Quick Facts", icon: "book.fill", color: .purple) {
                             router.push(.quickFacts)
                         }
@@ -56,13 +59,10 @@ struct StudentHomeView: View {
                                 router.switchRoot(.evalChoice(userToEval: student))
                             }
                         }
-                        
                     }
                     .padding(.horizontal)
                     .padding(.bottom, 50)
                     
-                    EvaluationSummaryMiniView()
-                        .padding(.horizontal)
                 }
             }
         }
