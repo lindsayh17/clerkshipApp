@@ -9,7 +9,7 @@ struct EvaluationView: View {
     
     
     @State var addedNotes = ""
-    @State var showLabels = false
+    @State var explainAlert = false
     @State private var submitted = false
     
     @StateObject var formState: EvalFormState
@@ -119,16 +119,30 @@ struct EvaluationView: View {
                     // Student-only preceptor email field
                     if let user = currUser.user, user.access == .student {
                         VStack(alignment: .leading, spacing: 5) {
-                            Text("Preceptor Email")
-                                .foregroundColor(.white)
-                                .font(.headline)
-                            
+                            HStack {
+                                Text("Preceptor Email")
+                                    .foregroundColor(.white)
+                                    .font(.headline)
+                                if !canSubmit() {
+                                    Button {
+                                        explainAlert.toggle()
+                                    } label: {
+                                        Image(systemName: "exclamationmark.circle")
+                                            .foregroundColor(.red)
+                                            .baselineOffset(2)
+                                            .font(.system(size: 14))
+                                    }
+                                }
+                            }
                             TextField("Enter preceptor email", text: $preceptorEmail)
                                 .keyboardType(.emailAddress)
                                 .autocapitalization(.none)
                                 .padding(10)
-                                .background(Color.white)
-                                .cornerRadius(10)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .fill(Color.white)
+                                        .stroke(preceptorEmail == "" ? .red.opacity(0.5) : .white, lineWidth: 5)
+                                )
                         }
                         .padding()
                     }

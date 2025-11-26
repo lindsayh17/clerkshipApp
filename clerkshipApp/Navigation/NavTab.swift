@@ -51,7 +51,7 @@ struct NavTab: View {
                     
                 ]
             }
-        }else{
+        } else {
             return [
                 ("house", .home, "Home"),
                 ("text.document", .resources, "Docs"),
