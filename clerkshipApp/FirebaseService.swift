@@ -7,26 +7,26 @@ import FirebaseFirestore
 // import FirebaseAuth
 
 class FirebaseService: ObservableObject {
-    //    @Published private(set) var forms: [EvaluationForm]
-    //    @Published var downloadSuccessful = false
     @Published var users: [User]!
     @Published var question: QuestionOfDay!
     @Published var downloadSuccessful = false
     @Published var formDownloadSuccessful = false
     @Published var currUser: User!
     @Published var forms: [EvalForm]!
+    @Published var userEvals: [Evaluation]
     
     let formCollection = "Forms"
-    
-    // TODO: user collection values
     let userCollection = "Users"
     let qCollection = "Questions"
+    let evalCollection = "Evaluations"
+    
     var db: Firestore!
     
     init() {
         db = Firestore.firestore()
         users = []
         forms = []
+        userEvals = []
     }
     
     // function to fetch form info from firebase
@@ -77,7 +77,6 @@ class FirebaseService: ObservableObject {
             DispatchQueue.main.async {
                 self.forms = fetchedForms
                 self.formDownloadSuccessful = true
-                print("forms: ", self.forms)
             }
         } catch {
             print("Error getting forms \(error)")
@@ -86,6 +85,57 @@ class FirebaseService: ObservableObject {
             }
         }
     }
+    
+    // function to fetch completed evaluations from firebase
+    func fetchCompletedEvals() async throws {
+        var fetchedEvals: [Evaluation] = []
+        
+        do {
+            let querySnapshot = try await db.collection(evalCollection).getDocuments()
+            for document in querySnapshot.documents {
+                let data = document.data()
+                
+                // try to cast to strings otherwise return empty
+                let id = document.documentID
+                let formType = data["formType"] as? String ?? ""
+                let preceptorId = data["preceptorId"] as? String ?? ""
+                let studentId = data["studentId"] as? String ?? ""
+                let submittedAt = data["submittedAt"] as? Date ?? Date()
+                let notes = data["notes"] as? String ?? ""
+                
+                var responses: [String: String] = [:]
+                
+                
+                for (key, value) in data {
+                    guard key.starts(with: "responses"), let responseMap = value as? [String: String] else { continue }
+                    
+                    // add each eval response to the responses dict
+                    for (prompt, response) in responseMap {
+                        responses[prompt] = response
+                    }
+                }
+                
+                fetchedEvals.append(Evaluation(
+                    formType: formType,
+                    preceptorId: preceptorId,
+                    studentId: studentId,
+                    responses: responses,
+                    submittedAt: submittedAt,
+                    notes: notes
+                ))
+            }
+            DispatchQueue.main.async {
+                self.userEvals = fetchedEvals
+                self.downloadSuccessful = true
+            }
+        } catch {
+            print("Error getting Evaluations: \(error)")
+            DispatchQueue.main.async{
+                self.downloadSuccessful = false
+            }
+        }
+    }
+    
     
     // function to fetch user info from firebase
     func fetchUsers() async throws{
