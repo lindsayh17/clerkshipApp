@@ -38,6 +38,7 @@ enum Destination: Identifiable {
     case users
     case evalChoice(userToEval: User)
     case eval(formState: EvalFormState, student: User)
+    case seeEval(student: User)
         
 }
 
@@ -107,9 +108,9 @@ extension Destination {
 
         case .eval(let form, let student):
             return EvaluationView(formState: form, currStudent: student)
+        case .seeEval(let student):
+            return EvalSummaryView(currStudent: student)
         
-//        case .empty:
-//            return EmptyView()
         }
     }
 }

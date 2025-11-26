@@ -7,28 +7,47 @@
 
 import SwiftUI
 
-struct EvalSummaryView: View{
-    
+struct EvalSummaryView: View {
     @EnvironmentObject var firebase: FirebaseService
-    @EnvironmentObject var currentUser: CurrentUser
+    @EnvironmentObject var currUser: CurrentUser
     @EnvironmentObject var evalStore: EvalStore
+    @EnvironmentObject var router: Router
     
-    func getEvals(){
+    var currStudent: User
+    
+    private let backgroundColor = Color("BackgroundColor")
+    
+    // download evaluations from firebase
+    func getEvals() {
         Task {
             do {
-                if let u = currentUser.user{
-                    try await firebase.fetchCompletedEvals(student: u)
-                    for eval in firebase.userEvals{
-                        evalStore.getComplete(evaluation: eval)
+                try await firebase.fetchCompletedEvals(student: currStudent)
+                if firebase.downloadSuccessful {
+                    for eval in firebase.userEvals {
+                        evalStore.addFetchedEvals(eval)
+                        print(eval)
                     }
                 }
             } catch {
-                print("Error fetching forms")
+                print("Error fetching evaluations: \(error)")
             }
         }
     }
-    
-    var body: some View{
-        
+            
+    var body: some View {
+        ZStack {
+            backgroundColor.ignoresSafeArea()
+            
+            BackButton()
+                .padding(.top, 10)
+                .padding(.leading, 10)
+                .ignoresSafeArea(.all, edges: .top)
+            
+            
+        }
+        .task {
+            getEvals()
+        }
+        .navigationBarBackButtonHidden(true)
     }
 }
