@@ -26,9 +26,8 @@ struct NavTab: View {
                 return [
                     ("house", .home, "Home"),
                     ("text.document", .resources, "Docs"),
+                    ("pencil", .evalChoice(userToEval: u), "Eval"),
                     ("person.crop.circle.fill", .profile, "Profile"),
-                    // TODO: these should not be unbound w/ the !
-                    ("pencil", .evalChoice(userToEval: u), "Eval")
                 ]
             case .preceptor:
                 return [
@@ -47,18 +46,17 @@ struct NavTab: View {
                 return [
                     ("house", .home, "Home"),
                     ("text.document", .resources, "Docs"),
+                    ("pencil", .evalChoice(userToEval: u), "Eval"),
                     ("person.crop.circle.fill", .profile, "Profile"),
-                    // TODO: these should not be unbound w/ the !
-                    ("pencil", .evalChoice(userToEval: u), "Eval")
+                    
                 ]
             }
         }else{
             return [
                 ("house", .home, "Home"),
                 ("text.document", .resources, "Docs"),
-                ("person.crop.circle.fill", .profile, "Profile"),
-                // TODO: these should not be unbound w/ the !
-                ("pencil", .evalChoice(userToEval: User(firstName: "Student", lastName: "Name", email: "Student.Name@uvm.edu")), "Eval")
+                ("pencil", .evalChoice(userToEval: User(firstName: "Student", lastName: "Name", email: "Student.Name@uvm.edu")), "Eval"),
+                ("person.crop.circle.fill", .profile, "Profile")
             ]
         }
     }
@@ -79,13 +77,14 @@ struct NavTab: View {
                     
                     if index < buttons.count - 1 {
                         // Adjust spacing between buttons
-                        Spacer().frame(width: buttons.count == 4 ? 32 : 40)
+                        Spacer().frame(width: buttons.count == 4 ? 40 : 54)
                     }
                 }
             }
             .padding(.vertical, 18)
             .padding(.horizontal, 16)
-            .frame(maxWidth: UIScreen.main.bounds.width * 0.9, minHeight: 80, alignment: .bottom)
+            
+            .frame(maxWidth: UIScreen.main.bounds.width * 0.9, minHeight: 60, alignment: .bottom)
             .background(buttonColor)
             .cornerRadius(40)
             .padding(.top, 15)
@@ -115,7 +114,7 @@ struct NavBarButton: View {
                 // Circle icon
                 Circle()
                     .fill(isSelected ? backgroundColor : Color.white)
-                    .frame(width: 50, height: 50)
+                    .frame(width: 30, height: 30)
                     .overlay(
                         Image(systemName: icon)
                             .foregroundColor(isSelected ? Color.white : buttonColor)

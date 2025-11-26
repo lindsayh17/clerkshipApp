@@ -40,7 +40,7 @@ struct HomeView: View {
     var body: some View {
         ZStack {
             backgroundColor.ignoresSafeArea()
-            VStack {
+            VStack(spacing: 0) {
                 // If user is admin show web dashboard
                 if currUser.user?.access == .admin {
                     AdminDashboardView()
