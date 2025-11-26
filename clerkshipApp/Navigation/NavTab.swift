@@ -20,35 +20,45 @@ struct NavTab: View {
     
     // Determine which buttons to show for each user type
     private func buttonsForUser() -> [(icon: String, selection: Destination, text: String)] {
-        switch currUser.user?.access {
-        case .student:
+        if let u = currUser.user{
+            switch u.access {
+            case .student:
+                return [
+                    ("house", .home, "Home"),
+                    ("text.document", .resources, "Docs"),
+                    ("person.crop.circle.fill", .profile, "Profile"),
+                    // TODO: these should not be unbound w/ the !
+                    ("pencil", .evalChoice(userToEval: u), "Eval")
+                ]
+            case .preceptor:
+                return [
+                    ("house", .home, "Home"),
+                    ("magnifyingglass", .search, "Search"),
+                    ("person.crop.circle.fill", .profile, "Profile")
+                ]
+            case .admin:
+                return [
+                    ("house", .home, "Home"),
+                    ("magnifyingglass", .users, "Users"),
+                    ("person.crop.circle.fill", .profile, "Profile")
+                ]
+                // defaults to a student
+            default:
+                return [
+                    ("house", .home, "Home"),
+                    ("text.document", .resources, "Docs"),
+                    ("person.crop.circle.fill", .profile, "Profile"),
+                    // TODO: these should not be unbound w/ the !
+                    ("pencil", .evalChoice(userToEval: u), "Eval")
+                ]
+            }
+        }else{
             return [
                 ("house", .home, "Home"),
                 ("text.document", .resources, "Docs"),
                 ("person.crop.circle.fill", .profile, "Profile"),
                 // TODO: these should not be unbound w/ the !
-                ("pencil", .evalChoice(userToEval: currUser.user!), "Eval")
-            ]
-        case .preceptor:
-            return [
-                ("house", .home, "Home"),
-                ("magnifyingglass", .search, "Search"),
-                ("person.crop.circle.fill", .profile, "Profile")
-            ]
-        case .admin:
-            return [
-                ("house", .home, "Home"),
-                ("magnifyingglass", .users, "Users"),
-                ("person.crop.circle.fill", .profile, "Profile")
-            ]
-        // defaults to a student
-        default:
-            return [
-                ("house", .home, "Home"),
-                ("text.document", .resources, "Docs"),
-                ("person.crop.circle.fill", .profile, "Profile"),
-                // TODO: these should not be unbound w/ the !
-                ("pencil", .evalChoice(userToEval: currUser.user!), "Eval")
+                ("pencil", .evalChoice(userToEval: User(firstName: "Student", lastName: "Name", email: "Student.Name@uvm.edu")), "Eval")
             ]
         }
     }
