@@ -49,11 +49,14 @@ struct EvaluationView: View {
     
     // Submit form data to Firestore
     func submitForm() {
-        var responseDict: [String: String] = [:]
+        var responseDict: [String: [String: String]] = [:]
         for category in formState.data.categories {
             for question in category.questions {
                 let response = formState.responses[question.question] ?? .none
-                responseDict[question.question] = infoTitle(for: response)
+                if responseDict[category.category] == nil{
+                    responseDict[category.category] = [:]
+                }
+                responseDict[category.category]?[question.question] = infoTitle(for: response)
             }
         }
         

@@ -103,15 +103,23 @@ class FirebaseService: ObservableObject {
                 let submittedAt = data["submittedAt"] as? Date ?? Date()
                 let notes = data["notes"] as? String ?? ""
                 
-                var responses: [String: String] = [:]
+                var responses: [String: [String: String]] = [:]
                 
                 
                 for (key, value) in data {
-                    guard key.starts(with: "responses"), let responseMap = value as? [String: String] else { continue }
+                    guard key.starts(with: "responses"), let categoryData = value as? [String: [String: String]] else { continue }
                     
                     // add each eval response to the responses dict
-                    for (prompt, response) in responseMap {
-                        responses[prompt] = response
+                    for (category, responseMap) in categoryData {
+                        // If the category is not already in responses, initialize it
+                        if responses[category] == nil {
+                            responses[category] = [:]
+                        }
+                        
+                        // Add responses within that category
+                        for (question, response) in responseMap {
+                            responses[category]?[question] = response
+                        }
                     }
                 }
                 
