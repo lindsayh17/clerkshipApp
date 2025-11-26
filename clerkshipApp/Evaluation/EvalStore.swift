@@ -20,5 +20,41 @@ class EvalStore: ObservableObject {
     func addFetchedEvals(_ eval: Evaluation) {
         currUserEvals.append(eval)
     }
+    
+    // Get score values for the each response
+    func scoreValue(for response: String) -> Double? {
+        switch response.lowercased() {
+        case "novice": return 1
+        case "advanced": return 3
+        case "expert": return 5
+        case "n/a": return nil
+        default: return nil
+        }
+    }
+    
+    func averageScores() -> [String: Double] {
+        var categoryTotals: [String: Double] = [:]
+        var categoryCounts: [String: Int] = [:]
+        
+        for eval in currUserEvals {
+            for (category, questions) in eval.responses {
+                for (_, response) in questions {
+                    if let score = scoreValue(for: response) {
+                        categoryTotals[category, default: 0] += score
+                        categoryCounts[category, default: 0] += 1
+                    }
+                }
+            }
+        }
+        
+        var averages: [String: Double] = [:]
+        for (category, total) in categoryTotals {
+            if let count = categoryCounts[category], count > 0 {
+                averages[category] = total / Double(count)
+            }
+        }
+        
+        return averages
+    }
       
 }

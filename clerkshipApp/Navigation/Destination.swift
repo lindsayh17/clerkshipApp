@@ -108,7 +108,7 @@ extension Destination {
 
         case .eval(let form, let student):
             return EvaluationView(formState: form, currStudent: student)
-        case .seeEval(let student):
+        case .seeEval:
             return EvalSummaryView()
         
         }

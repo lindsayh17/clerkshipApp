@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Charts
 
 struct EvalSummaryView: View {
     @EnvironmentObject var firebase: FirebaseService
@@ -19,11 +20,13 @@ struct EvalSummaryView: View {
     func getEvals() {
         Task {
             do {
-                try await firebase.fetchCompletedEvals(student: currUser.user!)
-                if firebase.downloadSuccessful {
-                    for eval in firebase.userEvals {
-                        evalStore.addFetchedEvals(eval)
-                        print(eval)
+                if let u = currUser.user{
+                    try await firebase.fetchCompletedEvals(student: u)
+                    if firebase.downloadSuccessful {
+                        for eval in firebase.userEvals {
+                            evalStore.addFetchedEvals(eval)
+                            print(eval)
+                        }
                     }
                 }
             } catch {
@@ -42,6 +45,24 @@ struct EvalSummaryView: View {
                 .ignoresSafeArea(.all, edges: .top)
             
             
+            let averages = evalStore.averageScores()
+
+            Chart{
+                ForEach(Array(averages), id: \.key) { item in
+                    BarMark(
+                        x: .value("Category", item.key), // Category name (key)
+                        y: .value("Average Score", item.value) // Average score (value)
+                    )
+                    .foregroundStyle(Color.green.gradient)
+                    .annotation(position: .top) {
+                        Text(String(format: "%.2f", item.value))
+                            .font(.caption)
+                            .foregroundColor(.white)
+                    }
+                }
+            }
+            
+            
         }
         .task {
             getEvals()
@@ -54,4 +75,5 @@ struct EvalSummaryView: View {
     EvalSummaryView()
         .environmentObject(EvalStore())
         .environmentObject(CurrentUser())
+        .environmentObject(FirebaseService())
 }
