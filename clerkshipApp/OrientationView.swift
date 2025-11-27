@@ -12,6 +12,9 @@ struct OrientationView: View {
     @EnvironmentObject var currUser: CurrentUser
     @EnvironmentObject var router: Router
     
+    // State to track which section is open
+    @State private var openSection: String? = nil
+    
     var body: some View {
         ZStack(alignment: .topLeading) {
             backgroundColor.ignoresSafeArea()
@@ -34,65 +37,81 @@ struct OrientationView: View {
                         .padding(.horizontal, 30)
                         .padding(.top, 10)
                     
-                    // Sections
-                    VStack(spacing: 25) {
-                        // Orientation Basics
-                        DisclosureGroup("Orientation Basics") {
-                            VStack(spacing: 15) {
-                                MainButtonView(title: "Schedule", color: buttonColor) {
-                                    router.push(.schedule)
-                                }
-                                MainButtonView(title: "Locations", color: buttonColor) {
-                                    router.push(.locations)
-                                }
+                    // Sections with Quick-Facts-style dropdowns
+                    VStack(spacing: 20) {
+                        section(title: "Orientation Basics") {
+                            MainButtonView(title: "Schedule", color: buttonColor) {
+                                router.push(.schedule)
                             }
-                            .padding(.top, 5)
+                            MainButtonView(title: "Locations", color: buttonColor) {
+                                router.push(.locations)
+                            }
                         }
-                        .accentColor(.white)
-                        .font(.headline)
                         
-                        // Clinical Skills / Procedures
-                        DisclosureGroup("Clinical Skills / Procedures") {
-                            VStack(spacing: 15) {
-                                MainButtonView(title: "Intrapartum FHR Interpretation", color: buttonColor)
-                                MainButtonView(title: "Family Planning Session", color: buttonColor) {
-                                    router.push(.familyPlan)
-                                }
-                                MainButtonView(title: "Trauma Informed Care and Labor Support", color: buttonColor) {
-                                    router.push(.trauma)
-                                }
-                                MainButtonView(title: "Surgical Instruments", color: buttonColor) {
-                                    router.push(.surgicalInst)
-                                }
+                        section(title: "Clinical Skills / Procedures") {
+                            MainButtonView(title: "Intrapartum FHR Interpretation", color: buttonColor)
+                            MainButtonView(title: "Family Planning Session", color: buttonColor) {
+                                router.push(.familyPlan)
                             }
-                            .padding(.top, 5)
+                            MainButtonView(title: "Trauma Informed Care and Labor Support", color: buttonColor) {
+                                router.push(.trauma)
+                            }
+                            MainButtonView(title: "Surgical Instruments", color: buttonColor) {
+                                router.push(.surgicalInst)
+                            }
                         }
-                        .accentColor(.white)
-                        .font(.headline)
                         
-                        // Systems / Tools
-                        DisclosureGroup("Systems / Tools") {
-                            VStack(spacing: 15) {
-                                MainButtonView(title: "EPIC Orientation", color: buttonColor)
-                            }
-                            .padding(.top, 5)
+                        section(title: "Systems / Tools") {
+                            MainButtonView(title: "EPIC Orientation", color: buttonColor)
                         }
-                        .accentColor(.white)
-                        .font(.headline)
                     }
                     .padding(.horizontal, 20)
                     .padding(.bottom, 30)
                 }
                 .padding(.top, 10)
             }
-            
-            // Back button
-            BackButton()
-                .padding(.top, 10)
-                .padding(.leading, 10)
-                .ignoresSafeArea(.all, edges: .top)
         }
-        .navigationBarBackButtonHidden(true)
+        // Show system navigation bar back button
+        .navigationBarBackButtonHidden(false)
+        .navigationTitle("Orientation")
+        .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    // MARK: - Section Helper
+    @ViewBuilder
+    private func section<Content: View>(title: String, @ViewBuilder content: @escaping () -> Content) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            // Header Row
+            HStack {
+                Text(title)
+                    .font(.headline)
+                    .foregroundColor(.white)
+                
+                Spacer()
+                
+                Image(systemName: "chevron.right")
+                    .foregroundColor(.white.opacity(0.7))
+                    .rotationEffect(.degrees(openSection == title ? 90 : 0))
+                    .animation(.easeInOut, value: openSection == title)
+            }
+            .padding()
+            .background(Color.white.opacity(0.1))
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .onTapGesture {
+                withAnimation(.spring()) {
+                    openSection = (openSection == title ? nil : title)
+                }
+            }
+            
+            // Expanded content
+            if openSection == title {
+                VStack(spacing: 15) {
+                    content()
+                }
+                .padding(.top, 5)
+                .transition(.opacity.combined(with: .move(edge: .top)))
+            }
+        }
     }
 }
 
@@ -104,3 +123,4 @@ struct OrientationView: View {
     .environmentObject(FirebaseService())
     .environmentObject(CurrentUser())
 }
+
