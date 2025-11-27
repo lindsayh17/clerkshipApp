@@ -13,8 +13,8 @@ struct EvaluationSummaryMiniView: View {
     @EnvironmentObject var firebase: FirebaseService
     
     // Mocked data for now — you can replace this with Firestore values later
-    let avgScore: Double = 4.6
-    var totalEvals: Int = 12
+    @State var avgScore: Double = 4.6
+    @State var totalEvals: Int = 12
     
     func getEvals() {
         Task {
@@ -42,13 +42,7 @@ struct EvaluationSummaryMiniView: View {
             
             HStack {
                 SummaryStat(title: "Average Score", value: String(format: "%.1f", avgScore))
-                if let u = currUser.user {
-                    // TODO: get this to work w/o multiplying
-                    // SummaryStat(title: "Evaluations", value: "\(Set(evalStore.currUserEvals).count)")
-                    SummaryStat(title: "Evaluations", value: "\(totalEvals)")
-                } else {
-                    SummaryStat(title: "Evaluations", value: "\(totalEvals)")
-                }
+                SummaryStat(title: "Evaluations", value: "\(evalStore.getNumEvals())")
             }
         }
         .task {

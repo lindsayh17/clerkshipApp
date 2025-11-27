@@ -18,19 +18,27 @@ class EvalStore: ObservableObject {
 
     // add completed evals from firestore to list
     func addFetchedEvals(_ eval: Evaluation) {
-        currUserEvals.insert(eval)
+        if !(currUserEvals.contains(where: {checkEquiv(lhs: $0, rhs: eval)})) {
+            currUserEvals.insert(eval)
+        }
     }
     
-    func getEvalsForUser(user: User) -> Set<Evaluation> {
-        var evals: Set<Evaluation> = []
-        
-        for e in currUserEvals {
-            evals.insert(e)
-        }
-        return evals
-    }
     func getNumEvals() -> Int {
         return currUserEvals.count
+    }
+
+    func checkEquiv(lhs: Evaluation, rhs: Evaluation) -> Bool {
+        if (lhs.formType == rhs.formType &&
+            lhs.responses == rhs.responses &&
+            lhs.studentId == rhs.studentId &&
+            lhs.preceptorId == rhs.preceptorId &&
+            lhs.submittedAt == rhs.submittedAt
+        ) {
+            return true
+        } else {
+            return false
+        }
+        
     }
 
     

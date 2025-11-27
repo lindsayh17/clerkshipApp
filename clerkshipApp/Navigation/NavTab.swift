@@ -114,7 +114,7 @@ struct NavBarButton: View {
                 // Circle icon
                 Circle()
                     .fill(isSelected ? backgroundColor : Color.white)
-                    .frame(width: 30, height: 30)
+                    .frame(width: 35, height: 35)
                     .overlay(
                         Image(systemName: icon)
                             .foregroundColor(isSelected ? Color.white : buttonColor)
