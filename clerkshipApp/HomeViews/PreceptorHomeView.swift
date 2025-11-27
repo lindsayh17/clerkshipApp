@@ -29,7 +29,7 @@ struct PreceptorHomeView: View {
                     }
                     .padding(.horizontal)
                     .padding(.top, 40)
-                    .padding(.bottom, 120)
+                    .padding(.bottom, 160)
                     
                     // Centered graphic
                     Image(systemName: "person.crop.circle.fill.badge.checkmark")
@@ -37,7 +37,6 @@ struct PreceptorHomeView: View {
                         .scaledToFit()
                         .frame(width: 180, height: 180)
                         .foregroundColor(.white.opacity(0.3))
-                        .frame(maxWidth: .infinity) // centers horizontally
                 }
                 .padding(.bottom, 40)
             }
