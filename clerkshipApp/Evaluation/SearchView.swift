@@ -1,5 +1,5 @@
-//  SearchView.swift
-//  clerkshipApp
+// SearchView.swift
+// clerkshipApp
 
 import SwiftUI
 
@@ -47,13 +47,18 @@ struct SearchView: View {
         namesByLetter = [:]
         for u in userStore.allUsers {
             guard u.access == .student else { continue } // Only students
-            let firstChar = String(u.firstName.prefix(1)).uppercased()
+            let firstChar = String(u.lastName.prefix(1)).uppercased()
             namesByLetter[firstChar, default: []].append(u)
         }
 
-        // Sort students in each section by last name
+        // Sort students in each section by last name, then first name
         for key in namesByLetter.keys {
-            namesByLetter[key]?.sort { $0.lastName < $1.lastName }
+            namesByLetter[key]?.sort {
+                if $0.lastName == $1.lastName {
+                    return $0.firstName < $1.firstName
+                }
+                return $0.lastName < $1.lastName
+            }
         }
     }
 
@@ -136,7 +141,7 @@ struct SearchView: View {
     }
 }
 
-// MARK: - NamesView
+// NamesView
 struct NamesView: View {
     var filteredNames: [String: [User]]
     @Binding var selectedUser: User?
@@ -187,3 +192,4 @@ struct NamesView: View {
     .environmentObject(CurrentUser())
     .environmentObject(Router(root: .home))
 }
+
