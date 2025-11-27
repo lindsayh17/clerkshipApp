@@ -39,17 +39,17 @@ struct FormChoiceView: View {
         ZStack (alignment: .topLeading){
             backgroundColor.ignoresSafeArea()
             VStack {
+                // Screen Label
+                Text("Evaluation\nType")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                    .padding(.top, 10)
+                    .padding(.bottom, 20)
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: .infinity)
+                
                 ScrollView {
-                    // Screen Label
-                    Text("Evaluation\nType")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                        .padding(.top, 30)
-                        .padding(.bottom, 30)
-                        .multilineTextAlignment(.center)
-                        .frame(maxWidth: .infinity)
-                    
                     ForEach(firebase.forms) { form in
                         MainButtonView(title: form.type, color: buttonColor, action: {
                             router.push(.eval(formState: EvalFormState(data: form), student: currStudent))

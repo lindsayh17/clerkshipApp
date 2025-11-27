@@ -138,10 +138,6 @@ struct LoginView: View {
                 .padding(.leading, 10)
                 .ignoresSafeArea(.all, edges: .top)
         }
-        // Navigate to HomeView on login
-//        .navigationDestination(isPresented: $auth.isLoggedIn) {
-//            HomeView()
-//        }
         .navigationBarBackButtonHidden(true)
     }
 }

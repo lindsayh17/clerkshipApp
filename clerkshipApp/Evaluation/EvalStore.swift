@@ -5,7 +5,7 @@ import Firebase
 
 class EvalStore: ObservableObject {
     private var db = Firestore.firestore()
-    @Published var currUserEvals: [Evaluation] = []
+    @Published var currUserEvals: Set<Evaluation> = []
     
     // adds completed eval to firestore
     func addToFirestore(evaluation: Evaluation) {
@@ -18,8 +18,21 @@ class EvalStore: ObservableObject {
 
     // add completed evals from firestore to list
     func addFetchedEvals(_ eval: Evaluation) {
-        currUserEvals.append(eval)
+        currUserEvals.insert(eval)
     }
+    
+    func getEvalsForUser(user: User) -> Set<Evaluation> {
+        var evals: Set<Evaluation> = []
+        
+        for e in currUserEvals {
+            evals.insert(e)
+        }
+        return evals
+    }
+    func getNumEvals() -> Int {
+        return currUserEvals.count
+    }
+
     
     // Get score values for the each response
     func scoreValue(for response: String) -> Double? {

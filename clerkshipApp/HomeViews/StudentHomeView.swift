@@ -26,21 +26,30 @@ struct StudentHomeView: View {
             backgroundColor.ignoresSafeArea()
             VStack(alignment: .leading, spacing: 4){
                 Text("Welcome, \(currUser.user?.firstName ?? "Student")")
-                    .font(.title3)
+                    .font(.title2)
                     .fontWeight(.bold)
                     .foregroundColor(.white)
                     .padding()
                 
                 
                 ScrollView {
+                    Button {
+                        router.push(.seeEval)
+                    } label: {
+                        EvaluationSummaryMiniView()
+                            .padding(.horizontal)
+                    }
                     
                     // Daily Question
                     QODView()
                         .padding()
                     
                     VStack(spacing: 20) {
-                        EvaluationSummaryMiniView()
-                            .padding(.horizontal)
+                        HomeNavCard(title: "Evaluation Form", icon: "doc.text.fill", color: .orange) {
+                            if let student = currUser.user {
+                                router.switchRoot(.evalChoice(userToEval: student))
+                            }
+                        }
                         
                         HomeNavCard(title: "Quick Facts", icon: "book.fill", color: .purple) {
                             router.push(.quickFacts)
@@ -54,11 +63,6 @@ struct StudentHomeView: View {
                             router.push(.requirements)
                         }
                         
-                        HomeNavCard(title: "Evaluation Form", icon: "doc.text.fill", color: .orange) {
-                            if let student = currUser.user {
-                                router.switchRoot(.evalChoice(userToEval: student))
-                            }
-                        }
                     }
                     .padding(.horizontal)
                     .padding(.bottom, 50)

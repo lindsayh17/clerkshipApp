@@ -102,25 +102,31 @@ struct CreateAccountView: View {
                 VStack {
                     TextField("First name...", text: $firstname)
                         .padding()
-                        .cornerRadius(10)
                         .background(Color.gray.opacity(0.4))
+                        .cornerRadius(10)
+                        .textInputAutocapitalization(.never)
+                        .foregroundColor(.black)
                     
                     TextField("Last name...", text: $lastname)
                         .padding()
-                        .cornerRadius(10)
                         .background(Color.gray.opacity(0.4))
+                        .cornerRadius(10)
+                        .textInputAutocapitalization(.never)
+                        .foregroundColor(.black)
                     
                     TextField("Email...", text: $email)
                         .padding()
-                        .cornerRadius(10)
                         .background(Color.gray.opacity(0.4))
+                        .cornerRadius(10)
                         .textInputAutocapitalization(.never)
+                        .foregroundColor(.black)
                     
                     SecureField("Password...", text: $password)
                         .padding()
-                        .cornerRadius(10)
                         .background(Color.gray.opacity(0.4))
+                        .cornerRadius(10)
                         .textInputAutocapitalization(.never)
+                        .foregroundColor(.black)
                     
                     if let errorMessage = auth.errorMessage {
                         Text(errorMessage)
@@ -136,7 +142,7 @@ struct CreateAccountView: View {
                         foregroundColor: .white,
                         backgroundColor: backgroundColor,
                         disabled: !checkComplete()
-                    )
+                    ).padding(.vertical, 10)
                 }
                 .padding()
             }

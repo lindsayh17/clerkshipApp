@@ -17,6 +17,7 @@ enum Destination: Identifiable {
     case home
     case profile
     case quickFacts
+    case settings
     
     // orientation
     case orientation
@@ -38,7 +39,7 @@ enum Destination: Identifiable {
     case users
     case evalChoice(userToEval: User)
     case eval(formState: EvalFormState, student: User)
-    case seeEval(student: User)
+    case seeEval
         
 }
 
@@ -73,6 +74,8 @@ extension Destination {
             return ProfileView()
         case .quickFacts:
             return QuickFactsView()
+        case .settings:
+            return EmptyView()
             
         case .orientation:
             return OrientationView()

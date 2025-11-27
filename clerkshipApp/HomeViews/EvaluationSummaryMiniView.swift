@@ -8,11 +8,31 @@
 import SwiftUI
 
 struct EvaluationSummaryMiniView: View {
+    @EnvironmentObject var evalStore: EvalStore
     @EnvironmentObject var currUser: CurrentUser
+    @EnvironmentObject var firebase: FirebaseService
     
     // Mocked data for now — you can replace this with Firestore values later
     let avgScore: Double = 4.6
-    let totalEvals: Int = 12
+    var totalEvals: Int = 12
+    
+    func getEvals() {
+        Task {
+            do {
+                if let u = currUser.user{
+                    try await firebase.fetchCompletedEvals(student: u)
+                    if firebase.downloadSuccessful {
+                        for eval in firebase.userEvals {
+                            evalStore.addFetchedEvals(eval)
+                            print(eval)
+                        }
+                    }
+                }
+            } catch {
+                print("Error fetching evaluations: \(error)")
+            }
+        }
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -22,8 +42,17 @@ struct EvaluationSummaryMiniView: View {
             
             HStack {
                 SummaryStat(title: "Average Score", value: String(format: "%.1f", avgScore))
-                SummaryStat(title: "Evaluations", value: "\(totalEvals)")
+                if let u = currUser.user {
+                    // TODO: get this to work w/o multiplying
+                    // SummaryStat(title: "Evaluations", value: "\(Set(evalStore.currUserEvals).count)")
+                    SummaryStat(title: "Evaluations", value: "\(totalEvals)")
+                } else {
+                    SummaryStat(title: "Evaluations", value: "\(totalEvals)")
+                }
             }
+        }
+        .task {
+            getEvals()
         }
         .padding()
         .background(Color.white.opacity(0.08))
