@@ -43,16 +43,15 @@ struct SearchView: View {
         }
     }
 
-    // Build namesByLetter: only students, sorted by last name
+    // Build namesByLetter: only students, sorted by last name then first name
     func namesList() {
-        namesByLetter = [:] // Reset
+        namesByLetter = [:]
         for u in userStore.allUsers {
-            guard u.access == .student else { continue } // Only students
+            guard u.access == .student else { continue }
             let firstChar = String(u.lastName.prefix(1)).uppercased()
             namesByLetter[firstChar, default: []].append(u)
         }
 
-        // Sort each letter section by last name, then first name
         for key in namesByLetter.keys {
             namesByLetter[key]?.sort {
                 if $0.lastName == $1.lastName {
@@ -63,13 +62,12 @@ struct SearchView: View {
         }
     }
 
-    // Body
     var body: some View {
         ZStack(alignment: .topLeading) {
             backgroundColor.ignoresSafeArea()
 
             VStack(spacing: 0) {
-                // Search Bar (pushed up slightly)
+                // Search Bar
                 HStack {
                     Image(systemName: "magnifyingglass")
                         .foregroundColor(.white.opacity(0.7))
@@ -82,21 +80,36 @@ struct SearchView: View {
                 .background(buttonColor.opacity(0.2))
                 .cornerRadius(10)
                 .padding(.horizontal, 16)
-                .padding(.top, 40) // slightly higher
+                .padding(.top, 40)
 
-                // Names list
-                NamesView(
-                    filteredNames: filteredNames,
-                    selectedUser: $selectedUser,
-                    showEvalForm: $hasChosenStudent
-                )
-                .environmentObject(router)
-                .environment(\.defaultMinListRowHeight, 28)
-                .listSectionSpacing(.compact)
-                .scrollContentBackground(.hidden)
-                .background(backgroundColor)
-                .listStyle(.insetGrouped)
-                .foregroundColor(.white)
+                // Names list with alphabet index
+                ZStack(alignment: .trailing) {
+                    NamesView(
+                        filteredNames: filteredNames,
+                        selectedUser: $selectedUser,
+                        showEvalForm: $hasChosenStudent,
+                        backgroundColor: backgroundColor
+                    )
+                    .environmentObject(router)
+                    .environment(\.defaultMinListRowHeight, 28)
+                    .listSectionSpacing(.compact)
+                    .scrollContentBackground(.hidden)
+                    .background(backgroundColor)
+                    .listStyle(.insetGrouped)
+                    .foregroundColor(.white)
+
+                    // Alphabet index (visual only)
+                    VStack(spacing: 6) {
+                        ForEach(alphabet, id: \.self) { letter in
+                            Text(String(letter))
+                                .font(.caption2)
+                                .fontWeight(.medium)
+                                .foregroundColor(buttonColor)
+                                .padding(.horizontal, 2)
+                        }
+                    }
+                    .padding(.trailing, 6)
+                }
 
                 // Nav tab only if current user is NOT student
                 if currUser.user?.access != .student {
@@ -112,7 +125,6 @@ struct SearchView: View {
                     .ignoresSafeArea(.all, edges: .top)
             }
         }
-        // Build the names list whenever users load
         .task { namesList() }
         .onChange(of: userStore.allUsers) { _ in namesList() }
         .navigationBarBackButtonHidden(true)
@@ -122,13 +134,12 @@ struct SearchView: View {
 // NamesView
 struct NamesView: View {
     var filteredNames: [String: [User]]
-    private let backgroundColor = Color("BackgroundColor")
-    private let buttonColor = Color("ButtonColor")
-
     @Binding var selectedUser: User?
     @Binding var showEvalForm: Bool
+    var backgroundColor: Color
 
     @EnvironmentObject var router: Router
+    private let buttonColor = Color("ButtonColor")
 
     var body: some View {
         List {
@@ -151,10 +162,9 @@ struct NamesView: View {
                             }
                             .contentShape(Rectangle())
                             .padding(.vertical, 8)
-                            .background(backgroundColor.opacity(0.8))
                         }
+                        .listRowBackground(backgroundColor)
                         .listRowInsets(EdgeInsets(top: 1, leading: 16, bottom: 1, trailing: 10))
-                        .listRowBackground(backgroundColor.opacity(0.8))
                     }
                 }
             }
