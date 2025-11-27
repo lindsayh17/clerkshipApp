@@ -44,7 +44,11 @@ struct SearchView: View {
     }
     
     func namesList(){
+        namesByLetter = [:]   // reset in case SearchView reloads
+        
         for u in userStore.allUsers{
+            guard u.access == .student else { continue }   // Only include students
+            
             let firstChar = String(u.firstName.prefix(1)).uppercased()
             // only add new names (avoid duplication)
             if !namesByLetter[firstChar, default: []].contains(where: { $0.id == u.id }) {
