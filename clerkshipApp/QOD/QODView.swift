@@ -17,7 +17,6 @@ struct QODView: View {
                         .foregroundColor(.white)
                         .font(.title3)
                         .fontWeight(.semibold)
-                        .bold()
                 Button(action: {
                         withAnimation {
                             // Show answer

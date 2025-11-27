@@ -46,7 +46,7 @@ struct EvalSummaryView: View {
             
             
             let averages = evalStore.averageScores()
-
+            
             Chart{
                 ForEach(Array(averages), id: \.key) { item in
                     BarMark(
@@ -63,9 +63,6 @@ struct EvalSummaryView: View {
             }
             
             
-        }
-        .task {
-            getEvals()
         }
         .navigationBarBackButtonHidden(true)
     }

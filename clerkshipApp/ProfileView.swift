@@ -64,7 +64,7 @@ struct ProfileView: View {
                             if user.access == .student {
                                 Button(action: {
                                     // push a seeEvaluations view onto nav
-                                    router.push(.seeEval(student: user))
+                                    router.push(.seeEval)
                                 }) {
                                     Text("Completed Evaluations")
                                         .foregroundColor(.white)

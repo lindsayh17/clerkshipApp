@@ -43,7 +43,8 @@ struct EvaluationSummaryMiniView: View {
             HStack {
                 SummaryStat(title: "Average Score", value: String(format: "%.1f", avgScore))
                 if let u = currUser.user {
-                    // TODO: get this to be evalStore.getNumEvals() w/o multiplying
+                    // TODO: get this to work w/o multiplying
+                    // SummaryStat(title: "Evaluations", value: "\(Set(evalStore.currUserEvals).count)")
                     SummaryStat(title: "Evaluations", value: "\(totalEvals)")
                 } else {
                     SummaryStat(title: "Evaluations", value: "\(totalEvals)")
