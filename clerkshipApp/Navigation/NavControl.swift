@@ -1,6 +1,6 @@
 //  NavControl.swift
 //  clerkshipApp
-//
+
 import SwiftUI
 
 class NavControl: ObservableObject{

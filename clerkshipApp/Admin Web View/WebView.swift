@@ -1,7 +1,6 @@
 //  WebView.swift
 //  clerkshipApp
 
-
 import SwiftUI
 import WebKit
 
@@ -17,4 +16,3 @@ struct WebView: UIViewRepresentable {
         uiView.load(request)
     }
 }
-

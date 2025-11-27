@@ -1,7 +1,6 @@
 //  ClinicalReasoningView.swift
 //  clerkshipApp
 
-
 import SwiftUI
 
 struct ClinicalReasoningView: View {
@@ -196,6 +195,3 @@ struct ClinicalReasoningView: View {
     .environmentObject(CurrentUser())
     .environmentObject(AuthService())
 }
-
-
-

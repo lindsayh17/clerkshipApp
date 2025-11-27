@@ -1,7 +1,6 @@
 //  clerkshipAppApp.swift
 //  clerkshipApp
 
-
 import SwiftUI
 import FirebaseCore
 

@@ -1,7 +1,5 @@
-//
 //  StudentHomeView.swift
 //  clerkshipApp
-//
 
 import SwiftUI
 

@@ -1,8 +1,6 @@
 //  SubmittedView.swift
 //  clerkshipApp
 
-// TODO: make submitted view nicer, and have back button go to the home page, not back to eval
-
 import SwiftUI
 
 struct SubmittedView: View {
@@ -52,4 +50,3 @@ struct SubmittedView: View {
     .environmentObject(CurrentUser())
     .environmentObject(AuthService())
 }
-

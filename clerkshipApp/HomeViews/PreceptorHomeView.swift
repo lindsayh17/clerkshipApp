@@ -1,7 +1,5 @@
-//
 //  PreceptorHomeView.swift
 //  clerkshipApp
-//
 
 import SwiftUI
 

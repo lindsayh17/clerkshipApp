@@ -1,11 +1,5 @@
 //  HomeView.swift
 //  clerkshipApp
-//
-
-/*
- TODO: daily question styling
- TODO: home page for preceptors
- */
 
 import SwiftUI
 import WebKit

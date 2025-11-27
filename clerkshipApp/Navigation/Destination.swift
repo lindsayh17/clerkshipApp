@@ -1,7 +1,5 @@
-//
-//  Destination.swift
+///  Destination.swift
 //  clerkshipApp
-//
 
 import SwiftUI
 

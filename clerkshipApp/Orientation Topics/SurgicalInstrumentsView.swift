@@ -1,7 +1,6 @@
 //  SurgicalInstrumentsView.swift
 //  clerkshipApp
 
-
 import SwiftUI
 
 struct Instruments: Identifiable {

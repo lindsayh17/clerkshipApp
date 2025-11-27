@@ -68,6 +68,3 @@ struct MidRotationView: View {
     .environmentObject(CurrentUser())
     .environmentObject(AuthService())
 }
-
-
-
