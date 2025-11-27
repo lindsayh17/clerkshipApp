@@ -1,4 +1,4 @@
-//  SearchView1.swift
+//  SearchView.swift
 //  clerkshipApp
 
 import SwiftUI
@@ -8,33 +8,31 @@ struct SearchView: View {
     @EnvironmentObject var userStore: UserStore
     @EnvironmentObject var evalStore: EvalStore
     @EnvironmentObject var currUser: CurrentUser
-    
+    @EnvironmentObject var router: Router
+
     @State private var searchText = ""
     @State private var selectedUser: User? = nil
     @State private var hasChosenStudent = false
 
     @Environment(\.dismiss) var dismiss
-    
+
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
-    
+
     private let alphabet = Array("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
     @State private var namesByLetter: [String: [User]] = [:]
-    
+
     // Nav state
     @State private var currentView: Destination = .search
-    
-    // Filtered data based on search text
+
+    // Filtered data for the list
     private var filteredNames: [String: [User]] {
         if searchText.isEmpty {
-            var filtered: [String: [User]] = [:]
-            for (letter, users) in namesByLetter {
-                let studentsOnly = users.filter { $0.access == .student }
-                if !studentsOnly.isEmpty { filtered[letter] = studentsOnly }
-            }
-            return filtered
+            // Only students, no search filter
+            return namesByLetter.mapValues { $0.filter { $0.access == .student } }
         } else {
+            // Search text applied, still only students
             var filtered: [String: [User]] = [:]
             for (letter, users) in namesByLetter {
                 let studentsOnly = users.filter {
@@ -47,28 +45,28 @@ struct SearchView: View {
         }
     }
 
-    
-    func namesList(){
-        namesByLetter = [:]   // reset in case SearchView reloads
-        
-        for u in userStore.allUsers{
-            guard u.access == .student else { continue }   // Only include students
-            
+    // Build namesByLetter
+    func namesList() {
+        namesByLetter = [:] // Reset
+        for u in userStore.allUsers {
+            guard u.access == .student else { continue } // Only students
             let firstChar = String(u.firstName.prefix(1)).uppercased()
-            // only add new names (avoid duplication)
-            if !namesByLetter[firstChar, default: []].contains(where: { $0.id == u.id }) {
-                namesByLetter[firstChar, default: []].append(u)
-            }
+            namesByLetter[firstChar, default: []].append(u)
         }
-        print("Names list: \(namesByLetter)")
     }
-    
+
+    // Scroll to letter
+    private func scrollTo(_ letter: Character) {
+        print("Scroll to \(letter)")
+    }
+
+    // Body
     var body: some View {
         ZStack(alignment: .topLeading) {
             backgroundColor.ignoresSafeArea()
-            
+
             VStack(spacing: 0) {
-                // Fixed search bar at the top
+                // Search Bar
                 HStack {
                     Image(systemName: "magnifyingglass")
                         .foregroundColor(.white.opacity(0.7))
@@ -82,7 +80,8 @@ struct SearchView: View {
                 .cornerRadius(10)
                 .padding(.horizontal, 16)
                 .padding(.top, 60)
-                
+
+                // Scrollable list with alphabet index
                 ScrollViewReader { proxy in
                     ZStack(alignment: .trailing) {
                         NamesView(
@@ -90,19 +89,18 @@ struct SearchView: View {
                             selectedUser: $selectedUser,
                             showEvalForm: $hasChosenStudent
                         )
+                        .environmentObject(router)
                         .environment(\.defaultMinListRowHeight, 28)
                         .listSectionSpacing(.compact)
                         .scrollContentBackground(.hidden)
                         .background(backgroundColor)
                         .listStyle(.insetGrouped)
                         .foregroundColor(.white)
-                        
+
                         // Alphabet index
                         VStack(spacing: 6) {
                             ForEach(alphabet, id: \.self) { letter in
-                                Button(action: {
-                                    scrollTo(letter)
-                                }) {
+                                Button(action: { scrollTo(letter) }) {
                                     Text(String(letter))
                                         .font(.caption2)
                                         .fontWeight(.medium)
@@ -115,12 +113,14 @@ struct SearchView: View {
                         .padding(.trailing, 6)
                     }
                 }
+
+                // Nav tab only if current user is NOT student
                 if currUser.user?.access != .student {
                     NavTab(currView: currentView)
                 }
             }
-            // Don't need back button if user is preceptor; use nav bar
-            // Back button stays in the ZStack
+
+            // Back button only for students
             if currUser.user?.access == .student {
                 BackButton()
                     .padding(.top, 10)
@@ -128,40 +128,25 @@ struct SearchView: View {
                     .ignoresSafeArea(.all, edges: .top)
             }
         }
-        .task {
-            namesList() // First load
-        }
+        // Build the names list whenever users load
+        .task { namesList() }
         .onChange(of: userStore.allUsers) { _ in namesList() }
         .navigationBarBackButtonHidden(true)
     }
 }
 
-private func scrollTo(_ letter: Character) {
-    print("Scroll to \(letter)")
-}
-
-// Components
-private extension NamesView {
-    func contactRow(user: User) -> some View {
-        HStack {
-            Button(action: {selectedUser = user}, label: {Text("\(user.firstName) \(user.lastName)").font(.body)
-                .foregroundColor(.white)})
-        }
-        .padding(.vertical, 0)
-    }
-}
-
-struct NamesView: View{
+// NamesView
+struct NamesView: View {
     var filteredNames: [String: [User]]
-    // Colors
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
+
     @Binding var selectedUser: User?
     @Binding var showEvalForm: Bool
-    
+
     @EnvironmentObject var router: Router
-    
-    var body: some View{
+
+    var body: some View {
         List {
             ForEach(filteredNames.keys.sorted(), id: \.self) { letter in
                 Section(
@@ -169,16 +154,13 @@ struct NamesView: View{
                         .font(.headline)
                         .foregroundColor(buttonColor)
                 ) {
-                    ForEach(filteredNames[letter, default: []], id: \.id) { student in
+                    ForEach(filteredNames[letter, default: []].filter { $0.access == .student }, id: \.id) { student in
                         Button {
                             selectedUser = student
-
-                            // TODO: check this !!!!
-                            router.push(.evalChoice(userToEval: student)) // pushes an empty view as a placeholder
+                            router.push(.evalChoice(userToEval: student))
                             showEvalForm = true
-                            
                         } label: {
-                            HStack{
+                            HStack {
                                 Text("\(student.firstName) \(student.lastName)")
                                     .foregroundColor(.white)
                                 Spacer()
@@ -205,5 +187,6 @@ struct NamesView: View{
     .environmentObject(UserStore())
     .environmentObject(EvalStore())
     .environmentObject(CurrentUser())
+    .environmentObject(Router(root: .home))
 }
 
