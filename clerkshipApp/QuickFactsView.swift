@@ -3,6 +3,12 @@
 
 import SwiftUI
 
+struct QuickFactItem: Identifiable {
+    let id = UUID()
+    let title: String
+    let description: String
+}
+
 struct QuickFactsView: View {
     // Colors
     private let backgroundColor = Color("BackgroundColor")
