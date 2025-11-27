@@ -50,7 +50,9 @@ struct EvalSummaryView: View {
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .foregroundColor(.white)
-                    .padding(.horizontal)
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: .infinity, alignment: .top)
+
                 
                 let averages = evalStore.averageScores()
                 if averages.isEmpty {
@@ -66,9 +68,10 @@ struct EvalSummaryView: View {
                                 y: .value("Category", item.key)
                             )
                             .foregroundStyle(by: .value("Type", item.key))
-                            .annotation(position: .trailing) {
+                            .cornerRadius(5)
+                            .annotation(position: .overlay) {
                                 Text(String(format: "%.2f", item.value))
-                                    .foregroundColor(.gray)
+                                    .foregroundColor(.white)
                             }
                         }
                     }
@@ -80,6 +83,11 @@ struct EvalSummaryView: View {
                         }
                     }
                     .aspectRatio(1, contentMode: .fit)
+                    .chartPlotStyle(content: { plotContent in
+                        plotContent
+                            .background(.thinMaterial.opacity(0.1))
+
+                    })
                     .padding()
                 }
                 
