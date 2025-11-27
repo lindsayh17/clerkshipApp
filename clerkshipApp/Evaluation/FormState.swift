@@ -1,9 +1,5 @@
-//
 //  FormState.swift
 //  clerkshipApp
-//
-//  Created by Lindsay on 11/19/25.
-//
 
 import SwiftUI
 

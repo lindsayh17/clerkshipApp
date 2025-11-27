@@ -35,7 +35,7 @@ struct PMCView: View {
                             .padding(.bottom, 20)
                         }
                         // Description area
-                        VStack(alignment: .leading, spacing: 10) {
+                        VStack(alignment: .center, spacing: 10) {
                             Text("115 Portee Drive, Middlebury, VT, 05701\n\nClinic is located directly behind the hospital building\n\nYou will be provided a map for parking")
                                 .font(.body)
                                 .foregroundColor(.white.opacity(0.85))

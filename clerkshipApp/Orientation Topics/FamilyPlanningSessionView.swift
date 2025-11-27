@@ -103,6 +103,3 @@ struct FamilyPlanningSessionView: View {
     .environmentObject(CurrentUser())
     .environmentObject(AuthService())
 }
-
-
-

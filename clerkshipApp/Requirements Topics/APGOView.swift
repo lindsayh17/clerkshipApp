@@ -129,5 +129,3 @@ struct APGOView: View {
     .environmentObject(CurrentUser())
     .environmentObject(AuthService())
 }
-
-

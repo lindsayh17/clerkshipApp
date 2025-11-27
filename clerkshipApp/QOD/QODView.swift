@@ -1,7 +1,6 @@
-//
 //  QODView.swift
 //  clerkshipApp
-//
+
 import SwiftUI
 
 struct QODView: View {

@@ -35,7 +35,7 @@ struct CVMCView: View {
                             .padding(.bottom, 20)
                         }
                         // Description area
-                        VStack(alignment: .leading, spacing: 10) {
+                        VStack(alignment: .center, spacing: 10) {
                             Text("130 Fisher Road MOB-A, Suite 1-1\n\nWomen's Health Clinic: MOB-A, Suite 104\n\nParking: Parking lot C (physician lot, does not require badge access)")
                                 .font(.body)
                                 .foregroundColor(.white.opacity(0.85))

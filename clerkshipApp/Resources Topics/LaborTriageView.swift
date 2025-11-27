@@ -70,5 +70,3 @@ struct LaborTriageView: View {
     .environmentObject(CurrentUser())
     .environmentObject(AuthService())
 }
-
-

@@ -1,9 +1,5 @@
-//
 //  RoutingView.swift
 //  clerkshipApp
-//
-//  Created by Hannah Deyst on 11/22/25.
-//
 
 import SwiftUI
 

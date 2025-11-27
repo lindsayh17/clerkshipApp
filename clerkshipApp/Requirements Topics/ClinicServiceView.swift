@@ -68,4 +68,3 @@ struct ClinicServiceView: View {
     .environmentObject(CurrentUser())
     .environmentObject(AuthService())
 }
-

@@ -147,6 +147,3 @@ struct TraumaView: View {
     .environmentObject(CurrentUser())
     .environmentObject(AuthService())
 }
-
-
-

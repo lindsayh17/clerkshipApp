@@ -84,5 +84,3 @@ struct SummativeClerkshipView: View {
     .environmentObject(CurrentUser())
     .environmentObject(AuthService())
 }
-
-
