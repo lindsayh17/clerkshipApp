@@ -28,20 +28,25 @@ struct SearchView: View {
     // Filtered data based on search text
     private var filteredNames: [String: [User]] {
         if searchText.isEmpty {
-            return namesByLetter
+            var filtered: [String: [User]] = [:]
+            for (letter, users) in namesByLetter {
+                let studentsOnly = users.filter { $0.access == .student }
+                if !studentsOnly.isEmpty { filtered[letter] = studentsOnly }
+            }
+            return filtered
         } else {
             var filtered: [String: [User]] = [:]
-            for (letter, students) in namesByLetter {
-                let results = students.filter {user in
-                    let fullName = "\(user.firstName) \(user.lastName)"
-                    return fullName.localizedCaseInsensitiveContains(searchText) }
-                if !results.isEmpty {
-                    filtered[letter] = results
+            for (letter, users) in namesByLetter {
+                let studentsOnly = users.filter {
+                    $0.access == .student &&
+                    "\($0.firstName) \($0.lastName)".localizedCaseInsensitiveContains(searchText)
                 }
+                if !studentsOnly.isEmpty { filtered[letter] = studentsOnly }
             }
             return filtered
         }
     }
+
     
     func namesList(){
         namesByLetter = [:]   // reset in case SearchView reloads
@@ -126,9 +131,7 @@ struct SearchView: View {
         .task {
             namesList() // First load
         }
-        .onChange(of: userStore.allUsers) { _ in
-                namesList() // reload after firebase finishes
-        }
+        .onChange(of: userStore.allUsers) { _ in namesList() }
         .navigationBarBackButtonHidden(true)
     }
 }
