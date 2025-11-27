@@ -47,6 +47,10 @@ struct LocationsView: View {
                     .padding(.top, 10)
                 }
             }
+            BackButton()
+                .padding(.top, 10)
+                .padding(.leading, 10)
+                .ignoresSafeArea(.all, edges: .top)
         }
         .navigationBarBackButtonHidden()
     }

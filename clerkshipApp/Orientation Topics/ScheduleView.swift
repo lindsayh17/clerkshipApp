@@ -77,6 +77,7 @@ struct ScheduleView: View {
             BackButton()
                 .padding(.top, 10)
                 .padding(.leading, 10)
+                .ignoresSafeArea(.all, edges: .top)
         }
         .navigationBarBackButtonHidden(true)
     }
