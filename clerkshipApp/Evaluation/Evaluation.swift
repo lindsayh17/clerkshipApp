@@ -4,7 +4,7 @@
 import SwiftUI
 
 // a completed form
-struct Evaluation: Identifiable, Codable {
+struct Evaluation: Identifiable, Codable, Hashable {
     var id = UUID()
     var formType: String             // Link to form type
     var preceptorId: String        // ID of preceptor filling out form
