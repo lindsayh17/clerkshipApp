@@ -13,7 +13,7 @@ struct LocationsView: View {
     @EnvironmentObject var router: Router
     
     var body: some View {
-        ZStack {
+        ZStack (alignment: .topLeading) {
             backgroundColor.ignoresSafeArea()
             
             VStack(spacing: 0) {
