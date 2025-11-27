@@ -22,14 +22,16 @@ struct PreceptorHomeView: View {
         // Preceptor view inside HomeView
         ZStack {
             backgroundColor.ignoresSafeArea()
-            VStack(spacing: 0) {
+            VStack(alignment: .leading, spacing: 8) {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Welcome, \(currUser.user?.firstName ?? "Preceptor")")
                             .font(.title)
                             .fontWeight(.bold)
                             .foregroundColor(.white)
+                            .padding(.top, 40)
                     }
+                    .padding(.horizontal)
                     Spacer()
                 }
                 .padding(.horizontal)
