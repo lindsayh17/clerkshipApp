@@ -89,6 +89,8 @@ struct QuickFactsView: View {
                         .padding(.bottom, 30)
                     }
                 }
+                // Add bottom navigation bar
+                //NavTab(currentTab: $currentView)
             }
             
             // Floating back button
@@ -100,7 +102,7 @@ struct QuickFactsView: View {
         .navigationBarBackButtonHidden(true)
     }
     
-    // MARK: - Section Header
+    // Section Header
     @ViewBuilder
     private func sectionHeader(_ title: String) -> some View {
         Text(title)
@@ -110,7 +112,7 @@ struct QuickFactsView: View {
             .padding(.bottom, 5)
     }
     
-    // MARK: - Section Items
+    // Section Items
     @ViewBuilder
     private func sectionItems(for titles: [String]) -> some View {
         VStack(spacing: 16) {
