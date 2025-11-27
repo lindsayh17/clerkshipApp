@@ -5,7 +5,7 @@ import Firebase
 
 class EvalStore: ObservableObject {
     private var db = Firestore.firestore()
-    @Published var currUserEvals: Set<Evaluation> = []
+    @Published var currUserEvals: [Evaluation] = []
     
     // adds completed eval to firestore
     func addToFirestore(evaluation: Evaluation) {
@@ -18,29 +18,15 @@ class EvalStore: ObservableObject {
 
     // add completed evals from firestore to list
     func addFetchedEvals(_ eval: Evaluation) {
-        if !(currUserEvals.contains(where: {checkEquiv(lhs: $0, rhs: eval)})) {
-            currUserEvals.insert(eval)
+        if !(currUserEvals.contains(where: {$0.id == eval.id} )) {
+            currUserEvals.append(eval)
         }
     }
     
     func getNumEvals() -> Int {
         return currUserEvals.count
     }
-
-    func checkEquiv(lhs: Evaluation, rhs: Evaluation) -> Bool {
-        if (lhs.formType == rhs.formType &&
-            lhs.responses == rhs.responses &&
-            lhs.studentId == rhs.studentId &&
-            lhs.preceptorId == rhs.preceptorId &&
-            lhs.submittedAt == rhs.submittedAt
-        ) {
-            return true
-        } else {
-            return false
-        }
-        
-    }
-
+    
     
     // Get score values for the each response
     func scoreValue(for response: String) -> Double? {

@@ -96,7 +96,8 @@ class FirebaseService: ObservableObject {
                 let data = document.data()
                 
                 // try to cast to strings otherwise return empty
-                let id = document.documentID
+                let docId = document.documentID
+                let id = data["id"] as? String ?? ""
                 let formType = data["formType"] as? String ?? ""
                 let preceptorId = data["preceptorId"] as? String ?? ""
                 let studentId = data["studentId"] as? String ?? ""
@@ -126,6 +127,7 @@ class FirebaseService: ObservableObject {
                 // only fetch evals for indicated student
                 if student.id == studentId {
                     fetchedEvals.append(Evaluation(
+                        id: id,
                         formType: formType,
                         preceptorId: preceptorId,
                         studentId: studentId,
