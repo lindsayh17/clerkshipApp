@@ -29,10 +29,8 @@ struct SearchView: View {
     // Filtered data for the list
     private var filteredNames: [String: [User]] {
         if searchText.isEmpty {
-            // Only students, no search filter
             return namesByLetter.mapValues { $0.filter { $0.access == .student } }
         } else {
-            // Search text applied, still only students
             var filtered: [String: [User]] = [:]
             for (letter, users) in namesByLetter {
                 let studentsOnly = users.filter {
@@ -45,19 +43,24 @@ struct SearchView: View {
         }
     }
 
-    // Build namesByLetter
+    // Build namesByLetter: only students, sorted by last name
     func namesList() {
         namesByLetter = [:] // Reset
         for u in userStore.allUsers {
             guard u.access == .student else { continue } // Only students
-            let firstChar = String(u.firstName.prefix(1)).uppercased()
+            let firstChar = String(u.lastName.prefix(1)).uppercased()
             namesByLetter[firstChar, default: []].append(u)
         }
-    }
 
-    // Scroll to letter
-    private func scrollTo(_ letter: Character) {
-        print("Scroll to \(letter)")
+        // Sort each letter section by last name, then first name
+        for key in namesByLetter.keys {
+            namesByLetter[key]?.sort {
+                if $0.lastName == $1.lastName {
+                    return $0.firstName < $1.firstName
+                }
+                return $0.lastName < $1.lastName
+            }
+        }
     }
 
     // Body
@@ -66,7 +69,7 @@ struct SearchView: View {
             backgroundColor.ignoresSafeArea()
 
             VStack(spacing: 0) {
-                // Search Bar
+                // Search Bar (pushed up slightly)
                 HStack {
                     Image(systemName: "magnifyingglass")
                         .foregroundColor(.white.opacity(0.7))
@@ -79,40 +82,21 @@ struct SearchView: View {
                 .background(buttonColor.opacity(0.2))
                 .cornerRadius(10)
                 .padding(.horizontal, 16)
-                .padding(.top, 60)
+                .padding(.top, 40) // slightly higher
 
-                // Scrollable list with alphabet index
-                ScrollViewReader { proxy in
-                    ZStack(alignment: .trailing) {
-                        NamesView(
-                            filteredNames: filteredNames,
-                            selectedUser: $selectedUser,
-                            showEvalForm: $hasChosenStudent
-                        )
-                        .environmentObject(router)
-                        .environment(\.defaultMinListRowHeight, 28)
-                        .listSectionSpacing(.compact)
-                        .scrollContentBackground(.hidden)
-                        .background(backgroundColor)
-                        .listStyle(.insetGrouped)
-                        .foregroundColor(.white)
-
-                        // Alphabet index
-                        VStack(spacing: 6) {
-                            ForEach(alphabet, id: \.self) { letter in
-                                Button(action: { scrollTo(letter) }) {
-                                    Text(String(letter))
-                                        .font(.caption2)
-                                        .fontWeight(.medium)
-                                        .foregroundColor(buttonColor)
-                                        .padding(.horizontal, 2)
-                                }
-                                .buttonStyle(.plain)
-                            }
-                        }
-                        .padding(.trailing, 6)
-                    }
-                }
+                // Names list
+                NamesView(
+                    filteredNames: filteredNames,
+                    selectedUser: $selectedUser,
+                    showEvalForm: $hasChosenStudent
+                )
+                .environmentObject(router)
+                .environment(\.defaultMinListRowHeight, 28)
+                .listSectionSpacing(.compact)
+                .scrollContentBackground(.hidden)
+                .background(backgroundColor)
+                .listStyle(.insetGrouped)
+                .foregroundColor(.white)
 
                 // Nav tab only if current user is NOT student
                 if currUser.user?.access != .student {
