@@ -62,31 +62,39 @@ struct ProfileView: View {
                         // create button so students can see their evals
                         if let user = currUser.user {
                             if user.access == .student {
-                                Button(action: {
-                                    // push a seeEvaluations view onto nav
+                                Button {
                                     router.push(.seeEval)
-                                }) {
-                                    Text("Completed Evaluations")
-                                        .foregroundColor(.white)
-                                        .padding()
-                                        .frame(maxWidth: .infinity)
-                                        .background(.white.opacity(0.1))
-                                        .cornerRadius(30)
-                                        .font(.headline)
+                                } label: {
+                                    HStack {
+                                        Image(systemName: "doc.text.fill")
+                                            .foregroundColor(.white)
+                                            .font(.title3)
+                                            .padding(12)
+                                            .background(.orange.opacity(0.8))
+                                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                                        
+                                        Text("Completed Evaluations")
+                                            .foregroundColor(.white)
+                                            .font(.headline)
+                                    }
+                                    .padding()
+                                    .background(Color.white.opacity(0.1))
+                                    .clipShape(RoundedRectangle(cornerRadius: 16))
                                 }
-                                .padding(.horizontal, 80)
-                                .padding(.vertical, 10)
+                                .padding(.horizontal, 30)
+                                .padding(.vertical, 20)
+                                .frame(maxWidth: .infinity, alignment: .center)
                             }
                         }
                         
                         // Logout button
                         MainButtonView(
                             title: "Log Out",
-                            color: .button,
+                            color: .button.opacity(0.8),
                             action: {
                                 signOut()
                             })
-                        .padding(.bottom, 50)
+                        .padding(.bottom, 30)
                         .padding(.horizontal, 40)
                     }
                 }

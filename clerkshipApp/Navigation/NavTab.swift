@@ -84,7 +84,7 @@ struct NavTab: View {
             .padding(.vertical, 18)
             .padding(.horizontal, 16)
             
-            .frame(maxWidth: UIScreen.main.bounds.width * 0.9, minHeight: 50, alignment: .bottom)
+            .frame(maxWidth: UIScreen.main.bounds.width * 0.9, minHeight: 40, alignment: .bottom)
             .background(buttonColor)
             .cornerRadius(40)
             .padding(.top, 15)
