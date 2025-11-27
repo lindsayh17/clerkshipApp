@@ -30,17 +30,7 @@ struct PreceptorHomeView: View {
                     }
                     .padding(.horizontal)
                     .padding(.top, 60)
-                    
-                    // Graphic
-                    HStack {
-                        Spacer() // Pushes the image to the right
-                        Image(systemName: "person.crop.circle.fill.badge.checkmark")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 100, height: 100)
-                            .foregroundColor(.white.opacity(0.3))
-                    }
-                    .padding(.horizontal, 20)
+                    .padding(.bottom, 100)
                     
                     // Instructions
                     VStack(alignment: .leading, spacing: 12) {
