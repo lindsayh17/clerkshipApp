@@ -28,16 +28,15 @@ struct PreceptorHomeView: View {
                             .foregroundColor(.white)
                     }
                     .padding(.horizontal)
-                    .padding(.top, 40)
-                    .padding(.bottom, 80)
+                    .padding(.top, 60)
+                    .padding(.bottom, 160)
                     
                     // Centered graphic
                     Image(systemName: "person.crop.circle.fill.badge.checkmark")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 140, height: 140)
+                        .frame(width: 180, height: 180)
                         .foregroundColor(.white.opacity(0.3))
-                        .frame(maxWidth: .infinity) // centers horizontally
                 }
                 .padding(.bottom, 40)
             }
