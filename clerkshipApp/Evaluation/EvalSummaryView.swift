@@ -74,8 +74,14 @@ struct EvalSummaryView: View {
                     .chartLegend(.hidden)
                     .chartXAxis(.hidden)
                     .chartYAxis {
-                        AxisMarks { _ in
-                            AxisValueLabel()
+                        AxisMarks { label in
+                            AxisValueLabel() {
+                                if let category = label.as(String.self) {
+                                    Text(category)
+                                        .foregroundColor(.white)
+                                        .font(.caption)
+                                }
+                            }
                         }
                     }
                     .aspectRatio(1, contentMode: .fit)
