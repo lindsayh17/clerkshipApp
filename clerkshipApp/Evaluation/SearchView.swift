@@ -124,7 +124,10 @@ struct SearchView: View {
             }
         }
         .task {
-            namesList()
+            namesList() // First load
+        }
+        .onChange(of: userStore.allUsers) { _ in
+                namesList() // reload after firebase finishes
         }
         .navigationBarBackButtonHidden(true)
     }
