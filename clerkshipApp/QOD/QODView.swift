@@ -17,7 +17,7 @@ struct QODView: View {
                         .foregroundColor(.white)
                         .font(.title3)
                         .fontWeight(.semibold)
-                Button(action: {
+                    Button(action: {
                         withAnimation {
                             // Show answer
                             showDailyQuestionAnswer.toggle()

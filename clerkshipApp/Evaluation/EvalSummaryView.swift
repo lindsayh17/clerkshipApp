@@ -38,31 +38,30 @@ struct EvalSummaryView: View {
     var body: some View {
         ZStack {
             backgroundColor.ignoresSafeArea()
-            
+            VStack {
+                
+                let averages = evalStore.averageScores()
+                
+                Chart{
+                    ForEach(Array(averages), id: \.key) { item in
+                        BarMark(
+                            x: .value("Category", item.key), // Category name (key)
+                            y: .value("Average Score", item.value) // Average score (value)
+                        )
+                        .foregroundStyle(Color.green.gradient)
+                        .annotation(position: .top) {
+                            Text(String(format: "%.2f", item.value))
+                                .font(.caption)
+                                .foregroundColor(.white)
+                        }
+                    }
+                }
+                
+            }
             BackButton()
                 .padding(.top, 10)
                 .padding(.leading, 10)
                 .ignoresSafeArea(.all, edges: .top)
-            
-            
-            let averages = evalStore.averageScores()
-            
-            Chart{
-                ForEach(Array(averages), id: \.key) { item in
-                    BarMark(
-                        x: .value("Category", item.key), // Category name (key)
-                        y: .value("Average Score", item.value) // Average score (value)
-                    )
-                    .foregroundStyle(Color.green.gradient)
-                    .annotation(position: .top) {
-                        Text(String(format: "%.2f", item.value))
-                            .font(.caption)
-                            .foregroundColor(.white)
-                    }
-                }
-            }
-            
-            
         }
         .navigationBarBackButtonHidden(true)
     }
