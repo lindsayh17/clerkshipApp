@@ -70,14 +70,15 @@ struct OrientationView: View {
                 }
                 .padding(.top, 10)
             }
+            BackButton()
+                .padding(.top, 10)
+                .padding(.leading, 10)
+                .ignoresSafeArea(.all, edges: .top)
         }
-        // Show system navigation bar back button
-        .navigationBarBackButtonHidden(false)
-        .navigationTitle("Orientation")
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(true)
     }
     
-    // MARK: - Section Helper
+    // Section Helper
     @ViewBuilder
     private func section<Content: View>(title: String, @ViewBuilder content: @escaping () -> Content) -> some View {
         VStack(alignment: .leading, spacing: 8) {
