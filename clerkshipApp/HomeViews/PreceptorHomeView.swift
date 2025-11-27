@@ -30,7 +30,7 @@ struct PreceptorHomeView: View {
                     }
                     .padding(.horizontal)
                     .padding(.top, 60)
-                    .padding(.bottom, 100)
+                    .padding(.bottom, 60)
                     
                     // Instructions
                     VStack(alignment: .leading, spacing: 12) {
