@@ -67,7 +67,7 @@ struct EvalSummaryView: View {
                             )
                             .foregroundStyle(by: .value("Type", item.key))
                             .annotation(position: .trailing) {
-                                Text(String(item.value))
+                                Text(String(format: "%.2f", item.value))
                                     .foregroundColor(.gray)
                             }
                         }

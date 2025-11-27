@@ -63,5 +63,14 @@ class EvalStore: ObservableObject {
         
         return averages
     }
-      
+    
+    func getMiniViewAvg() -> Double {
+        var avgs = averageScores().values
+        var sum: Double = 0
+        for a in avgs {
+            sum += a
+        }
+        
+        return (sum / Double(avgs.count))
+    }
 }

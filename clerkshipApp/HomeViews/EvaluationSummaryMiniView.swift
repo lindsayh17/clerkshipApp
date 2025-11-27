@@ -12,10 +12,6 @@ struct EvaluationSummaryMiniView: View {
     @EnvironmentObject var currUser: CurrentUser
     @EnvironmentObject var firebase: FirebaseService
     
-    // Mocked data for now — you can replace this with Firestore values later
-    @State var avgScore: Double = 4.6
-    @State var totalEvals: Int = 12
-    
     func getEvals() {
         Task {
             do {
@@ -41,8 +37,8 @@ struct EvaluationSummaryMiniView: View {
                 .foregroundColor(.white)
             
             HStack {
-                SummaryStat(title: "Average Score", value: String(format: "%.1f", avgScore))
-                SummaryStat(title: "Evaluations", value: "\(evalStore.getNumEvals())")
+                SummaryStat(title: "Average Score", value: evalStore.getNumEvals() != 0 ? String(format: "%.2f", evalStore.getMiniViewAvg()): "-")
+                SummaryStat(title: "Evaluations", value: evalStore.getNumEvals() != 0 ? "\(evalStore.getNumEvals())": "-")
             }
         }
         .task {
