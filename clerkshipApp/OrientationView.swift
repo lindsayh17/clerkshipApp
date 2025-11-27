@@ -55,6 +55,9 @@ struct OrientationView: View {
                             MainButtonView(title: "Surgical Instruments", color: buttonColor) {
                                 router.push(.surgicalInst)
                             }
+                            MainButtonView(title: "Locations", color: buttonColor) {
+                                router.push(.locations)
+                            }
                         }
                         .padding(.horizontal, 20)
                         .navigationBarBackButtonHidden(false)

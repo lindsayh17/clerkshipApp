@@ -25,6 +25,7 @@ enum Destination: Identifiable {
     case familyPlan
     case trauma
     case surgicalInst
+    case locations
     
     // put all requirement views beneath here
     case requirements
@@ -87,6 +88,8 @@ extension Destination {
             return TraumaView()
         case .surgicalInst:
             return SurgicalInstrumentsView()
+        case .locations:
+            return LocationsView()
             
             
         case .requirements:
