@@ -40,7 +40,7 @@ struct EvaluationView: View {
             }
             
             if curr.access == .student {
-                return !preceptorEmail.trimmingCharacters(in: .whitespaces).isEmpty
+                return (!preceptorEmail.trimmingCharacters(in: .whitespaces).isEmpty && formState.validForm())
             }
         }
         
