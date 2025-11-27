@@ -10,6 +10,7 @@ struct LocationsView: View {
     @Environment(\.dismiss) var dismiss
     @State private var currentView: Destination = .home
     @EnvironmentObject var currUser: CurrentUser
+    @EnvironmentObject var router: Router
     
     var body: some View {
         ZStack {
@@ -29,11 +30,16 @@ struct LocationsView: View {
 
                         // Location Buttons
                         VStack(spacing: 15) {
-                            MainButtonView(title: "UVMMC", color: buttonColor)
-                            MainButtonView(title: "CVMC", color: buttonColor)
-                            MainButtonView(title: "CVPH", color: buttonColor)
-                            MainButtonView(title: "Porter Medical Center", color: buttonColor)
-                            MainButtonView(title: "RRMC", color: buttonColor)
+                            MainButtonView(title: "CVMC", color: buttonColor) {
+                                router.push(.cvmc)
+                            }
+                            MainButtonView(title: "Porter Medical Center", color: buttonColor) {
+                                router.push(.pmc)
+                            }
+
+                            MainButtonView(title: "RRMC", color: buttonColor) {
+                                router.push(.rrmc)
+                            }
                         }
                         .padding(.horizontal, 20)
                         .padding(.bottom, 30)

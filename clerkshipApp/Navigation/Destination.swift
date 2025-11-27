@@ -24,6 +24,9 @@ enum Destination: Identifiable {
     case trauma
     case surgicalInst
     case locations
+    case cvmc     // CVMC
+    case pmc      // Porter Medical Center
+    case rrmc
     
     // put all requirement views beneath here
     case requirements
@@ -88,6 +91,12 @@ extension Destination {
             return SurgicalInstrumentsView()
         case .locations:
             return LocationsView()
+        case .cvmc:
+            return CVMCView()
+        case .pmc:
+            return PMCView()
+        case .rrmc:
+            return RRMCView()
             
             
         case .requirements:
