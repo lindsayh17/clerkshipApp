@@ -26,42 +26,41 @@ struct SearchView: View {
     // Nav state
     @State private var currentView: Destination = .search
 
-    // Filtered names based on search
+    // Filtered data for the list
     private var filteredNames: [String: [User]] {
         if searchText.isEmpty {
-            return namesByLetter
+            // Only students, no search filter
+            return namesByLetter.mapValues { $0.filter { $0.access == .student } }
         } else {
+            // Search text applied, still only students
             var filtered: [String: [User]] = [:]
             for (letter, users) in namesByLetter {
-                let matching = users.filter {
+                let studentsOnly = users.filter {
+                    $0.access == .student &&
                     "\($0.firstName) \($0.lastName)".localizedCaseInsensitiveContains(searchText)
                 }
-                if !matching.isEmpty { filtered[letter] = matching }
+                if !studentsOnly.isEmpty { filtered[letter] = studentsOnly }
             }
             return filtered
         }
     }
 
-    // Build namesByLetter: only students, grouped by last name initial
+    // Build namesByLetter
     func namesList() {
-        namesByLetter = [:]
+        namesByLetter = [:] // Reset
         for u in userStore.allUsers {
             guard u.access == .student else { continue } // Only students
-            let firstChar = String(u.lastName.prefix(1)).uppercased()
+            let firstChar = String(u.firstName.prefix(1)).uppercased()
             namesByLetter[firstChar, default: []].append(u)
-        }
-
-        // Sort students in each section by last name, then first name
-        for key in namesByLetter.keys {
-            namesByLetter[key]?.sort {
-                if $0.lastName == $1.lastName {
-                    return $0.firstName < $1.firstName
-                }
-                return $0.lastName < $1.lastName
-            }
         }
     }
 
+    // Scroll to letter
+    private func scrollTo(_ letter: Character) {
+        print("Scroll to \(letter)")
+    }
+
+    // Body
     var body: some View {
         ZStack(alignment: .topLeading) {
             backgroundColor.ignoresSafeArea()
@@ -85,12 +84,10 @@ struct SearchView: View {
                 // Scrollable list with alphabet index
                 ScrollViewReader { proxy in
                     ZStack(alignment: .trailing) {
-                        // Names List
                         NamesView(
                             filteredNames: filteredNames,
                             selectedUser: $selectedUser,
-                            showEvalForm: $hasChosenStudent,
-                            scrollProxy: proxy
+                            showEvalForm: $hasChosenStudent
                         )
                         .environmentObject(router)
                         .environment(\.defaultMinListRowHeight, 28)
@@ -103,11 +100,7 @@ struct SearchView: View {
                         // Alphabet index
                         VStack(spacing: 6) {
                             ForEach(alphabet, id: \.self) { letter in
-                                Button(action: {
-                                    withAnimation {
-                                        proxy.scrollTo(letter, anchor: .top)
-                                    }
-                                }) {
+                                Button(action: { scrollTo(letter) }) {
                                     Text(String(letter))
                                         .font(.caption2)
                                         .fontWeight(.medium)
@@ -135,6 +128,7 @@ struct SearchView: View {
                     .ignoresSafeArea(.all, edges: .top)
             }
         }
+        // Build the names list whenever users load
         .task { namesList() }
         .onChange(of: userStore.allUsers) { _ in namesList() }
         .navigationBarBackButtonHidden(true)
@@ -144,28 +138,23 @@ struct SearchView: View {
 // NamesView
 struct NamesView: View {
     var filteredNames: [String: [User]]
-    @Binding var selectedUser: User?
-    @Binding var showEvalForm: Bool
-    var scrollProxy: ScrollViewProxy
-
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
+
+    @Binding var selectedUser: User?
+    @Binding var showEvalForm: Bool
 
     @EnvironmentObject var router: Router
 
     var body: some View {
         List {
             ForEach(filteredNames.keys.sorted(), id: \.self) { letter in
-                // Invisible anchor for scrolling
-                Color.clear
-                    .frame(height: 0)
-                    .id(letter)
-
-                Section(header: Text(letter)
-                    .foregroundColor(buttonColor)
-                    .font(.headline)
+                Section(
+                    header: Text(letter)
+                        .font(.headline)
+                        .foregroundColor(buttonColor)
                 ) {
-                    ForEach(filteredNames[letter, default: []], id: \.id) { student in
+                    ForEach(filteredNames[letter, default: []].filter { $0.access == .student }, id: \.id) { student in
                         Button {
                             selectedUser = student
                             router.push(.evalChoice(userToEval: student))
@@ -186,9 +175,6 @@ struct NamesView: View {
                 }
             }
         }
-        .listStyle(.insetGrouped)
-        .scrollContentBackground(.hidden)
-        .background(backgroundColor)
     }
 }
 
