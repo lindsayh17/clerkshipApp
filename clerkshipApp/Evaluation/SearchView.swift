@@ -42,7 +42,7 @@ struct SearchView: View {
         }
     }
 
-    // Build namesByLetter: only students, sorted by last name
+    // Build namesByLetter: only students, grouped by last name initial
     func namesList() {
         namesByLetter = [:]
         for u in userStore.allUsers {
@@ -156,7 +156,15 @@ struct NamesView: View {
     var body: some View {
         List {
             ForEach(filteredNames.keys.sorted(), id: \.self) { letter in
-                Section(header: Text(letter).id(letter)) { // assign id for scrolling
+                // Invisible anchor for scrolling
+                Color.clear
+                    .frame(height: 0)
+                    .id(letter)
+
+                Section(header: Text(letter)
+                    .foregroundColor(buttonColor)
+                    .font(.headline)
+                ) {
                     ForEach(filteredNames[letter, default: []], id: \.id) { student in
                         Button {
                             selectedUser = student
@@ -178,6 +186,9 @@ struct NamesView: View {
                 }
             }
         }
+        .listStyle(.insetGrouped)
+        .scrollContentBackground(.hidden)
+        .background(backgroundColor)
     }
 }
 
