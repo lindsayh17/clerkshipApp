@@ -23,6 +23,13 @@ struct PreceptorHomeView: View {
         ZStack {
             backgroundColor.ignoresSafeArea()
             VStack(alignment: .leading, spacing: 8) {
+            // Decorative graphic
+              Image(systemName: "person.crop.circle.fill.badge.checkmark")
+                  .resizable()
+                  .scaledToFit()
+                  .frame(width: 120, height: 120)
+                  .foregroundColor(.white.opacity(0.3))
+                  .padding(.top, 40)
                 ScrollView {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Welcome, \(currUser.user?.firstName ?? "Preceptor")")
@@ -34,7 +41,6 @@ struct PreceptorHomeView: View {
                     .padding(.horizontal)
                     Spacer()
                 }
-                .padding(.horizontal)
             }
         }
         .navigationBarBackButtonHidden()
