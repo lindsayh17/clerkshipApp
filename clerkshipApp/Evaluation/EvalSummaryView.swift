@@ -62,29 +62,25 @@ struct EvalSummaryView: View {
                     Chart{
                         ForEach(Array(averages), id: \.key) { item in
                             BarMark(
-                                x: .value("Category", item.key), // Category name (key)
-                                y: .value("Average Score", item.value) // Average score (value)
+                                x: .value("Average Score", item.value),
+                                y: .value("Category", item.key)
                             )
-                            .foregroundStyle(Color.blue.gradient)
-                            .cornerRadius(8)
-                            .annotation(position: .top) {
-                                Text(String(format: "%.2f", item.value))
-                                    .font(.caption)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.white)
-                                    .padding(.top, 2)
+                            .foregroundStyle(by: .value("Type", item.key))
+                            .annotation(position: .trailing) {
+                                Text(String(item.value))
+                                    .foregroundColor(.gray)
                             }
                         }
                     }
-                    .chartYScale(domain: 0...4) // Max score = 4
-                    .frame(height: 300)
-                    .padding(.horizontal) // Horizontal padding for chart
-                    .background(
-                        RoundedRectangle(cornerRadius: 16)
-                            .fill(Color.white.opacity(0.1)) // Light background for the chart
-                            .shadow(radius: 10) // Shadow for better depth
-                    )
-                    .padding(.vertical)
+                    .chartLegend(.hidden)
+                    .chartXAxis(.hidden)
+                    .chartYAxis {
+                        AxisMarks { _ in
+                            AxisValueLabel()
+                        }
+                    }
+                    .aspectRatio(1, contentMode: .fit)
+                    .padding()
                 }
                 
                 Spacer()
