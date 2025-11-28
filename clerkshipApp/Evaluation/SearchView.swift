@@ -66,6 +66,13 @@ struct SearchView: View {
             backgroundColor.ignoresSafeArea()
 
             VStack(spacing: 0) {
+                Text("Student search:")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity, alignment: .topLeading)
+                    .padding(.horizontal, 16)
+                    .padding(.top, 30)
                 // Search Bar
                 HStack {
                     Image(systemName: "magnifyingglass")
@@ -79,7 +86,7 @@ struct SearchView: View {
                 .background(buttonColor.opacity(0.2))
                 .cornerRadius(10)
                 .padding(.horizontal, 16)
-                .padding(.top, 60)
+                .padding(.top, 10)
 
                 // Scrollable list with alphabet index
                 ScrollViewReader { proxy in
