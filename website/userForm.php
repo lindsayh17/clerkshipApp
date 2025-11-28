@@ -7,18 +7,11 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <div class="header-left">
-      <img src="UVM recolored logo.jpg" alt="UVM Logo" class="logo">
-      <h1>OBGYN Clerkship</h1>
-    </div>
-    <nav>
-      <a href="resources.html" class="nav-link">Resources</a>
-      <a href="profile.html" class="nav-link">Profile</a>
-      <a href="user-permissions.html" class="nav-link active">Users</a>
-      <a href="student-grades.html" class="nav-link">Admin</a>
-    </nav>
-  </header>
+  <?php
+    $title = "userForm";
+
+    include 'header.php';
+  ?>
 
   <main>
     <form>
@@ -45,6 +38,7 @@
         <fieldset id="submit">
             <button id="submitBtn" type="submit">Submit</button>
         </fieldset>
+    </form>
   </main>
 
   <script type="module" src="scripts/firebase.js"></script>
