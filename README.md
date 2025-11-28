@@ -7,6 +7,7 @@ Description
 
 Running the app:
 - The app should be run through the simulator, or downloaded onto an iPhone. Due to the extensive use of Firebase for much of the app's information, running it in the preview would exclude much of the app's functionality.
+- Run on iOS 18.5 or above for the best app experience.
 
 
 Key Features:
@@ -17,11 +18,8 @@ Key Features:
 - Navigation: Role-specific home screens and bottom navigation for quick access to profiles, resources, and evaluations.
 
 
-Visuals
-
-
 Dependencies:
--Firebase
+- Firebase
 
 
 Usage
