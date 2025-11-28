@@ -83,7 +83,6 @@ struct FamilyPlanningSessionView: View {
                     .padding(.bottom, 40)
                 }
 
-//                NavTab(currentTab: $currentView)
             }
             BackButton()
                 .padding(.top, 10)
