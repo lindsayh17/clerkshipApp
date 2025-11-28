@@ -85,24 +85,6 @@ textarea {
   max-width: 500px;
 }
 
-/* Style the button that is used to open and close the collapsible content */
-.collapsible {
-  background-color: #eee;
-  color: #444;
-  cursor: pointer;
-  padding: 18px;
-  width: 100%;
-  border: none;
-  text-align: left;
-  outline: none;
-  font-size: 15px;
-}
-
-/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
-.active, .collapsible:hover {
-  background-color: #ccc;
-}
-
 /* user permissions table */
 table{
     padding: 1em;
@@ -135,8 +117,34 @@ table td{
 table tr:nth-child(even) td{
     background-color: #a1cdb8; 
 }
+.actionButton{
+  padding: 0.375em 0.875em;
+  border-radius: .3125em;
+  font-size: 0.9em;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  margin: 0.125em;
+  color: white;
+}
+.editButton{
+  background-color: #064225;
+}
+.editButton:hover {
+  background-color: #076f3c;
+}
+.deleteButton {
+  background-color: #f44336;
+}
+.deleteButton:hover {
+  background-color: #d6302a;
+}
+td .actionButton {
+  white-space: nowrap;
+}
 
-/* Cancel confirmatio styling */
+/* Cancel confirmation styling */
 .modal {
   display: none;
   position: fixed;
@@ -174,4 +182,158 @@ table tr:nth-child(even) td{
 .confirm-btn {
   background-color: #4CAF50; /* Green */
   color: white;
+}
+
+/*Evaluations*/
+.collapsible {
+  background-color: #064225;
+  color: white;
+  cursor: pointer;
+  padding: 1.2em 1.5em;
+  border-radius: 0.375em;
+  font-size: 1.1em;
+  margin: 1.5em auto 0 auto;
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.studentEvals .active, .collapsible:hover {
+  background-color: #08804a;
+}
+
+.content {
+  width: 85%;
+  margin: 0 auto 1.5em auto;
+  background: #f9f9f9;
+  border-left: 0.25em solid #064225;
+  border-radius: 0 0 0.375em 0.375em;
+  padding: 1em 1.2em;
+  display: none;
+}
+
+.collapsible:after {
+  font-size: 2.2em;
+  content: "▸";
+  transition: 0.2s;
+}
+
+.collapsible.active:after {
+  transform: rotate(90deg);
+}
+
+/*Evaluation View*/
+/* Category wrapper */
+.category {
+  background: #f3f4f6;
+  padding: 1.2rem 1.4rem;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  border-left: 5px solid #6366f1;
+}
+
+/* Category title */
+.category h3 {
+  margin: 0 0 1rem 0;
+  color: #374151;
+  font-size: 1.3rem;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 0.3rem;
+}
+
+.qa {
+  margin-bottom: 1rem;
+  background: white;
+  padding: .8rem 1rem;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.question {
+  font-weight: 600;
+  margin: 0 0 .2rem 0;
+  color: #1f2937;
+}
+
+.answer {
+  margin: 0;
+  color: #374151;
+}
+
+.notes {
+  background: #f3f4f6;
+  padding: 1.2rem 1.4rem;
+  border-left: 0.375em solid #6366f1;
+  border-radius: 0.5em;
+  margin-top: 2rem;
+  width: 90%;
+}
+
+.notes h3 {
+  margin-top: 0;
+  color: #064225;
+}
+
+/* Form Styling */
+form {
+  background: #f3f4f6;
+  width: 90%;
+  max-width: 37.5em;
+  margin: 2em auto;
+  padding: 2em 2.5em;
+  border-radius: 0.75em;
+  box-shadow: 0 0.25em 0.875em rgba(0,0,0,0.08);
+  border-left: 0.375em solid #064225;
+}
+
+form fieldset {
+  border: none;
+  padding: 0;
+  margin: 0 0 1.5em 0;
+}
+
+form p {
+  margin: 1em 0;
+}
+
+form label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: .3em;
+  color: #064225;
+}
+
+form input, form select {
+  width: 100%;
+  padding: .75em 1em;
+  border-radius: 0.375em;
+  border: 1px solid #a1cdb8;
+  background: #f9f9f9;
+  font-size: 1em;
+  transition: border-color .2s, background .2s;
+}
+
+form input:focus, form select:focus {
+  outline: none;
+  border-color: #064225;
+  background: #ffffff;
+}
+
+fieldset #submit{
+  text-align: right;
+}
+
+#submitBtn {
+  background-color: #064225;
+  color: #ffffff;
+  border: none;
+  padding: .75em 1.5em;
+  border-radius: 0.375em;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color .2s;
+}
+
+#submitBtn:hover {
+  background-color: #08804a;
 }

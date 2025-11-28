@@ -1,5 +1,5 @@
-//  SearchView.swift
-//  clerkshipApp
+// SearchView.swift
+// clerkshipApp
 
 import SwiftUI
 
@@ -29,10 +29,8 @@ struct SearchView: View {
     // Filtered data for the list
     private var filteredNames: [String: [User]] {
         if searchText.isEmpty {
-            // Only students, no search filter
             return namesByLetter.mapValues { $0.filter { $0.access == .student } }
         } else {
-            // Search text applied, still only students
             var filtered: [String: [User]] = [:]
             for (letter, users) in namesByLetter {
                 let studentsOnly = users.filter {
@@ -45,22 +43,25 @@ struct SearchView: View {
         }
     }
 
-    // Build namesByLetter
+    // Build namesByLetter: only students, sorted by last name then first name
     func namesList() {
-        namesByLetter = [:] // Reset
+        namesByLetter = [:]
         for u in userStore.allUsers {
-            guard u.access == .student else { continue } // Only students
-            let firstChar = String(u.firstName.prefix(1)).uppercased()
+            guard u.access == .student else { continue }
+            let firstChar = String(u.lastName.prefix(1)).uppercased()
             namesByLetter[firstChar, default: []].append(u)
+        }
+
+        for key in namesByLetter.keys {
+            namesByLetter[key]?.sort {
+                if $0.lastName == $1.lastName {
+                    return $0.firstName < $1.firstName
+                }
+                return $0.lastName < $1.lastName
+            }
         }
     }
 
-    // Scroll to letter
-    private func scrollTo(_ letter: Character) {
-        print("Scroll to \(letter)")
-    }
-
-    // Body
     var body: some View {
         ZStack(alignment: .topLeading) {
             backgroundColor.ignoresSafeArea()
@@ -86,39 +87,35 @@ struct SearchView: View {
                 .background(buttonColor.opacity(0.2))
                 .cornerRadius(10)
                 .padding(.horizontal, 16)
-                .padding(.top, 10)
+                .padding(.top, 40)
 
-                // Scrollable list with alphabet index
-                ScrollViewReader { proxy in
-                    ZStack(alignment: .trailing) {
-                        NamesView(
-                            filteredNames: filteredNames,
-                            selectedUser: $selectedUser,
-                            showEvalForm: $hasChosenStudent
-                        )
-                        .environmentObject(router)
-                        .environment(\.defaultMinListRowHeight, 28)
-                        .listSectionSpacing(.compact)
-                        .scrollContentBackground(.hidden)
-                        .background(backgroundColor)
-                        .listStyle(.insetGrouped)
-                        .foregroundColor(.white)
+                // Names list with alphabet index
+                ZStack(alignment: .trailing) {
+                    NamesView(
+                        filteredNames: filteredNames,
+                        selectedUser: $selectedUser,
+                        showEvalForm: $hasChosenStudent,
+                        backgroundColor: backgroundColor
+                    )
+                    .environmentObject(router)
+                    .environment(\.defaultMinListRowHeight, 28)
+                    .listSectionSpacing(.compact)
+                    .scrollContentBackground(.hidden)
+                    .background(backgroundColor)
+                    .listStyle(.insetGrouped)
+                    .foregroundColor(.white)
 
-                        // Alphabet index
-                        VStack(spacing: 6) {
-                            ForEach(alphabet, id: \.self) { letter in
-                                Button(action: { scrollTo(letter) }) {
-                                    Text(String(letter))
-                                        .font(.caption2)
-                                        .fontWeight(.medium)
-                                        .foregroundColor(buttonColor)
-                                        .padding(.horizontal, 2)
-                                }
-                                .buttonStyle(.plain)
-                            }
+                    // Alphabet index (visual only)
+                    VStack(spacing: 6) {
+                        ForEach(alphabet, id: \.self) { letter in
+                            Text(String(letter))
+                                .font(.caption2)
+                                .fontWeight(.medium)
+                                .foregroundColor(buttonColor)
+                                .padding(.horizontal, 2)
                         }
-                        .padding(.trailing, 6)
                     }
+                    .padding(.trailing, 6)
                 }
 
                 // Nav tab only if current user is NOT student
@@ -135,7 +132,6 @@ struct SearchView: View {
                     .ignoresSafeArea(.all, edges: .top)
             }
         }
-        // Build the names list whenever users load
         .task { namesList() }
         .onChange(of: userStore.allUsers) { _ in namesList() }
         .navigationBarBackButtonHidden(true)
@@ -145,13 +141,12 @@ struct SearchView: View {
 // NamesView
 struct NamesView: View {
     var filteredNames: [String: [User]]
-    private let backgroundColor = Color("BackgroundColor")
-    private let buttonColor = Color("ButtonColor")
-
     @Binding var selectedUser: User?
     @Binding var showEvalForm: Bool
+    var backgroundColor: Color
 
     @EnvironmentObject var router: Router
+    private let buttonColor = Color("ButtonColor")
 
     var body: some View {
         List {
@@ -174,10 +169,9 @@ struct NamesView: View {
                             }
                             .contentShape(Rectangle())
                             .padding(.vertical, 8)
-                            .background(backgroundColor.opacity(0.8))
                         }
+                        .listRowBackground(backgroundColor)
                         .listRowInsets(EdgeInsets(top: 1, leading: 16, bottom: 1, trailing: 10))
-                        .listRowBackground(backgroundColor.opacity(0.8))
                     }
                 }
             }

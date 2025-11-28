@@ -32,7 +32,7 @@ class EvalStore: ObservableObject {
     func scoreValue(for response: String) -> Double? {
         switch response.lowercased() {
         case "novice": return 1
-        case "advanced": return 3
+        case "apprentice": return 3
         case "expert": return 5
         case "n/a": return nil
         default: return nil
@@ -65,12 +65,16 @@ class EvalStore: ObservableObject {
     }
     
     func getMiniViewAvg() -> Double {
-        var avgs = averageScores().values
-        var sum: Double = 0
-        for a in avgs {
-            sum += a
+        let avgs = averageScores().values
+        if !avgs.isEmpty{
+            var sum: Double = 0
+            for a in avgs {
+                sum += a
+            }
+            
+            return (sum / Double(avgs.count))
+        }else{
+            return 0
         }
-        
-        return (sum / Double(avgs.count))
     }
 }

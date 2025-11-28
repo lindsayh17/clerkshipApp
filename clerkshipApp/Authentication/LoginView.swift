@@ -13,6 +13,7 @@ struct LoginView: View {
     @EnvironmentObject var userStore: UserStore
     @EnvironmentObject var currentUser: CurrentUser
     @EnvironmentObject var qod: QODStore
+    @EnvironmentObject var evalStore: EvalStore
     
     @State private var email = ""
     @State private var password = ""
@@ -20,7 +21,7 @@ struct LoginView: View {
     
     private let backgroundColor = Color("BackgroundColor")
     
-    // MARK: - Firebase fetch functions
+    // Firebase fetch functions
     func getNames() async {
         do {
             try await firebase.fetchUsers()
@@ -57,6 +58,26 @@ struct LoginView: View {
         }
     }
     
+    func getEvals() async{
+        Task {
+            do {
+                if let u = currentUser.user{
+                    try await firebase.fetchCompletedEvals(student: u)
+                    if firebase.downloadSuccessful {
+                        evalStore.currUserEvals.removeAll()
+                        for eval in firebase.userEvals {
+                            evalStore.addFetchedEvals(eval)
+                            print(eval)
+                        }
+                    }
+                }
+            } catch {
+                print("Error fetching evaluations: \(error)")
+            }
+        }
+    }
+
+    
     func signin() {
         Task {
             do {
@@ -64,6 +85,7 @@ struct LoginView: View {
                 await getNames()
                 await getCurrUser()
                 await getQOD()
+                await getEvals()
                 auth.isLoggedIn = true
                 
                 // switch the root from the welcome screen to home
@@ -74,7 +96,6 @@ struct LoginView: View {
         }
     }
     
-    // MARK: - Body
     var body: some View {
         ZStack(alignment: .topLeading) {
             VStack(spacing: 20) {
@@ -142,7 +163,6 @@ struct LoginView: View {
     }
 }
 
-// MARK: - Preview
 #Preview {
     NavigationStack {
         LoginView()
@@ -152,4 +172,5 @@ struct LoginView: View {
     .environmentObject(CurrentUser())
     .environmentObject(AuthService())
     .environmentObject(QODStore())
+    .environmentObject(EvalStore())
 }

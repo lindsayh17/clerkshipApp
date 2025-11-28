@@ -54,12 +54,14 @@ querySnapshot.forEach((doc) => {
 
   let actionCell = document.createElement("td");
   let editlink = document.createElement('a');
-  editlink.href = `userForm.html?id=${doc.id}`;
+  editlink.href = `userForm.php?id=${doc.id}`;
   editlink.textContent = 'Edit'
+  editlink.classList.add('editButton', 'actionButton');
   actionCell.appendChild(editlink)
 
   let deleteButton = document.createElement('button');
-  deleteButton.textContent = 'Delete User'
+  deleteButton.textContent = 'Delete User';
+  deleteButton.classList.add('deleteButton', 'actionButton');
   actionCell.appendChild(deleteButton)
 
   deleteButton.addEventListener('click', function() {

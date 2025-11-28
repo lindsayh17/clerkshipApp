@@ -8,18 +8,11 @@
 </head>
 <body>
   <!-- Header with Navbar -->
-  <header>
-    <div class="header-left">
-      <img src="UVM recolored logo.jpg" alt="UVM Logo" class="logo">
-      <h1>OBGYN Clerkship</h1>
-    </div>
-    <nav>
-      <a href="resources.html" class="nav-link active">Resources</a>
-      <a href="profile.html" class="nav-link">Profile</a>
-      <a href="user-permissions.html" class="nav-link">Users</a>
-      <a href="student-grades.html" class="nav-link">Admin</a>
-    </nav>
-  </header>
+  <?php
+    $title = "resources";
+
+    include 'header.php';
+  ?>
 
   <!-- Main Content -->
   <main>

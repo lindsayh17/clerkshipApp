@@ -30,6 +30,16 @@ enum Destination: Identifiable {
     
     // put all requirement views beneath here
     case requirements
+    case attendance
+    case obstetricService
+    case clinicService
+    case inpatientGynService
+    case apgo
+    case clinicalReasoning
+    case rce
+    case midRotation
+    case summativeClerkship
+    case shelfExam
     
     // resources
     case resources
@@ -101,6 +111,27 @@ extension Destination {
             
         case .requirements:
             return ClerkshipRequirementsView()
+        case .attendance:
+            return AttendanceView()
+        case .apgo:
+            return APGOView()
+        case .clinicalReasoning:
+            return ClinicalReasoningView()
+        case .clinicService:
+            return ClinicServiceView()
+        case .inpatientGynService:
+            return InpatientGynServiceView()
+        case .midRotation:
+            return MidRotationView()
+        case .obstetricService:
+            return ObstetricServiceView()
+        case .rce:
+            return RCEView()
+        case .summativeClerkship:
+            return SummativeClerkshipView()
+        case .shelfExam:
+            return ShelfExamView()
+
             
         // resources
         case .resources:

@@ -12,6 +12,7 @@ struct CreateAccountView: View {
     @EnvironmentObject var userStore: UserStore
     @EnvironmentObject var currentUser: CurrentUser
     @EnvironmentObject var qod: QODStore
+    @EnvironmentObject var evalStore: EvalStore
     
     @State private var email = ""
     @State private var password = ""
@@ -31,8 +32,8 @@ struct CreateAccountView: View {
                 try await auth.createUser(fname: firstname, lname: lastname, email: email)
                 await getNames()
                 await getCurrUser()
-                print(currentUser)
                 await getQOD()
+                await getEvals()
                 auth.isLoggedIn = true
                 
                 // switch the root from the welcome screen to home
@@ -79,6 +80,25 @@ struct CreateAccountView: View {
             }
         } catch {
             print("Error fetching questions: \(error)")
+        }
+    }
+    
+    func getEvals() async{
+        Task {
+            do {
+                if let u = currentUser.user{
+                    try await firebase.fetchCompletedEvals(student: u)
+                    if firebase.downloadSuccessful {
+                        evalStore.currUserEvals.removeAll()
+                        for eval in firebase.userEvals {
+                            evalStore.addFetchedEvals(eval)
+                            print(eval)
+                        }
+                    }
+                }
+            } catch {
+                print("Error fetching evaluations: \(error)")
+            }
         }
     }
     
@@ -168,5 +188,6 @@ struct CreateAccountView: View {
     .environmentObject(UserStore())
     .environmentObject(CurrentUser())
     .environmentObject(QODStore())
+    .environmentObject(EvalStore())
 }
 
