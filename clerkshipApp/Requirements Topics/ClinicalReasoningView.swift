@@ -103,7 +103,7 @@ struct ClinicalReasoningView: View {
                                     .cornerRadius(12)
                                     .shadow(radius: 4)
                             }
-                            Text("Gynecology Topics                                      ")
+                            Text("Gynecology Topics                                        ")
                                 .font(.body)
                                 .foregroundColor(.white.opacity(0.85))
                                 .multilineTextAlignment(.leading)
