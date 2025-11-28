@@ -3,79 +3,89 @@
 
 import SwiftUI
 
+
 struct ClerkshipRequirementsView: View {
-    // Colors
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
     
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var currUser: CurrentUser
+    @EnvironmentObject var router: Router  // Assuming you have a Router like in OrientationView
 
     @State private var openSection: String? = nil
     
     var body: some View {
-        ZStack (alignment: .topLeading) {
+        ZStack(alignment: .topLeading) {
             backgroundColor.ignoresSafeArea()
             
-            VStack(spacing: 0) {
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 20) {
-                        
-                        Text("Clerkship Requirements")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                            .padding(.top, 20)
-                            .padding(.bottom, 20)
-                            .padding(.horizontal, 40)
-                            .frame(maxWidth: .infinity, alignment: .center)
-                            .multilineTextAlignment(.center)
-                        
-                        
-                        // Attendance & Scheduling
-                        section(title: "Attendance & Scheduling") {
-                            button("Attendance")
-                            button("Rotation Checklist")
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+                    Text("Clerkship Requirements")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .padding(.top, 20)
+                        .padding(.bottom, 20)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .multilineTextAlignment(.center)
+                    
+                    // Sections
+                    section(title: "Attendance & Scheduling") {
+                        MainButtonView(title: "Attendance", color: buttonColor) {
+                            router.push(.attendance)
                         }
-                        
-                        // Clinical Rotations
-                        section(title: "Clinical Rotations") {
-                            button("Obstetrics Service")
-                            button("Clinic Service")
-                            button("Gyn/Inpatient Service")
-                        }
-                        
-                        // Modules
-                        section(title: "Learning Modules") {
-                            button("APGO uWise Topics")
-                            button("Social Determinants of Health (SDoH)")
-                            button("Clinical Reasoning Session")
-                            button("RCE Tracker")
-                        }
-                        
-                        // Evaluations
-                        section(title: "Evaluations") {
-                            button("Mid-Rotation")
-                            button("Summative Clerkship Evaluations")
-                            button("Exit Interview")
-                        }
-                        
-                        // Exams
-                        section(title: "Exams") {
-                            button("Shelf Exam Review Session")
-                            button("Exams")
-                        }
-                        
-                        // Other
-                        section(title: "Other Requirements") {
-                            button("Teaching Awards")
-                        }
-                        
+                        MainButtonView(title: "Rotation Checklist", color: buttonColor)
                     }
-                    .padding(.top, 10)
-                    .padding(.horizontal, 20)
-                    .padding(.bottom, 30)
+                    
+                    section(title: "Clinical Rotations") {
+                        MainButtonView(title: "Obstetrics Service", color: buttonColor) {
+                            router.push(.obstetricService)
+                        }
+                        MainButtonView(title: "Clinic Service", color: buttonColor) {
+                            router.push(.clinicService)
+                        }
+                        MainButtonView(title: "Gyn/Inpatient Service", color: buttonColor) {
+                            router.push(.inpatientGynService)
+                        }
+                    }
+                    
+                    section(title: "Learning Modules") {
+                        MainButtonView(title: "APGO uWise Topics", color: buttonColor) {
+                            router.push(.apgo)
+                        }
+                        MainButtonView(title: "Social Determinants of Health (SDoH)", color: buttonColor)
+                        MainButtonView(title: "Clinical Reasoning Session", color: buttonColor) {
+                            router.push(.clinicalReasoning)
+                        }
+                        MainButtonView(title: "RCE Tracker", color: buttonColor) {
+                            router.push(.rce)
+                        }
+                    }
+                    
+                    section(title: "Evaluations") {
+                        MainButtonView(title: "Mid-Rotation", color: buttonColor) {
+                            router.push(.midRotation)
+                        }
+                        MainButtonView(title: "Summative Clerkship Evaluations", color: buttonColor) {
+                            router.push(.summativeClerkship)
+                        }
+                        MainButtonView(title: "Exit Interview", color: buttonColor)
+                    }
+                    
+                    section(title: "Exams") {
+                        MainButtonView(title: "Shelf Exam Review Session", color: buttonColor) {
+                            router.push(.shelfExam)
+                        }
+                        MainButtonView(title: "Exams", color: buttonColor)
+                    }
+                    
+                    section(title: "Other Requirements") {
+                        MainButtonView(title: "Teaching Awards", color: buttonColor)
+                    }
                 }
+                .padding(.top, 10)
+                .padding(.horizontal, 20)
+                .padding(.bottom, 30)
             }
             
             BackButton()
@@ -86,25 +96,8 @@ struct ClerkshipRequirementsView: View {
         .navigationBarBackButtonHidden()
     }
     
-    // Button
     @ViewBuilder
-    private func button(_ title: String) -> some View {
-        Button(action: {}) {
-            Text(title)
-                .foregroundColor(.white)
-                .font(.headline)
-                .frame(maxWidth: .infinity, alignment: .center)
-                .padding()
-                .background(buttonColor)
-                .cornerRadius(12)
-        }
-    }
-    
-    // Section Wrapper
-    @ViewBuilder
-    private func section<Content: View>(title: String,
-                                        @ViewBuilder content: @escaping () -> Content) -> some View {
-        
+    private func section<Content: View>(title: String, @ViewBuilder content: @escaping () -> Content) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Text(title)
@@ -137,6 +130,7 @@ struct ClerkshipRequirementsView: View {
         }
     }
 }
+
 
 
 // Preview
