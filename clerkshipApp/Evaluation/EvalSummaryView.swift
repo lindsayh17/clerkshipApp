@@ -12,26 +12,7 @@ struct EvalSummaryView: View {
         
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
-    
-    // download evaluations from firebase
-    func getEvals() {
-        Task {
-            do {
-                if let u = currUser.user{
-                    try await firebase.fetchCompletedEvals(student: u)
-                    if firebase.downloadSuccessful {
-                        for eval in firebase.userEvals {
-                            evalStore.addFetchedEvals(eval)
-                            print(eval)
-                        }
-                    }
-                }
-            } catch {
-                print("Error fetching evaluations: \(error)")
-            }
-        }
-    }
-            
+                    
     var body: some View {
         ZStack {
             backgroundColor.ignoresSafeArea()
@@ -97,9 +78,6 @@ struct EvalSummaryView: View {
             }
             
             
-        }
-        .task {
-            getEvals()
         }
         .navigationBarBackButtonHidden(true)
     }
