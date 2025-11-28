@@ -1,5 +1,7 @@
 //  BreastExamView.swift
 //  clerkshipApp
+//  Note: App content is hardcoded to help with the transfer of the app to the IT team at UVMMC
+
 
 import SwiftUI
 
@@ -7,11 +9,9 @@ struct BreastExamView: View {
     // Colors
     private let backgroundColor = Color("BackgroundColor")
     private let buttonColor = Color("ButtonColor")
-    // @Binding var destination: HomeDestination
     @Environment(\.dismiss) var dismiss
     
     @State private var currentView = Destination.home
-    // @State var loginManager
     @EnvironmentObject var currUser: CurrentUser
     @EnvironmentObject var auth: AuthService
     
@@ -20,7 +20,6 @@ struct BreastExamView: View {
             // Fill the screen with background color
             backgroundColor.ignoresSafeArea()
             
-            // if currUser.user?.getPrivilege() == .student{
             VStack(spacing: 0) {
                 // Scrollable content
                 ScrollView {
@@ -51,8 +50,6 @@ struct BreastExamView: View {
                     .padding(.horizontal, 24)
                     .padding(.bottom, 40)
                 }
-
-//                NavTab(currentTab: $currentView)
             }
             BackButton()
                 .padding(.top, 10)

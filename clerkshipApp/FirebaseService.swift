@@ -4,7 +4,6 @@
 import SwiftUI
 import FirebaseCore
 import FirebaseFirestore
-// import FirebaseAuth
 
 class FirebaseService: ObservableObject {
     @Published var users: [User]!

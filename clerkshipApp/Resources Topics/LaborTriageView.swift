@@ -1,5 +1,7 @@
 //  LaborTriageView.swift
 //  clerkshipApp
+//  Note: App content is hardcoded to help with the transfer of the app to the IT team at UVMMC
+
 
 import SwiftUI
 
@@ -18,7 +20,6 @@ struct LaborTriageView: View {
             // Fill the screen with background color
             backgroundColor.ignoresSafeArea()
             
-            // if currUser.user?.getPrivilege() == .student{
             VStack(spacing: 0) {
                 // Scrollable content
                 ScrollView {
@@ -49,8 +50,6 @@ struct LaborTriageView: View {
                     .padding(.horizontal, 24)
                     .padding(.bottom, 40)
                 }
-
-//                NavTab(currentTab: $currentView)
             }
             BackButton()
                 .padding(.top, 10)

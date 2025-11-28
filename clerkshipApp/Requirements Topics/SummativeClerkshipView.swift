@@ -1,5 +1,7 @@
 //  SummativeClerkshipView.swift
 //  clerkshipApp
+//  Note: App content is hardcoded to help with the transfer of the app to the IT team at UVMMC
+
 
 import SwiftUI
 
@@ -9,7 +11,6 @@ struct SummativeClerkshipView: View {
     private let buttonColor = Color("ButtonColor")
     
     @State private var currentView = Destination.home
-    // @State var loginManager
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var currUser: CurrentUser
     @EnvironmentObject var auth: AuthService
@@ -19,7 +20,6 @@ struct SummativeClerkshipView: View {
             // Fill the screen with background color
             backgroundColor.ignoresSafeArea()
             
-            // if currUser.user?.getPrivilege() == .student{
             VStack(spacing: 0) {
                 // Scrollable content
                 ScrollView {
@@ -38,7 +38,6 @@ struct SummativeClerkshipView: View {
                         VStack(alignment: .leading, spacing: 10) {
                             // Buttons Section
                             Button(action: {
-                            // do something for Pregnancy Counseling
                             }) {
                                 Text("Send Evaluation Request")
                                     .font(.headline)
@@ -64,7 +63,6 @@ struct SummativeClerkshipView: View {
                     .padding(.bottom, 40)
                 }
 
-//                NavTab(currentTab: $currentView)
             }
             BackButton()
                 .padding(.top, 10)

@@ -1,5 +1,6 @@
 //  ShelfExamView.swift
 //  clerkshipApp
+//  Note: App content is hardcoded to help with the transfer of the app to the IT team at UVMMC
 
 import SwiftUI
 
@@ -9,7 +10,6 @@ struct ShelfExamView: View {
     private let buttonColor = Color("ButtonColor")
     
     @State private var currentView = Destination.home
-    // @State var loginManager
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var currUser: CurrentUser
     @EnvironmentObject var auth: AuthService
@@ -19,7 +19,6 @@ struct ShelfExamView: View {
             // Fill the screen with background color
             backgroundColor.ignoresSafeArea()
             
-            // if currUser.user?.getPrivilege() == .student{
             VStack(spacing: 0) {
                 // Scrollable content
                 ScrollView {
@@ -49,7 +48,6 @@ struct ShelfExamView: View {
                         Spacer()
                     // Buttons Section
                     Button(action: {
-                    // do something for Pregnancy Counseling
                     }) {
                         Text("Shelf Exam Review Zoom")
                             .font(.headline)
@@ -64,7 +62,6 @@ struct ShelfExamView: View {
                     .padding(.bottom, 40)
                 }
 
-//                NavTab(currentTab: $currentView)
             }
             BackButton()
                 .padding(.top, 10)

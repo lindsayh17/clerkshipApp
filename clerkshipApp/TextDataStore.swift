@@ -2,7 +2,7 @@
 //  TextDataStore.swift
 //  clerkshipApp
 //
-//  Created by Hannah Deyst on 11/28/25.
+//  Convenience class for future developers to read from app resources
 //
 import SwiftUI
 

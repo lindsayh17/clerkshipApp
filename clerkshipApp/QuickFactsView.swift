@@ -1,5 +1,7 @@
 // QuickFactsView.swift
 // clerkshipApp
+//  Note: App content is hardcoded to help with the transfer of the app to the IT team at UVMMC
+
 
 import SwiftUI
 
@@ -89,8 +91,6 @@ struct QuickFactsView: View {
                         .padding(.bottom, 30)
                     }
                 }
-                // Add bottom navigation bar
-                //NavTab(currentTab: $currentView)
             }
             
             // Floating back button

@@ -10,7 +10,7 @@ struct ClerkshipRequirementsView: View {
     
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var currUser: CurrentUser
-    @EnvironmentObject var router: Router  // Assuming you have a Router like in OrientationView
+    @EnvironmentObject var router: Router  
 
     @State private var openSection: String? = nil
     

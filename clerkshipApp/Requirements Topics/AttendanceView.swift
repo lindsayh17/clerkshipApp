@@ -1,5 +1,6 @@
 //  AttendanceView.swift
 //  clerkshipApp
+//  Note: App content is hardcoded to help with the transfer of the app to the IT team at UVMMC
 
 import SwiftUI
 
@@ -19,7 +20,6 @@ struct AttendanceView: View {
             // Fill the screen with background color
             backgroundColor.ignoresSafeArea()
             
-            // if currUser.user?.getPrivilege() == .student{
             VStack(spacing: 0) {
                 // Scrollable content
                 ScrollView {
@@ -64,14 +64,13 @@ struct AttendanceView: View {
                     .padding(.bottom, 40)
                 }
 
-//                NavTab(currentTab: $currentView)
             }
             BackButton()
                 .padding(.top, 10)
                 .padding(.leading, 10)
                 .ignoresSafeArea(.all, edges: .top)
         }
-    .navigationBarBackButtonHidden(true)
+        .navigationBarBackButtonHidden(true)
     }
 }
 

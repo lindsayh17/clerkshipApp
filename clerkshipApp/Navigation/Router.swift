@@ -16,39 +16,31 @@ class Router: ObservableObject {
     func switchRoot(_ root: Destination) {
         path.removeAll()
         self.root = root
-        print("path: \(path)")
     }
     
     func push(_ destination: Destination) {
         path.append(destination)
-        print("path: \(path)")
     }
-    
     
     func pop() {
         path.removeLast()
-        print("path: \(path)")
     }
     
     func popTo(_ destination: Destination) {
         guard let index = path.lastIndex(where: { $0 == destination }) else { return }
         path.popItem(to: index)
-        print("path: \(path)")
     }
     
     func popToRoot() {
         path.removeAll()
-        print("path: \(path)")
     }
     
     func sheet(_ destination: Destination) {
         sheet = destination
-        print("path: \(path)")
     }
 
     func fullScreenCover(_ destination: Destination) {
         fullScreenCover = destination
-        print("path: \(path)")
     }
     
     // get the current view
@@ -65,7 +57,6 @@ class Router: ObservableObject {
         } else if fullScreenCover != nil {
             fullScreenCover = nil
         }
-        print("path: \(path)")
     }
     
 }

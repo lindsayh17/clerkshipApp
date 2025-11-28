@@ -1,5 +1,7 @@
 //  APGOView.swift
 //  clerkshipApp
+//  Note: App content is hardcoded to help with the transfer of the app to the IT team at UVMMC
+
 
 import SwiftUI
 
