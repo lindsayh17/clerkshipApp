@@ -10,6 +10,10 @@ Running the app:
 - Run on iOS 18.5 or above for the best app experience.
 
 
+Website Access:
+- Visit: https://lhall11.w3.uvm.edu/ClerkshipApp/
+
+
 Key Features:
 - Student View: Access clinical resources, evaluations, orientation details, and graded evaluations.
 - Preceptor View: Complete and submit student evaluation forms.
