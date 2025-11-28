@@ -21,7 +21,7 @@ struct LoginView: View {
     
     private let backgroundColor = Color("BackgroundColor")
     
-    // MARK: - Firebase fetch functions
+    // Firebase fetch functions
     func getNames() async {
         do {
             try await firebase.fetchUsers()
