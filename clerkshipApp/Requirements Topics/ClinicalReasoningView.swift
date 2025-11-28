@@ -36,12 +36,21 @@ struct ClinicalReasoningView: View {
                         }
                         // Description area
                         VStack(alignment: .leading, spacing: 10) {
-                            Text("Sessions with faculty designed to provide opportunities for students to complete a history and diagnostic workup, interpret laboratory and imaging results, and apply knowledge to formulate treatment plans - using cases from a pre-selected list of topics.\n\nPlease note that students at Porter && RRMC will conduct these sessions with the faculty on site\n\nObstetric Topics")
+                            Text("Sessions with faculty designed to provide opportunities for students to complete a history and diagnostic workup, interpret laboratory and imaging results, and apply knowledge to formulate treatment plans - using cases from a pre-selected list of topics.\n\nPlease note that students at Porter && RRMC will conduct these sessions with the faculty on site")
                                 .font(.body)
                                 .foregroundColor(.white.opacity(0.85))
                                 .multilineTextAlignment(.leading)
                                 .padding(16)
                                 .background(Color.white.opacity(0.1).cornerRadius(12))
+                            
+                            Text("Obstetric Topics")
+                                .font(.headline)
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.vertical, 8)    // vertical spacing
+                                .padding(.horizontal, 0)  // optional horizontal padding
+                                .padding(.top, 10)
+                            
                             // Buttons Section
                             Button(action: {
                             // do something for Pregnancy Counseling
@@ -103,12 +112,13 @@ struct ClinicalReasoningView: View {
                                     .cornerRadius(12)
                                     .shadow(radius: 4)
                             }
-                            Text("Gynecology Topics                                        ")
-                                .font(.body)
-                                .foregroundColor(.white.opacity(0.85))
-                                .multilineTextAlignment(.leading)
-                                .padding(16)
-                                .background(Color.white.opacity(0.1).cornerRadius(12))
+                            Text("Gynecology Topics")
+                                .font(.headline)
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.vertical, 8)
+                                .padding(.top, 20)
+                            
                             Button(action: {
                             // do something for Pregnancy Counseling
                             }) {
